@@ -1,0 +1,89 @@
+\documentclass[12pt,a4paper]{article}
+
+\usepackage[BCOR1cm]{typearea}
+\usepackage[american]{babel}
+\usepackage{tocbibind}
+\usepackage{parskip}
+\usepackage[latin1]{inputenc}
+\usepackage{a4wide}
+\usepackage{makeidx}
+\usepackage{url}
+\usepackage{doc}
+\usepackage{graphicx}
+\usepackage{color}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage{amsthm}
+\usepackage{bbm}
+\usepackage{enumerate}
+
+\makeatletter
+\newcommand*{\centernot}{%
+  \mathpalette\@centernot
+}
+\def\@centernot#1#2{%
+  \mathrel{%
+    \rlap{%
+      \settowidth\dimen@{$\m@th#1{#2}$}%
+      \kern.5\dimen@
+      \settowidth\dimen@{$\m@th#1=$}%
+      \kern-.5\dimen@
+      $\m@th#1\not$%
+    }%
+    {#2}%
+  }%
+}
+\makeatother
+
+\newcommand{\independent}{\perp\mkern-9.5mu\perp}
+\newcommand{\notindependent}{\centernot{\independent}}
+\newcommand{\norm}[1]{\left\lVert#1\right\rVert}
+\newcommand{\logit}[1]{\text{logit}\left(#1\right)}
+\newcommand{\ilogit}[1]{\text{logit}^{-1}\left(#1\right)}
+\newcommand{\expec}[2]{\mathbb{E}_{#1}\left[#2\right]}
+\newcommand{\G}{\mathcal{G}}
+\renewcommand{\P}{\mathbb{P}}
+\renewcommand{\d}{\text{d}}
+\newcommand{\trarrow}[1]{\xrightarrow{\text{#1}}}
+\newtheoremstyle{def}
+  {12pt}   % ABOVESPACE
+  {6pt}   % BELOWSPACE
+  {\normalfont}  % BODYFONT
+  {0pt}       % INDENT (empty value is the same as 0pt)
+  {\bfseries} % HEADFONT
+  {.}         % HEADPUNCT
+  {5pt plus 1pt minus 1pt} % HEADSPACE
+  {}          % CUSTOM-HEAD-SPEC
+
+\theoremstyle{def}
+\newtheorem{theorem}{Theorem}[section]
+\theoremstyle{def}
+\newtheorem{lemma}[theorem]{Lemma}
+\theoremstyle{def}
+\newtheorem{example}[theorem]{Example}
+\theoremstyle{def}
+\newtheorem{assumption}[theorem]{Assumption}
+\newtheorem*{remark}{Remark}
+\newtheorem*{remarks}{Remarks}
+\theoremstyle{def}
+\newtheorem{definition}[theorem]{Definition}
+
+\graphicspath{{figures/}}
+
+\global\newcommand{\note}[1]{{\color{red}(#1)}}
+
+\title{Causal Inference: TBD}
+\author{Matthieu Bult\'e}
+
+\begin{document}
+
+\numberwithin{equation}{section}
+\pagenumbering{roman}
+
+\bibliographystyle{plain}
+\bibliography{references}
+
+\nocite{*}
+
+\end{document}
