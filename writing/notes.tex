@@ -1,0 +1,45 @@
+\begin{itemize}
+    \item {
+        2020-10-??: Section 6.2 (p174, $p^*$-formula of \cite{BarndorffNielsen1994}, jumping back to 
+        \begin{itemize}
+            \item 2.5 (p36): Ancilliarity
+            \item {5.2 (p145): Log-likelihood derivatives and mixed log model derivatives.\\
+                Barlett Identities, balance relations
+            }
+            \item 5.4 (p155): {Expansion of likelihood quantities: observed case\\
+                More expansions based on results in 5.2
+            }
+        \end{itemize}
+    }
+    \item {
+        2020-12-02:
+        \begin{itemize}
+            \item The $p^*$ formula and other approximation formula provide an approximation for the distribution of the MLE $\hat\theta$.
+            \item Using this approximation, one can compute an approximation to the density of other statistics by change of variable formula: this is true because with $A$ ancilliary, $(\hat\theta, A)$ is sufficient (always?).
+            \item The above point also works for components of the MLE (profile likelihood setting) where the variable of interest is $\psi$ in $\theta = (\psi, \chi)$. See the derivation for $r^*$ in \cite[Section 6.6.1]{BarndorffNielsen1994}.
+            \item So to understand this whole story, need to understand the multi variate version of the $p^*$ formula $\rightarrow$ multi variate version of the saddlepoint approximation.
+            \item Still not sure about the whole Ancilliarity topic and how it is applied.
+        \end{itemize}
+    }
+    \item{
+        2020-12-08:
+        \begin{itemize}
+            \item The whole point of all of this is to estimate (with some series expansion) the distribution of a certain quantity, say $r^\star$.
+            \item Since we know that some of them converge to a known distribution ($N(\mu, \sigma^2) ,\chi^2_p$), we want to factorize the approximate density as $f_{\text{known distribution}} \times (1 + \mathcal{O}(n^{-\varphi}))$
+        \end{itemize}
+    }
+\end{itemize}
+
+
+\begin{align*}
+    \left| \hat\theta_{/(r, \hat\lambda_{\psi_0})} \right|
+    &= \left| \left(\ell_{;\hat\theta}(\hat\theta; \hat\theta) - \ell_{;\hat\theta}(\hat\theta_{\psi_0}; \hat\theta); \ \ \ell_{\lambda; \hat\theta}(\hat\theta_{\psi_0}; \hat\theta) \right) \right|^{-1} \left| \left(\begin{matrix}
+        r & 0\\
+        0 & j_{\lambda\lambda}(\hat\theta_{\psi_0})
+    \end{matrix}\right) \right|\\
+    &= r \left| j_{\lambda\lambda}(\hat\theta_{\psi_0}) \right| \left| \left(\ell_{;\hat\theta}(\hat\theta; \hat\theta) - \ell_{;\hat\theta}(\hat\theta_{\psi_0}; \hat\theta); \ \ \ell_{\lambda; \hat\theta}(\hat\theta_{\psi_0}; \hat\theta) \right) \right|^{-1},
+\end{align*}
+and hence
+\begin{equation*}
+    \left| (r, \hat\lambda_{\psi_0})_{/\hat\theta}\right| = \left| \hat\theta_{/(r, \hat\lambda_{\psi_0})} \right|^{-1} = r^{-1} \left| j_{\lambda\lambda}(\hat\theta_{\psi_0}) \right|^{-1} \left| \left(\ell_{;\hat\theta}(\hat\theta; \hat\theta) - \ell_{;\hat\theta}(\hat\theta_{\psi_0}; \hat\theta); \ \ \ell_{\lambda; \hat\theta}(\hat\theta_{\psi_0}; \hat\theta) \right) \right|
+\end{equation*}

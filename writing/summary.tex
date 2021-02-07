@@ -1,0 +1,88 @@
+\section{Summary}
+
+\subsection{Introduction}
+
+Assume a parametric model for i.i.d.\ observations $(Y_1, \ldots, Y_n)$ where $Y_i \sim F(\theta)$, the distribution $F(\theta)$ has a density $f(\cdot; \theta)$ and $\theta \in \mathbb{R}^p$. We only wish to perform inference on a one-dimensional parameter $\psi$, leading to the decomposition $\theta = (\psi, \lambda)$ with $\lambda \in \mathbb{R}^{p-1}$. The parameters $\psi$ and $\lambda$ are also referred to as \textit{parameter of interest} and \textit{nuisance parameters}. This is the same setting used in Tang et al. \cite{Tang2020}.
+
+To simplify the discussion, we will (at least for now) assume that $F(\theta)$ is a member of an $(m,m)-$exponential family with natural parameter $\theta$. Hence, we know that the MLE $\hat\theta$ is sufficient\footnote{In a more general setting, one would need to consider an additional statistic $a$ which is either approximately or exactly ancilliary for $(\hat\theta, a)$ to be used as a sufficient statistic.} and can replace the conditionning of the likelihood on the data with a conditionning on $\hat\theta$ and write $\ell(\theta; y) = \ell(\theta; \hat\theta)$. 
+
+We define the \textit{profile log-likelihod} $\ell_p$ and \textit{normalized profile log-likelihood} $\bar\ell_p(\psi)$,
+\begin{align*}
+    \ell_p(\psi) = \sup_{\lambda} \ell(\psi, \lambda) && \text{and} && \bar\ell_p(\psi) = \ell_p(\hat\psi) - \ell_p(\psi).
+\end{align*}
+Under the model $F(\theta)$ with $\psi = \psi_0$, the the \textit{directed likelihood root} is 
+\begin{equation*}
+    r(\psi_0) = \text{sgn}(\hat\psi - \psi_0)\left[2 \bar\ell_p(\psi_0)\right]^{1/2}.
+\end{equation*}
+For fixed $p$ and under regularity conditions, the directed profile likelihood converges to a $N(0, 1)$ random variable with relative error of $O(n^{-1/2})$. This convergence will be explored in following sections. A modified version can be more accurately approximated by the standard normal, the \textit{modified likelihood root}, given by
+\begin{equation}
+    r^\star(\psi_0) = r(\psi_0) + r(\psi_0)^{-1}\log\left[C(\psi_0)\tilde u(\psi_0) / r(\psi_0)\right],
+\end{equation}
+with
+\begin{align*}
+    \tilde u(\psi_0) = j_p^{-1/2}(\hat\psi)\bar\ell_{p/\hat\psi}(\psi_0) && \text{and} && C(\psi_0) = |\ell_{\lambda; \hat\lambda}(\hat\theta_{\psi_0})| / \{ |j_{\lambda\lambda}(\hat\theta_{\psi_0})||j_{\lambda\lambda}(\hat\theta)| \}^{1/2}
+\end{align*}
+
+Under the same regularity conditions, the normal distribution approximates the distribution of $r^\star$ with relative error of $O(n^{-3/2})$.
+
+\subsection{Approximation to the distribution of $\hat\theta$}
+
+As we will show in the next Section, the distribution of both $r$ and $r^\star$ can be expressed via a change of variable s proportional to the distribution of the MLE $\hat\theta$. Hence, finding   asymptoticaly valid approximations to the distribution of $\hat\theta$ will be used to derive similar approximations to the distribution of $r$ and $r^\star$.
+
+Continuing with the setup of the previous section, we assume that we have access to a sample of $n$ i.i.. observations $(Y_1, \ldots, Y_n)$ from an exponential family $F(\theta)$. Since $F(\theta)$ is an exponential family, we can assume that its density has the form
+\begin{equation*}
+    f_Y(y; \theta) = \exp\left(\theta^\top y - \mathcal{H}_Y(\theta) - \mathcal{G}_Y(y)\right)
+\end{equation*}
+and the cumulant generating function of $Y$ is given by
+\begin{equation*}
+    \mathcal{K}_Y(\beta; \theta) = \mathcal{H}_Y(\theta + \beta) - \mathcal{H}_Y(\theta).
+\end{equation*}
+
+Assume that $Y$ is centered\footnote{This is to simplify the notation. It will be removed in the future}, that is, $\mathbb{E}_\theta[Y] = 0$ and let $S_n$ be the standardized mean of $Y_1, \ldots, Y_n$. We can construct a Saddlepoint approxmiation\footnote{Details on the Saddlepoint approximation will come in the future.} to the distribution of $S_n$, giving
+\begin{equation} \label{eq-saddlepoint-sn}
+    f_{S_n}(s; \theta) = \frac{\exp\left(n\left[\mathcal{K}_Y(\hat\beta; \theta) - \hat\beta^\top s\right]\right)}{\left| \mathcal{K}^{''}_Y(\hat\beta; \theta) \right|^{1/2}}\left(\frac{n}{2\pi}\right)^{p/2}\left[ 1 + \frac{b(\hat\beta)}{2n} + O(n^{-2}) \right],
+\end{equation}
+where $\hat\beta$ solves $\mathcal{K}^{'}_{Y}(\hat\beta; \theta) = s$. Since the $Y_i$ are from an exponential family, its cumulant generating function has the special form $\mathcal{K}_Y(\beta; \theta) = \mathcal{H}_Y(\theta + \beta) - \mathcal{H}_Y(\theta)$ and hence the condition on $\hat\beta$ is equivalent to $\mathcal{H}^{'}_{Y}(\theta + \hat\beta) = s$. Furthermore, using again the properties of exponential families, we have that the MLE $\hat\theta$ satisfies $\mathcal{H}^{'}_{Y}(\hat\theta) = s$ and hence $\hat\beta = \hat\theta - \theta$. Replacing this in (\ref{eq-saddlepoint-sn}) together with some rewriting yields
+\begin{equation} \label{eq-saddlepoint-nobeta}
+    f_{S_n}(s; \theta) = \frac{\exp\left( \ell(\hat\theta) - \ell(\theta) \right)}{\left| j(\hat\theta) \right|^{1/2}\left(2\pi\right)^{p/2}}\left[ 1 + \frac{b(\hat\beta)}{2n} + O(n^{-2}) \right].
+\end{equation}
+
+Finally, we note that since $\mathcal{H}^{'}_{S_n}(\hat\theta) = s$ and $\frac{\d}{\d s}\mathcal{H}^{'}_{S_n} = \hat\theta_{/s}\mathcal{H}^{''}_{S_n}(\hat\theta)$, we get that $\hat\theta_{/s} = \mathcal{H}^{''}_{S_n}(\hat\theta)^{-1} = j(\hat\theta)^{-1}$ and hence by change of varible we can obtain an approximation to the density of $\hat\theta$ 
+\begin{equation*} \label{eq-unnormalized-pstar}
+    f_{\hat\theta}(\hat\theta; \theta) = \left(2\pi\right)^{-p/2}\left| j(\theta) \right|^{1/2}  \exp\left( \ell(\hat\theta) - \ell(\theta) \right) \left[ 1 + \frac{b(\hat\beta)}{n} + O(n^{-2}) \right].
+\end{equation*}
+
+Note that Approximation (\ref{eq-unnormalized-pstar}) need not integrate to 1. Dividing the approximation by a factor of $1 + \frac{b(0)}{2n}$ can be shown to yield an approximation of order $O(n^{-3/2})$ which is also a proper density function. The resulting approximation is a special case of the \textit{Barndorff-Nielsen formula} also called $p^\star$ \textit{formula}.
+
+\subsection{Distribution of $r^\star$}
+
+High-order approximations to the distribution of the MLE $\hat\theta$ can be readily found as we will show in later sections. By change of variable, such approximations can be used to derive approximnations to the distribution of both the directed and modified likelihood roots $r$ and $r^\star$. We follow the derivation presented in Barndorff-Nielsen and Cox \cite{BarndorffNielsen1994}.
+
+First, we assume that such a change of variable exists between the MLE $\hat\theta = (\hat\psi, \hat\lambda)$ and a vector composed of the directed likelihood root and the profile MLE $\hat\lambda_{\psi_0}$. To determine the Jacobian of this transformation, we consider the equations determining $r$ and $\hat\lambda_{\psi_0}$,
+\begin{align*}
+    \ell(\hat\theta; \hat\theta) - \ell(\hat\theta_{\psi_0}; \hat\theta) &= \frac12r^2\\
+    \ell_\lambda(\hat\theta_{\psi_0}; \hat\theta) &= 0.
+\end{align*}
+Taking derivatives of these two equations with respect to $r$ and $\hat\lambda_{\psi_0}$, while keeping the other fix, yields the following additional equations
+\begin{align}
+    \hat\theta_{/r} \left\{ \ell_{;\hat\theta}(\hat\theta; \hat\theta) - \ell_{;\hat\theta}(\hat\theta_{\psi_0}; \hat\theta) \right\} &= r \label{A}\\
+    \hat\theta_{/\hat\lambda_{\psi_0}} \left\{ \ell_{;\hat\theta}(\hat\theta; \hat\theta) - \ell_{;\hat\theta}(\hat\theta_{\psi_0}; \hat\theta) \right\} &= 0\\
+    \hat\theta_{/r}\ell_{\lambda; \hat\theta}(\hat\theta_{\psi_0}; \hat\theta) &= 0\\
+    \ell_{\lambda\lambda}(\hat\theta_{\psi_0}; \hat\theta) + \hat\theta_{/\hat\lambda_{\psi_0}}\ell_{\lambda; \hat\theta}(\hat\theta_{\psi_0}; \hat\theta) &= 0. \label{eq-score-4}
+\end{align}
+
+We first note that $\ell_{\lambda\lambda}(\hat\theta_{\psi_0}; \hat\theta) = -j_{\lambda\lambda}(\hat\theta_{\psi_0})$, which implies together with (\ref{eq-score-4}) that $\hat\theta_{/\hat\lambda_{\psi_0}}\ell_{\lambda; \hat\theta}(\hat\theta_{\psi_0}; \hat\theta) = j_{\lambda\lambda}(\hat\theta_{\psi_0})$. All together we have
+\begin{equation*}
+    \hat\theta_{/(r, \hat\lambda_{\psi_0})} \left(\ell_{;\hat\theta}(\hat\theta; \hat\theta) - \ell_{;\hat\theta}(\hat\theta_{\psi_0}; \hat\theta); \ \ \ell_{\lambda; \hat\theta}(\hat\theta_{\psi_0}; \hat\theta) \right) = 
+    \left(\begin{matrix}
+        r & 0\\
+        0 & j_{\lambda\lambda}(\hat\theta_{\psi_0})
+    \end{matrix}\right),
+\end{equation*}
+which after a some rewriting yields,
+\begin{equation*}
+    \left| \hat\theta_{/(r, \hat\lambda_{\psi_0})} \right| 
+    = r \frac{\left| j_{\lambda\lambda}(\hat\theta_{\psi_0}) \right|}{\bar\ell_{p/\hat\psi}(\psi_0)\left| \ell_{\lambda;\hat\lambda}(\hat\theta_{\psi_0}) \right|}.
+\end{equation*}
+
+

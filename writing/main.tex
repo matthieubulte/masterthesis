@@ -1,6 +1,5 @@
 \documentclass[12pt,a4paper]{article}
 
-\usepackage[BCOR1cm]{typearea}
 \usepackage[american]{babel}
 \usepackage{tocbibind}
 \usepackage{parskip}
@@ -17,8 +16,23 @@
 \usepackage{amsthm}
 \usepackage{bbm}
 \usepackage{enumerate}
+\usepackage{bbold}
 
 \makeatletter
+\newcommand{\xout}[1]{%
+  \ifmeasuring@
+    % we're in the measuring stage, just use the argument
+    #1
+  \else
+    % we're typesetting, add the strikeout rule
+    \sbox0{$\displaystyle#1$}
+    \rlap{\vrule height \dimexpr.5ex+0.4pt\relax
+                 depth -\dimexpr.5ex-0.4pt\relax
+                 width \wd0 }
+    \box0
+  \fi
+}
+
 \newcommand*{\centernot}{%
   \mathpalette\@centernot
 }
@@ -36,50 +50,43 @@
 }
 \makeatother
 
-\newcommand{\independent}{\perp\mkern-9.5mu\perp}
-\newcommand{\notindependent}{\centernot{\independent}}
-\newcommand{\norm}[1]{\left\lVert#1\right\rVert}
-\newcommand{\logit}[1]{\text{logit}\left(#1\right)}
-\newcommand{\ilogit}[1]{\text{logit}^{-1}\left(#1\right)}
-\newcommand{\expec}[2]{\mathbb{E}_{#1}\left[#2\right]}
-\newcommand{\G}{\mathcal{G}}
-\renewcommand{\P}{\mathbb{P}}
-\renewcommand{\d}{\text{d}}
-\newcommand{\trarrow}[1]{\xrightarrow{\text{#1}}}
-\newtheoremstyle{def}
-  {12pt}   % ABOVESPACE
-  {6pt}   % BELOWSPACE
-  {\normalfont}  % BODYFONT
-  {0pt}       % INDENT (empty value is the same as 0pt)
-  {\bfseries} % HEADFONT
-  {.}         % HEADPUNCT
-  {5pt plus 1pt minus 1pt} % HEADSPACE
-  {}          % CUSTOM-HEAD-SPEC
+\numberwithin{equation}{section}
 
-\theoremstyle{def}
-\newtheorem{theorem}{Theorem}[section]
-\theoremstyle{def}
-\newtheorem{lemma}[theorem]{Lemma}
-\theoremstyle{def}
-\newtheorem{example}[theorem]{Example}
-\theoremstyle{def}
-\newtheorem{assumption}[theorem]{Assumption}
-\newtheorem*{remark}{Remark}
-\newtheorem*{remarks}{Remarks}
-\theoremstyle{def}
-\newtheorem{definition}[theorem]{Definition}
+\include{commands}
 
-\graphicspath{{figures/}}
-
-\global\newcommand{\note}[1]{{\color{red}(#1)}}
-
-\title{Causal Inference: TBD}
+\title{Higher-order statistics got high-dimensional problems with applications to graphical models}
 \author{Matthieu Bult\'e}
 
 \begin{document}
 
-\numberwithin{equation}{section}
-\pagenumbering{roman}
+% \maketitle
+% \newpage
+
+% \input{notes}
+
+% \input{summary}
+% \input{definitions}
+\input{ggm}
+
+% \input{exponential_fam_facts}
+
+% \section{Assumptions}
+
+% \section{Questions}
+
+% \subsection{What is $p^*$?}
+
+% \subsection{Convergence $p^* \rightarrow p$}
+
+% \subsection{Is $p^* \rightarrow p$ true in high dimensions?}
+
+% \subsection{What is $r^*$?}
+
+% \subsection{Asymptotic normality of $r^*$}
+
+% \subsection{Is $r^*$ asymptotically normal in high dimensions?}
+
+% \subsection{What are Gaussian Graphical Models (GGM)?}
 
 \bibliographystyle{plain}
 \bibliography{references}

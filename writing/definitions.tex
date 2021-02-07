@@ -1,0 +1,184 @@
+\newpage
+
+\subsection{Charlier differential Series}
+
+Let $F, G$ be two distributions with characteristic functions $\chi, \xi$ and cumulants $\beta_r, \gamma_r$ for $r \geq 1$. We assume that the derivatives $F^{(r)}(x), G^{(r)}(x)$ exist for all $r \geq 1$ and vanish when $x$ approaches the boundaries of the domain of definition \note{this is handwavy}. We first note the following relation
+\
+\begin{align*}
+    \beta_r
+    &= \frac{\d^r}{\d u^r} K_F(u) |_{u=0}
+    = \frac{\d^r}{\d u^r} \log \mathbb{E}_F\left[\exp(uX)\right]|_{u=0}\\
+    &= \frac{\d^r}{\d u^r} \log \mathbb{E}_F\left[\exp(uX)\right]|_{u=0}
+    = i^{-r}\frac{\d^r}{\d u^r} \log \mathbb{E}_F\left[\exp(iuX)\right]|_{u=0}\\
+    &= (-i)^r\frac{\d^r}{\d u^r} \log \chi(u) |_{u=0}
+\end{align*}
+\
+By Taylor expansion of $\log \chi(u)$ around $u = 0$ and using that $\chi(0) = 1$, we obtain
+\begin{equation*}
+    \log \chi(u)
+    = \log \chi(0) + \sum_{r=1}^\infty \frac{u^r}{r!}\frac{\d^r}{\d u^r} \log \chi(u) |_{u=0}
+    = \sum_{r=1}^\infty \frac{(iu)^r}{r!}\beta_r.
+\end{equation*}
+\
+This result holds accordingly for $\xi$, giving
+\begin{align*}
+    \log \frac{\chi(u)}{\xi(u)} &= \sum_{r=1}^\infty (\beta_r - \gamma_r)\frac{(iu)^r}{r!}\\
+\Rightarrow \chi(u) &= \xi(u) \exp\left\{\sum_{r=1}^\infty (\beta_r - \gamma_r)\frac{(iu)^r}{r!}\right\}.
+\end{align*}
+\
+\note{properly introduce the fourier transform somewhere else, since we use the "stats" version of fourier which is different from the usual $L^2$ operator}
+
+We can now show that $u \mapsto (iu)^r\xi(u)$ is the characteristic function of $x \mapsto (-1)^rG^{(r)}(x)$, or $(iu)^r\xi(u) = \mathcal{F}\left[(-1)^rG^{(r+1)}\right](u)$, since by integration by part we have
+\begin{align*}
+    \mathcal{F}\left[(-1)^rG^{(r+1)}\right](u)
+    &= \int_{\mathbb{R}} e^{iux}(-1)^rG^{(r+1)}(x) dx \\
+    &= \left[e^{iux}(-1)^rG^{(r)}(x)\right]_{-\infty}^{+\infty} - \int_{\mathbb{R}} (iu)e^{iux}(-1)^rG^{(r)}(x)dx\\
+    &= iu \int_{\mathbb{R}} e^{iux}(-1)^{r-1}G^{(r)}(x) dx
+    = (iu)\mathcal{F}\left[(-1)^{r-1}G^{(r)}\right](u)\\
+    &= \ldots = (iu)^r\mathcal{F}\left[G^{(1)}\right] = (iu)^r \xi(u).
+\end{align*}
+
+With $\alpha_r = \beta_r - \gamma_r$ and vy Taylor expansion, we can rewrite
+\begin{align*}
+    \chi(u)
+    &= \xi(u)\exp\left\{\sum_{r=1}^\infty \alpha_r\frac{(iu)^r}{r!}\right\} \\
+    &= \xi(u)\sum_{l=0}^\infty \frac{1}{l!}\left\{\sum_{r=1}^\infty \alpha_r\frac{(iu)^r}{r!}\right\}^l \\
+    &= \sum_{l=0}^\infty \frac{1}{l!} \sum_{r_1, \ldots, r_l=1}^\infty \alpha_{r_1}\ldots\alpha_{r_l}\frac{\xi(u)(iu)^{r_1 + \ldots + r_l}}{r_1!\ldots r_l!}
+\end{align*}
+And hence, by linearity of the inverse Fourier transform, \note{very handwavy}
+\begin{align*}
+    F^{(1)} = \mathcal{F}^{-1}\left[\chi\right]
+    &= \sum_{l=0}^\infty \frac{1}{l!} \sum_{r_1, \ldots, r_l=1}^\infty \alpha_{r_1}\ldots\alpha_{r_l}\frac{\mathcal{F}^{-1}\left[\xi(u)(iu)^{r_1 + \ldots + r_l}\right]}{r_1!\ldots r_l!}\\
+    &= \sum_{l=0}^\infty \frac{1}{l!} \sum_{r_1, \ldots, r_l=1}^\infty \alpha_{r_1}\ldots\alpha_{r_l}\frac{(-1)^{r_1 + \ldots + r_l}G^{(r_1 + \ldots + r_l + 1)}}{r_1!\ldots r_l!}\\
+    &= \sum_{l=0}^\infty \frac{1}{l!} \sum_{r_1, \ldots, r_l=1}^\infty \alpha_{r_1}\ldots\alpha_{r_l}\frac{(-D)^{r_1 + \ldots + r_l}G^{(1)}}{r_1!\ldots r_l!}\\
+    &= \exp\left\{\sum_{r=1}^\infty \alpha_r\frac{(-D)^r}{r!}\right\}G^{(1)},
+\end{align*}
+where $D$ is the differential operator with respect to $x$ and $\exp D = \sum_{l=0}^\infty \frac{D^l}{l!}$. All in all, we obtain an expansion for the density $f = F^{(1)}$ of $F$ in terms of $G$ and the cumulants of both distributions,
+\begin{equation}\label{eq-charlier}
+    f(x) = \exp\left\{\sum_{r=1}^\infty (\beta_r - \gamma_r)\frac{(-D)^r}{r!}\right\}g(x).
+\end{equation}
+Using $G = \Phi$, where $\Phi$ is the distribution function of $N(0, 1)$, in expansion (\ref{eq-charlier}) is called a Charlier differential series.
+\newpage
+
+\section{Notation}
+
+\paragraph{Indexing} Multi-indexable objects are indexed by writing indices in the exponent of the variables. For instance, we use $A^{ij}$ to denote the element in the $i$-th row of the $j$-th column of a matrix $A \in \mathbb{R}^{n\times m}$.
+
+\paragraph{Einstein notation} A term given in the Einstein notation can be rewritten as a correct turn by remplacing any free index on a vector or matrix quantity by a sum of the indexed quantity over the range of meaningful possible values. For instance, let $v, w \in \mathbb{R}^n$, we can write
+\begin{equation*}
+    v^iw^i = \sum_{i=1}^n v^iw^i. 
+\end{equation*}
+
+
+\paragraph{Partial derivatives} For $R = (r_1, \ldots, r_n)$ and $S = (s_1, \ldots, s_m)$
+\begin{equation*}
+    \ell_{R;S}(\theta_0) = \left[\frac{\partial^{n+m}\ell(\theta; \hat\theta, a)}{\partial\theta^{r_1} \ldots \partial\theta^{r_n}\partial\hat\theta^{s_1} \ldots \partial\hat\theta^{s_m}}\right]_{\theta=\theta_0}.
+\end{equation*}
+
+
+\section{Definitions}
+
+\begin{definition}
+    An anciliary statistic of a statistical model $p(x; \theta)$ is a pivotal statistic, that is, a function of the sample of which the distribution does not depend on the parameter $\theta$ of the model.
+\end{definition}
+
+\begin{example} \label{ex-normal}
+    Let $X_1, \ldots, X_n \simiid N(\theta, 1)$, the sample variance,
+    \begin{equation*}
+        \hat\sigma^2 = \frac{\sum_{i=1}^n (X_i - \bar X)^2}{n},
+    \end{equation*}
+    is an anciliary statistic.
+\end{example}
+
+\begin{example} \label{ex-loc-model}
+    Let $Y_1, \ldots, Y_n \simiid h(\cdot - \mu)$ follow a location model with location parameter $\mu$. The \textit{orbit}, $a = (Y_{(2)} - Y_{(1)}, \ldots, Y_{(n)} - Y_{(1)})$ is an anciliary statistic since $a$ is invariant under translation. Since the transformation $y_{(1)} \rightarrow y_{(1)}, y_{(2)} \rightarrow y_{(1)} + a_1, \ldots, y_{(n)} \rightarrow y_{(1)} + a_{n-1}$ has unit Jacobian, we get that the joint density of $(Y_{(1)}, A)$ is
+    \begin{equation*}
+        n!h(y_{(n)} - \mu)h(y_{(n)} + a_1 - \mu)\ldots h(y_{(n)} + a_{n-1} - \mu)
+    \end{equation*}
+    And the density of $Y_{(1)}$ given $A = a$ is given by
+    \begin{align*}
+        p(y_{(1)} | a; \mu) &= \frac{h(y_{(n)} - \mu)h(y_{(n)} + a_1 - \mu)\ldots h(y_{(n)} + a_{n-1} - \mu)}{\int{h(z - \mu)h(z + a_1 - \mu)\ldots h(z + a_{n-1} - \mu)}\d z}\\
+        &= \frac{\ell(\mu; u)}{\int{L(\nu; y) \d \nu}}.
+    \end{align*}
+    This shows that the conditional distribution of the position parameter $Y_{(1)}$ is equal to the normalized likelihood of $\mu$. Note that for $a$ fix, the right hand side is then a function of the difference $y_{(1)} - \mu$.
+\end{example}
+
+\begin{definition}
+    Given a model with parameters $\theta = (\psi, \lambda)$ where $\psi$ is the paramter of interest and $\lambda$ is a vector of nuisance parameters, we define the profile likelihood as
+    \begin{equation*}
+        L_P(\psi; x) = \max_{\lambda} L(\psi, \lambda; x) \equiv L(\psi, \lambda_\psi; x).
+    \end{equation*}
+\end{definition}
+\begin{example}
+    Consider the linear regression model $Y \sim N(X\beta, \tau 1_n)$ where $Y$ is a vector of $n$ observations and $\beta$ is a vector of $d_\beta < n$ parameters. The parameter of interest is the error variance $\tau$. Then the MLE of $\tau$ is $\hat\tau = SSD / n$ has a expected value of $\tau (n - d_\beta)/n$ and hence a bias of $-\tau d_\beta/n$. This means that if $d_\beta = d_{\beta(n)}$ is allowed to vary with $n$, in particular if $d_{\beta(n)} = O(n)$, the MLE for $\tau$ is biased.
+\end{example}
+
+\begin{definition}
+    A conditionality resolution of a statistical model $p(x; \theta)$ is a one-to-one transformation of the minimal sufficient statistic $t$ to the statistic $(\hat\theta, a)$, where $\hat\theta$ is the MLE of $\theta$ and $a$ is an anciliary statistic, and $p(\hat\theta; \theta | a)$ has a \textit{manageable} expression.
+\end{definition}
+
+\begin{example}
+    In the normal model of Example \ref{ex-normal}, it can be easily shown that $t = (\bar x, \hat\sigma^2)$ is minimal sufficient. Taking the lof of the model function can then be rewritten as
+    \begin{equation*}
+        p(x; \theta) = - n\hat\sigma^2 - n(\bar x - \theta)^2.
+    \end{equation*}
+    Since $\hat\theta = \bar x$ and $\hat\sigma^2$ is anciliary, we can say that the minimal sufficient statistic $t$ is itself a conditionality resolution.
+    \note{maybe not a great example}
+\end{example}
+
+\begin{definition}
+    A curved exponential model, or $(m, d)$ exponential model, $\{ P_\theta : \theta \in \mathbb{R}^d \}$ is a model with model function
+    \begin{equation*}
+        p(x; \theta) = a(\phi(\theta))b(x)e^{\langle s(x), \phi(\theta)\rangle},
+    \end{equation*}
+    where $s(x)$ and $\phi(\theta)$ are of dimension $m > d$.
+\end{definition}
+
+\begin{remark}
+    The following holds,
+    \begin{itemize}
+        \item $\eta(\theta) := \mathbb{E}_\theta[s(X)]$;
+        \item $\frac{\partial}{\partial \phi_i} \log a(\phi) = -\eta_i$
+        \item $\ell = \log a(\phi) + s^i(x)\phi^i$
+        \item $\ell_r = \phi^i_r(s^i - \eta^i)$
+        \item $\hat\phi^\top_r(s - \hat\eta) = 0 \Rightarrow \hat\phi_r \perp s - \hat\eta$
+    \end{itemize}
+\end{remark}
+
+
+
+
+
+\subsection{Observed information}
+
+Given that our model of interest has a conditionality resolution, we can also express the log-likelihood via $(\hat\theta, a)$ as $\ell(\theta; \hat\theta, a)$. We then use the follwoing notation: $\ell = \ell(\theta; \hat\theta, a)$, $\hat\ell = \ell(\hat\theta; \hat\theta, a)$ and $\xout\ell = \ell(\theta; \theta, a)$. Quantities like $\hat\ell_{R;S}$ or $\xout\ell_{R;S}$ are taken by substituting $\theta$ or $\hat\theta$ after all differentiations have taken place.
+
+The observed information is given by $j_{rs} = -\ell_{rs}$. We can extend the $\hat\ell$ and $\xout\ell$ notation to $j$ to define $\hat j$ and $\xout j$.
+
+
+\begin{definition}
+    Normed log-likelihood $\bar\ell$ as 
+    \begin{equation*}
+        \bar\ell(\theta; \hat\theta, a) = \ell(\theta; \hat\theta, a) - \ell(\hat\theta; \hat\theta, a).
+    \end{equation*}
+        
+\end{definition}
+
+
+\begin{definition}
+    The $p^\star$-formula is defined by
+    \begin{equation}\label{def-pstar}
+        p^\star(\hat\theta; \theta | a) = c |\hat j|^{1/2}e^{\bar \ell},
+    \end{equation}
+    where $a$ is anciliary and $c = c(\theta, a)$ is a normalizing constant such that $p^\star$ integrated over the range of possible values of $\hat\theta$ is unity.
+\end{definition}
+
+
+
+
+\begin{definition}
+    Gaussian Graphical Model.
+    \begin{equation*}
+        p(x; \Theta) = \frac{|\Theta|^{1/2}}{(2\pi)^{m/2}} \exp\left( -\frac12x^\top\Theta x \right)
+    \end{equation*}
+\end{definition}

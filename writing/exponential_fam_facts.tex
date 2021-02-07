@@ -1,0 +1,14 @@
+\section{Exponential families facts}
+
+\begin{itemize}
+    \item $ f_X(x; \gamma) = h(x)\exp\left(\gamma^\top T(x) - A(\gamma) \right) $
+    \item $ A(\gamma) = \log \int h(x)\exp\left(\gamma^\top T(x)\right) \d x $
+    \item $A'(\gamma) = \mathbb{E}_\gamma[T(X)]$
+    \item $\ell(\theta) = \gamma^\top T(x) - A(\gamma) \Rightarrow \ell'(\theta) = T(x) - A'(\gamma) \Rightarrow A'(\hat\gamma) = T(x)$
+    \item $A'(\hat\gamma) = T(x)$ and $A'(\gamma) = \mathbb{E}_\gamma[T(X)] \Rightarrow \mathbb{E}_{\hat\gamma}[T(X)] = T(x)$
+    \item $f_X(x; \gamma) = h(x)\exp\left(\gamma^\top T(x) - A(\gamma) \right) = h(x)\exp\left(\gamma^\top A'(\hat\gamma) - A(\gamma) \right) = h(x)g_\gamma(\hat\gamma) \Rightarrow \hat\gamma$ is sufficient by Fisher-Neyman
+    \item $T(X) = X \Rightarrow \mathcal{K}_X(t \mid \gamma) = \log \mathbb{E}_\gamma[\exp(t^\top X)] = A(\gamma + t) - A(\gamma) $
+    \item $T(X) = X \Rightarrow \nabla_t \mathcal{K}_X(t \mid \gamma) = \mathbb{E}_{\gamma + t}[X] $
+    \item $T(X) = X \Rightarrow \hat\gamma = \nabla_t \mathcal{K}_X(t) |_{t=0}$
+\end{itemize}
+
