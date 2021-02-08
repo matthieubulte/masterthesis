@@ -1,6 +1,6 @@
 using Distributions
 using LinearAlgebra
-using Plots
+# using Plots
 using ProgressMeter
 using JLD
 
@@ -62,8 +62,10 @@ function rstar(ψₚ, λₚ, ψ̂, λ̂, n)
 end
 
 function compStats(ψₚ, λₚ, ψ̂, λ̂, n)
-    _w = w(ψₚ, λₚ, ψ̂, λ̂, n)
+    _w = max(w(ψₚ, λₚ, ψ̂, λ̂, n), 1e-5)
+
     _r = sign(ψ̂ - ψₚ) * sqrt(_w)
+
     _u = u(ψₚ, λₚ, ψ̂, λ̂, n) 
     
     _w, _r, _r + log(_u / _r) / _r
@@ -80,7 +82,7 @@ end
 
 n = 1_000
 sims = 1_000
-alphas = 3:11
+alphas = 3:9
 
 a = 1
 b = 2
@@ -89,7 +91,9 @@ w_idx = 1
 r_idx = 2
 rstar_idx = 3
 
-@time @showprogress for u = 1:1000
+println("Starting...")
+
+@showprogress for u = 1:1000
     stats = zeros(Float64, 3, size(alphas)[1], sims);
 
     for αi = alphas
