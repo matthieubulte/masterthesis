@@ -4,6 +4,19 @@ function eye(p)
     Matrix{Float64}(I, p, p)
 end
 
+function vecToU(vec::Vector{T}) where {T <: Number}
+    veclen = size(vec)[1]
+    p = Int((sqrt(1 + 8*veclen)-1)/2)
+    A = zeros(T, p, p)
+    vstart = 1
+    for i = 1:p
+        ilen = p - i
+        @inbounds A[i, i:end] = vec[vstart:vstart+ilen]
+        vstart += ilen + 1
+    end
+    UpperTriangular(A)
+end
+
 function vecToSymm(vec::Vector{T}) where {T <: Number}
     veclen = size(vec)[1]
     p = Int((sqrt(1 + 8*veclen)-1)/2)
@@ -17,7 +30,7 @@ function vecToSymm(vec::Vector{T}) where {T <: Number}
     Symmetric(A)
 end
 
-function symmToVec(A::Matrix{T}) where {T <: Number}
+function symmToVec(A::AbstractMatrix{T}) where {T <: Number}
     p = size(A)[1]
     veclen = Int(p*(p+1)/2)
     vec = zeros(veclen)

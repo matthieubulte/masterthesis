@@ -88,7 +88,7 @@ Note that while $T$ is a projection, we find that $T_{\mathcal{C}_1}T \neq T$, s
     \end{matrix}\right).
 \end{equation*}
 
-\note{Note: we observe numerically that $\hat\Omega^{(\mathcal{C}_2)}_{\Gamma \Gamma} + \hat\Omega^{(\mathcal{C}_1)}_{\Gamma 1}\hat\Omega^{(\mathcal{C}_1)}_{1 \Gamma} /\hat\Omega^{(\mathcal{C}_1)}_{11} \approx \hat\Omega^{(\mathcal{C}_1)}_{\Gamma \Gamma} + \hat\Omega^{(\mathcal{C}_2)}_{\Gamma 2}\hat\Omega^{(\mathcal{C}_2)}_{2 \Gamma} /\hat\Omega^{(\mathcal{C}_2)}_{22}$. Could the gap be due to numerical errors? Might be true and provable equality using normality.}
+% \note{Note: we observe numerically that $\hat\Omega^{(\mathcal{C}_2)}_{\Gamma \Gamma} + \hat\Omega^{(\mathcal{C}_1)}_{\Gamma 1}\hat\Omega^{(\mathcal{C}_1)}_{1 \Gamma} /\hat\Omega^{(\mathcal{C}_1)}_{11} \approx \hat\Omega^{(\mathcal{C}_1)}_{\Gamma \Gamma} + \hat\Omega^{(\mathcal{C}_2)}_{\Gamma 2}\hat\Omega^{(\mathcal{C}_2)}_{2 \Gamma} /\hat\Omega^{(\mathcal{C}_2)}_{22}$. Could the gap be due to numerical errors? Might be true and provable equality using normality.}
 
 \subsection{Modified likelihood root}
 
@@ -111,18 +111,44 @@ with
 
 In our case, $\theta = \text{Upper}(\Omega)$ and the parameter of interest is $\psi = \Omega_{12}$ with a tested value of $\psi = \psi_0 = 0$. We can than use results from the previous sections for expressions of $\hat\Omega$ in the unconstrained case, for estimation of $\hat\theta$, and in the constrained case, for estimation of $\hat\theta_{\psi_0}$.
 
-\subsection{Implementation}
+\begin{algorithm}\label{alg-omega-sampling}
+    \SetAlgoLined
+    \KwIn{Dimension $d$}
+    \KwResult{Constrained precision matrix $\Omega$}
+
+     $\Omega := 0$\;
+     \While{$|\Omega| \leq 0$ }{
+      Sample $\Omega \sim \mathcal{W}(\mathbb{1}_d, d)$ \;
+      Set $\Omega_{12} = \Omega_{21} = 0$\;
+     }
+     \caption{Sampling of a precision matrix for a GGM with $X_1 \independent X_2 | X_3, \ldots, X_d$}
+\end{algorithm}
+
+\subsection{Simulations}
 We implement a suite of benchmarks to analyze and compare the different test statistics for testing the hypothesis
-\begin{align*}
-    H_0: X_1 \independent X_2 | X_3, \ldots, X_p && \text{ vs. } && H_1: X_1 \notindependent X_2 | X_3, \ldots, X_p.
-\end{align*}
-To do this, we sample $n$ observations from the multivariate normal distribution $\mathcal{N}_p(0, \Omega^{-1})$ satisfying the null hypothesis, compute several test statistics and compare their distributions for different values of $n$ and $p$.
+\begin{align}\label{eq-sim-test}
+    H_0: X_1 \independent X_2 | X_3, \ldots, X_d && \text{ vs. } && H_1: X_1 \notindependent X_2 | X_3, \ldots, X_d 
+\end{align}
+where $X \sim \mathcal{N}_d(0, \Omega^{-1})$ and the precision matrix is $\Omega \in \mathcal{S}_p$. In this setup, the quantity of interest is $\Omega$ and the number of scalar parameters to estimate is $p = d(d-1)/2$. 
 
-The precision matrix $\Omega$ is sampled from a Wishart distribution with $p$ degrees of freedom and the identity scaling in which the null hypothesis is integrated by setting $\Omega_{12} = \Omega_{21} = 0$.
 
-For each sample of $\Omega$, we can generate a random sample $X^{(1)}, \ldots, X^{(n)}$ and  compute several test statistics: the log likelihood ratio $w$, the signed likelihood root $r$ and the modified likelihood root $r^\star$. 
+We are interested in evaluating the normal approximation of $r$ and $r^\star$ under the null hypothesis (\ref{eq-sim-test}) for different scaling between the number of observations and the number of parameters, $p = O(n^\alpha)$ where $\alpha \in \{3/12, 4/12, 5/15, 6/12, 7/12, 8/12, 9/12\}$ is the scaling parameter. To do this, we fix the number of observations to $n = 1000$ and compute for each value of $\alpha$ a set of $N_p=500$ p-values for $r$ and $r^\star$ testing the hypothesis that $r$, respectively $r^\star$, is normally distributed. 
 
-Under the null hypothesis, we expect $w, r$ and $r^\star$ should asymptotically be respectively distributed according to the $\chi_2^1$, $N(0,1)$ and $N(0,1)$ distributions. We first very this visually by plotting the distribution of the p-values for each of these distributional results which follow a uniform distribution on $[0, 1]$.
+For a given value of $\alpha$, we perform $N_{\text{sim}} = 1000$ experiments to sample values of $r$ and $r^\star$ under the null hypothesis (\ref{eq-sim-test}). A Kolmgrov-Smirnov test is used to compute p-values for the null hypothesis that $r$ and $r^\star$ are respectively normally distributed.
+
+In each experiment, we sample $n$ observations from the multivariate normal distribution $X^{(1)}, \ldots, X^{(n)} \sim \mathcal{N}_d(0, \Omega^{-1})$ with $p = n^\alpha$ and $d = p^{1/2}$. The precision matrix $\Omega$ is sampled from a Wishart distribution with $d$ degrees of freedom and the identity scaling in which the null hypothesis (\ref{eq-sim-test}) is integrated by setting $\Omega_{12} = \Omega_{21} = 0$. This is done by rejection sampling as displayed in Algorithm \ref{alg-omega-sampling}. The sample $X^{(1)}, \ldots, X^{(n)}$ is then used to compute values of $r$ and $r^\star$ according to the previous sections.
+
+The results show that the normal approximation to the distribution of $r$ and $r^\star$ hold for every scaling parameter $\alpha$ we have tried. While the normal approximation to the $r$ statistic is expected to break for $p = O(n^{1/2})$, we do not observe this behaviour. To further explore a possible breaking point, we simulated one experiment with $n = 1000$ and $p = 990 (d = 45)$ and plotted the distribution of the p-values testing the null hypotheses $w \sim \chi^2_1$, which also seem to not expose a break behaviour.
+
+\begin{figure}[hbtp]
+    \centering
+    \includegraphics[scale=0.5]{r}
+    \includegraphics[scale=0.5]{rstar}
+    \includegraphics[scale=0.5]{w_largep}
+\end{figure}
+
+\newpage
+
 
 \subsection{Multivariate normal distribution as an exponential family}
 To benefit from the many existing results concerning exponential families, we reformulate the density (\ref{eq-density-omega}) as an exponential family with sufficient statistic $T$ and natural parameter $\theta \in \text{vec}(\mathcal{S}_p)$. 

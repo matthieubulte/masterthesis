@@ -17,7 +17,7 @@
 *.blg
 
 literature/
-output/
+output*/
 
 .DS_Store
 .ipynb_checkpoints/

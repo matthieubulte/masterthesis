@@ -1,8 +1,11 @@
 using Distributions
 using LinearAlgebra
-# using Plots
+using Plots
 using ProgressMeter
 using JLD
+using PDMats
+using BenchmarkTools
+using Dates
 
 include("matrix_extra.jl")
 include("parameters_wrangling.jl")
@@ -24,8 +27,7 @@ function ℓ(ψ, λ, ψ̂, λ̂, n)
 end
 
 function ℓ(K, K̂, n)
-    p = size(K)[1]
-    return [log(det(K))*n/2 - n*tr(K̂\K)/2]
+    n/2*[logabsdet(K)[1] - tr(K̂\K)]
 end
 
 
@@ -33,7 +35,7 @@ function u(ψₚ, λₚ, ψ̂, λ̂, n)
     _dθ̂ = dθ̂(ℓ)
     hess = dθ(dθ(ℓ))
 
-    ddθ̂ = _dθ̂(ψ̂, λ̂, ψ̂, λ̂, n) - _dθ̂(ψₚ, λₚ, ψ̂, λ̂, n)
+    @time ddθ̂ = _dθ̂(ψ̂, λ̂, ψ̂, λ̂, n) - _dθ̂(ψₚ, λₚ, ψ̂, λ̂, n)
     dλθ̂ = transpose(dλ(_dθ̂)(ψₚ, λₚ, ψ̂, λ̂, n))
     ltop = det([ddθ̂ dλθ̂])
 
@@ -80,65 +82,112 @@ function mkRestMLE(p, a, b)
     return (Σ̂) -> T(T(eye(p), Ca, Σ̂), Cb, Σ̂)
 end
 
-n = 1_000
-sims = 1_000
-alphas = 3:9
+# NEW 
+# BenchmarkTools.Trial: 
+#   memory estimate:  262.45 MiB
+#   allocs estimate:  5676
+#   --------------
+#   minimum time:     223.764 ms (8.20% GC)
+#   median time:      250.205 ms (11.05% GC)
+#   mean time:        252.565 ms (12.21% GC)
+#   maximum time:     282.641 ms (20.16% GC)
+#   --------------
+#   samples:          20
+#   evals/sample:     1
 
-a = 1
-b = 2
+# OLD
+# BenchmarkTools.Trial: 
+#   memory estimate:  269.01 MiB
+#   allocs estimate:  5679
+#   --------------
+#   minimum time:     310.596 ms (11.76% GC)
+#   median time:      1.005 s (20.38% GC)
+#   mean time:        1.378 s (18.59% GC)
+#   maximum time:     5.767 s (15.74% GC)
+#   --------------
+#   samples:          45
+#   evals/sample:     1
 
-w_idx = 1
-r_idx = 2
-rstar_idx = 3
 
-println("Starting...")
+# @benchmark begin
+#     @time K, Σ = sampleKΣnew(d, a, b);
+#     @time X = rand(MvNormal(Σ), n);
+#     @time XX = Symmetric(X*transpose(X));
 
-@showprogress for u = 1:1000
-    stats = zeros(Float64, 3, size(alphas)[1], sims);
+#     @time Σ̂ = XX/n;
+    
+#     @time K̂ = inv(Σ̂).data; # unconstrained MLE
+#     @time K̂ₚ = compK̂(Σ̂); # profile MLE 
 
-    for αi = alphas
-        # NOTE: using p=n^α here is wrong because in the model we are looking at, p is the dimensionality
-        # of the data while the dimensionality of the parameter space is then p^2 = n^2α. To be in the framework
-        # p = O(n^α) we would then need to have p = sqrt(n^α) 
-        α = αi/12
-        d = Int(floor(n^(α/2)))
-        compK̂ = mkRestMLE(d, a, b);
+#     ψₚ, λₚ = KToTheta(K̂ₚ);
+#     ψ̂, λ̂ = KToTheta(K̂);
+# end
 
-        for j = 1:sims
-            K, Σ = sampleKΣ(d, a, b);
-            X = rand(MvNormal(Σ), n);
-            XX = Symmetric(X*transpose(X));
-        
-            Σ̂ = XX/n;
-            K̂ = inv(Σ̂).data; # unconstrained MLE
-            K̂ₚ = compK̂(Σ̂); # profile MLE 
-        
-            ψₚ, λₚ = KToTheta(K̂ₚ);
-            ψ̂, λ̂ = KToTheta(K̂);
-        
-            _w, _r, _rstar = compStats(ψₚ, λₚ, ψ̂, λ̂, n)
 
-            stats[r_idx, αi-2, j] = _r
-            stats[rstar_idx, αi-2, j] = _rstar
-            stats[w_idx, αi-2, j] = _w
-        end
-    end
-    save("./output/stats_$(u).jld", "data", stats)
-end
 
-# TODO: use reverse diff
+# TODO: 
+#   - compute the MLE in a more generic way to handle phi of higher dim 
+#   - compute rstar by hand to hopefully improve performance
 #
 
-# histogram(
-#     cdf(Normal(), stats[r_idx, 2, :]), 
-#     bins=20
-# )
+function run()
+    now = Dates.format(Dates.now(), "yyyymmddHHMM")
+    outDir = "./$(now)_output"
+    println("Creating $(outDir)...")
+    mkdir(outDir)
+    
+    w_idx = 1
+    r_idx = 2
+    rstar_idx = 3
+    
+    n = 500;
+    sims = 500;
+    
+    a = 1; b = 2;
+    dvals = [10; 50; 100; 250; 490]
 
-# p,runtime(s)
-# 4,5
-# 5,11
-# 6,34
-# 7,45
-# 8,61
-# 10,184
-# 12,540
+    println("Starting...")
+    @showprogress "Top-level" for u = 13:500
+        stats = zeros(Float64, 3, size(dvals)[1], sims);
+        i = 0
+        num_negs = 0
+
+        for d = dvals
+            compK̂ = mkRestMLE(d, a, b);
+            i += 1
+
+            println("\nTop-level = $(u), Dimension = $(d)")
+
+            @showprogress "Simulation-level" for j = 1:sims
+                K, Σ = sampleKΣ(d, a, b);
+                X = rand(MvNormal(Σ), n);
+                XX = Symmetric(X*transpose(X));
+            
+                Σ̂ = XX/n;
+                K̂ = inv(Σ̂); ψ̂, λ̂ = KToTheta(K̂); # unconstrained MLE
+                K̂ₚ = Symmetric(compK̂(Σ̂)); ψₚ, λₚ = KToTheta(K̂ₚ); # profile MLE 
+
+                sk = Σ̂*K̂ₚ
+                _w = n * (-logabsdet(sk)[1] + tr(sk) - d)
+
+                stats[w_idx, i, j] = _w
+
+                if _w >= 0
+                    _r = sign(ψ̂ - ψₚ) * sqrt(_w)
+                    stats[r_idx, i, j] = _r
+                else
+                    num_negs += 1
+                end
+                # _w, _r, _rstar = compStats(ψₚ, λₚ, ψ̂, λ̂, n)
+                # stats[r_idx, αi-2, j] = _r
+                # stats[rstar_idx, αi-2, j] = _rstar
+                # stats[w_idx, αi-2, j] = _w
+            end
+
+            if num_negs > 0
+                println("u=$(u), d=$(d), num_negs=$(num_negs)")
+            end
+        end
+        save("$(outDir)/stats_$(u).jld", "data", stats)
+    end
+end

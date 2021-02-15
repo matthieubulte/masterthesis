@@ -1,16 +1,26 @@
 using Distributions
 
 function sampleKΣ(p, a, b)
-    while true
-        K = rand(Wishart(p, eye(p)))
-        K[a,b] = 0
-        K[b,a] = 0
-        Σ = Symmetric(inv(K))
-    
-        if isposdef(Σ)
-            return K, Σ
-        end
+    e = zeros(Float64, p);
+    L = W(p);
+    C = Cholesky(L, :L, 0);
+    @inbounds e[a] = - L[a, :]' * L[b, :]
+    @inbounds e[b] = 1
+    lowrankupdate!(C, e)
+    K = PDMat(C)
+    Σ = inv(K)
+    K, inv(K)
+end
+
+function W(p)
+    L = zeros(Float64, p, p)
+    for i = 1:p
+        @inbounds L[i,i] = rand(Chi(p - i + 1.0))
     end
+    for j in 1:p-1, i in j+1:p
+        @inbounds L[i,j] = randn()
+    end
+    L
 end
 
 function compl(V, c)
