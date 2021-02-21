@@ -1,5 +1,7 @@
 using Distributions
 
+include("matrix_extra.jl")
+
 function sampleKΣ(p, a, b)
     e = zeros(Float64, p);
     L = W(p);
@@ -38,3 +40,22 @@ function KToTheta(K)
     ψ = vec[2]
     return ψ, λ
 end
+
+function T(K, c, Σ̂)
+    nK = copy(K)
+    p = size(K)[1]
+    notc = compl(1:p, c)
+    
+    nK[c, c] = inv(Σ̂[c,c]) + K[c,notc] * (K[notc,notc]\K[notc,c])
+    return nK
+end
+
+function mkRestMLE(p, a, b)
+    Γ = collect(3:p)
+    V = collect(1:p)
+    Ca = vcat([a], Γ)
+    Cb = vcat([b], Γ)
+
+    return (Σ̂) -> T(T(eye(p), Ca, Σ̂), Cb, Σ̂)
+end
+

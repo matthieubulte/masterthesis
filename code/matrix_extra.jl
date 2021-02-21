@@ -1,7 +1,13 @@
 using LinearAlgebra
 
-function eye(p)
+function eye(p::Integer)
     Matrix{Float64}(I, p, p)
+end
+
+function eye(m::AbstractMatrix)
+    p1,p2 = size(m)
+    @assert p1 == p2
+    eye(p1)
 end
 
 function vecToU(vec::Vector{T}) where {T <: Number}
@@ -17,10 +23,10 @@ function vecToU(vec::Vector{T}) where {T <: Number}
     UpperTriangular(A)
 end
 
-function vecToSymm(vec::Vector{T}) where {T <: Number}
+function vecToSymm(vec)
     veclen = size(vec)[1]
     p = Int((sqrt(1 + 8*veclen)-1)/2)
-    A = zeros(T, p, p)
+    A = zeros(eltype(vec), p, p)
     vstart = 1
     for i = 1:p
         ilen = p - i
