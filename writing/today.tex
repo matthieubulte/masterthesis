@@ -1,0 +1,86 @@
+
+% In Eriksen \cite{eriksen1996tests}, we work with the likelihood ratio statistic, denoted $Q$
+% \begin{equation*}
+%     Q = \frac{L(\hat\Omega_{\mathcal{G}_0)}}{L(\hat\Omega_{\mathcal{G}})} = \frac{|\hat\Omega_{\mathcal{G}_0}|^{n/2}}{|\hat\Omega_{\mathcal{G}}|^{n/2}}.
+% \end{equation*}
+
+% Standard MLE theory shows that the log-likelihood ratio $W = -2 \log{Q}$ is asymptotically $\chi^2_1$. Eriksen shows that a better statistic to look at is $Q^{2/n}$ which can be  shown to be asymptotically $\mathcal{B}(\frac{n - f(a) - 1}{2}, \frac{1}{2})$.
+
+% Let's define the following functions
+% \begin{align*}
+%     f(q) &= 1 - P\left(\chi^2_1 \leq W(q)\right)\\
+%     g_n(q) &= P\left(\mathcal{B}(\frac{n - f(a) - 1}{2}, \frac{1}{2}) \leq q^{2/n}\right)
+% \end{align*}
+
+% We observe numerically that $g_n$ converges to $f$ as $n \rightarrow \infty$. This means that the approximations resulting from the $\chi^2_1$ approximation to the distribution of $W$ and the $\mathcal{B}(\frac{n - f(a) - 1}{2}, \frac{1}{2})$ approximation to the distribution of $Q^{n/2}$ converge to eah other, independently of $p$. This means that the $Q^{n/2}$ approximation is only interesting for small $n$.
+
+every experiment should be linked to a file and a commit number
+
+things to try:
+    - look at the beta approximation in the dense vs dense with one edge less, because in this cause f(a) ~ p
+    - look at the beta approximation in the dense vs sparse testing == removing multiple edges
+    - non-linear models ?
+
+
+
+
+
+Introduction
+    + Short intro to GGMs, the motivation
+        - What are GGMs
+        - Concrete example
+        - Covariance selection model
+    
+    + Moderate dimensional setting
+        - What is moderate dimension
+        - Vhallenges in settings of moderate dimension
+        - Example with failure of chi sq approximation
+
+    + Teaser of higher-order statistics
+        - Motivation and history of the topic
+        - Mention some of the asymptotical results that are promised
+
+Part 1. Higher-order statistics
+    + Chapter 1. Short intro and motivation
+        - Talk quickly about first order method, which is familiar to reader
+        - Introduce a classical approximation example, not related to GGM
+        - Use Bartlett adjustment, or something similar to demonstrate better approximation
+
+    + Chapter 2. Basis for higher-order approximations (based on Kolassa 2006)
+        - Notation, good intro to the statistical setup
+        - Characteristic functions and inversion of characteristic function
+        - General approximation theorem from expansions of the characteristic function 
+        - Edgeworth expansion
+            With examples, show flaws of absolute error coming from Edgeworth expansion
+            Julia symbolic implementation can be nice to show there
+
+    + Chapter 3. The Barnorff-Nielsen formula in exponential families
+        - Tilted approximation in exponential families (Barndorff-Nielsen and Cox 1989)
+            With example, show advantage of relative error
+        - p* formula
+            In this case it's really just mentioning it since the p* formula is the tilted approximation for exponential families by actually computing it
+        - Some simple examples of higher-order statistics that have accurate approximation results
+            Bartlett correction on simple examples, Barndorff-Nielsen and Cox 1994 has many good examples
+    
+Part 2. Gaussian Graphical Models
+    + Chapter 4. Intro to graphical models
+        - Directed vs undirected
+        - Markov property
+        - Decomposition of density
+
+    + Chapter 5. Gaussian Graphical models
+        - Introduce the model
+        - Relation between precision matrix and independence
+        - Conditions for existence of MLE (based on Handbook of Graphical Models, Chapter 9)
+        - Computing the MLE of the precision matrix for a given graph (iterative proportional scaling / Julia implementation)
+
+    + Chapter 6: Higher-order techniques for GGMs
+        - Presentation of work in Erisken 1996
+        - Presentation of numerical experiments on different topologies from the last months
+
+Conclusion
+
+Appendix A. Some notions on exponential families
+
+
+
