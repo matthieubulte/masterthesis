@@ -51,21 +51,21 @@ end
 # ---------------------------------------------------------------
 
 struct EFNormal{T <: Number} <: MMExponentialFamily{T}
-  mean
+  mean::T
 end
 
-function nat_param(e::EFNormal)
+function nat_param(e::EFNormal{T})::Vector{T} where {T <: Number}
   return [e.mean]
 end
 
-function from_nat_param(::EFNormal, nat_param)
+function from_nat_param(::EFNormal, nat_param::Vector{T}) where {T <: Number}
   return EFNormal(nat_param[1])
 end
 
-function to_distribution(e::EFNormal)
+function to_distribution(e::EFNormal{T}) where {T <: Number}
   return Normal(e.mean, 1)
 end
 
-function log_partition(e::EFNormal)
+function log_partition(e::EFNormal{T}) where {T <: Number}
   return e.mean .^ 2
 end

@@ -60,9 +60,23 @@ end
 
 # ---------------------------------------------------------------
 
-struct IIDSum{T <: Number} <: CDistribution{T}
+struct FromCGF{T <: Number} <: CDistribution{T}
+    cum_gen_fn::Function
+end
+
+function Base.convert(s::Type{S}, d::FromCGF{T})::FromCGF{S} where {T<:Number,S<:Number}
+    return FromCGF{S}(d.cum_gen_fn)
+end
+
+function cumulant_gen_fn(d::FromCGF{T}, t::T) where {T <: Number}
+    return d.cum_gen_fn(t)
+end
+
+# ---------------------------------------------------------------
+
+struct IIDSum{T <: Number, U<:Number} <: CDistribution{T}
     distrib::CDistribution{T}
-    n::T
+    n::U
 end
 
 function Base.convert(s::Type{S}, d::IIDSum{T})::IIDSum{S} where {T<:Number,S<:Number}
@@ -77,8 +91,8 @@ end
 
 struct AffineTransformed{T <: Number} <: CDistribution{T}
     distrib::CDistribution{T}
-    location::T
-    scale::T
+    location
+    scale
 end
 
 function Base.convert(s::Type{S}, d::AffineTransformed{T})::AffineTransformed{S} where {T<:Number,S<:Number}

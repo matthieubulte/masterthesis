@@ -13,10 +13,10 @@ using Plots
 using StatsPlots
 
 
-# function log(s)
-#     now = Dates.format(Dates.now(), "yyyy-mm-dd HH:MM")
-#     println("$(now): $(s)")
-# end
+function _log(s)
+    now = Dates.format(Dates.now(), "yyyy-mm-dd HH:MM")
+    println("$(now): $(s)")
+end
 
 function experiment(K₀, C₀, C₁, n)
     X = rand(MvNormal(inv(K₀)), n)
@@ -34,14 +34,14 @@ function run()
     sims = 500
     n = 100
     pvals = [5; 10; 20; 50; 75; 90; 99]
-    log("Parameters: sims=$(sims), n=$(n), p=$(pvals)")
+    _log("Parameters: sims=$(sims), n=$(n), p=$(pvals)")
 
     now = Dates.format(Dates.now(), "yyyymmddHHMM")
     outDir = "./$(now)_output"
     mkdir(outDir)
-    log("Created $(outDir)")
+    _log("Created $(outDir)")
 
-    log("Starting...")
+    _log("Starting...")
     for p = pvals
         results = zeros(Float64, sims, 2)
 
@@ -57,7 +57,7 @@ function run()
         save("$(outDir)/results_$(p).jld", "data", results)
     end
 
-    log("Done")
+    _log("Done")
 end
 
 run()

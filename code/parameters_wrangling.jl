@@ -3,15 +3,19 @@ using Distributions
 include("matrix_extra.jl")
 
 function sampleKΣ(p, a, b)
-    e = zeros(Float64, p);
     L = W(p);
     C = Cholesky(L, :L, 0);
-    @inbounds e[a] = - L[a, :]' * L[b, :]
-    @inbounds e[b] = 1
-    lowrankupdate!(C, e)
+    removeEdge!(C, a, b)
     K = PDMat(C)
     Σ = inv(K)
     K, inv(K)
+end
+
+function removeEdge!(C, a, b)
+    e = zeros(Float64, size(C)[1]);
+    @inbounds e[a] = - C.L[a, :]' * C.L[b, :]
+    @inbounds e[b] = 1
+    lowrankupdate!(C, e)
 end
 
 function W(p)
