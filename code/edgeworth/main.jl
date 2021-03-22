@@ -1,10 +1,20 @@
 # ---------------------------------------------------------------
 
-using TaylorSeries, SpecialPolynomials, SymPy, Distributions, Plots
+using TaylorSeries, SpecialPolynomials, SymPy, Distributions, Plots, ReverseDiff
 
 include("edgeworth/vendor_extra.jl")
 include("edgeworth/distributions.jl")
 include("edgeworth/expfam.jl")
+
+∇²(f) = x -> ReverseDiff.hessian(t -> f(t[1]), [x])[1]
+
+function sample_sum(d, nterms, samplesize)
+    result = zeros(samplesize)
+    for i=1:nterms
+        result .+= rand(d, samplesize)
+    end
+    result
+end
 
 function truncate_order(expr, term, opower)
     infty = SymPy.sympy.oo
@@ -27,7 +37,6 @@ function edgeworth_coefficients(d::CDistribution{T}, order) where {T<:Number}
     # in the expansion by Hermite polynomials
     exp(poly_D - poly_N).coeffs
 end
-
 
 function edgeworth_sum(d::CDistribution{T}, nsum, order) where {T}
     n = Pos(string("n", abs(rand(Int8)))) # just generate a random symbol
@@ -71,15 +80,75 @@ function edgeworth_sum(d::CDistribution{T}, nsum, order) where {T}
     return density
 end
 
+function saddlepoint_expfam(K, compθ̂, θ, nsum)
+    function density(s)
+        θ̂ = compθ̂(s)
+        λ̂ = θ̂ - θ
+
+        w = exp(nsum*K(λ̂) - s*λ̂)
+        d = sqrt(2*pi*nsum*∇²(K)(λ̂))
+
+        w/d
+    end
+end
+
+function plot_empirical(d, nterms)
+    sample = sample_sum(d, nterms, 100_000);
+    p = histogram(sample, normalize=true, color="grey", alpha=0.3, label="Empirical")
+    q = LinRange(minimum(sample), maximum(sample), 1000);
+    p, q
+end
+
+function plot_gamma(nterms)
+    # Γ(1, 1)
+    f = saddlepoint_expfam(
+        (t) -> -log(1 - t), 
+        (s) -> -nterms/s, 
+        -1.0, nterms
+    )
+
+    p, q = plot_empirical(Gamma(1, 1), nterms)
+    plot!(p, q, pdf(Gamma(nterms, 1), q), label="True density")
+    plot!(p, q, f.(q), label="Saddlepoint")
+end
+
+function plot_normal(μ, nterms)
+    # N(μ, 1)
+    f = saddlepoint_expfam(
+        (t) -> μ*t + t^2/2, 
+        (s) -> s/nterms, 
+        μ, nterms
+    )
+
+    p, q = plot_empirical(Normal(μ, 1), nterms)
+    plot!(p, q, pdf(Normal(nterms*μ, sqrt(nterms)), q), label="True density", color="black")
+    plot!(p, q, f.(q), label="Saddlepoint", color="red")
+end
+
+function plot_exp(nterms)
+    # Exp(1)
+    f = saddlepoint_expfam(
+        (t) -> log(-1 / (-1+t)), 
+        (s) -> -nterms/s, 
+        -1.0, nterms
+    )
+
+    p, q = plot_empirical(Exponential(1), nterms)
+    plot!(p, q, f.(q), label="Saddlepoint")
+end
 
 # base distribution
 d = FromCGF{Float64}((t) -> t^2/2) # N(0,1)
 d = FromCGF{Float64}((t) -> -log(1-t)) # Γ(1,1)
+d = FromCGF{Float64}((t) -> log(-1 / (-1 + t))) # Exp(1)
+
+plot_normal(1, 3)
+plot_gamma(3)
+plot_exp(3)
+    
 
 nterms = 10
-
-q = LinRange(0,10, 1000);
-tp = pdf(Gamma(nterms,1/sqrt(nterms)), q);
+q = LinRange(60, 140, 1000);
 
 # plot densities
 p = plot(q, tp, label="True; n=$nterms")
