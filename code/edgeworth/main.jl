@@ -92,6 +92,7 @@ function saddlepoint_expfam(K, compθ̂, θ, nsum)
     end
 end
 
+
 function plot_empirical(d, nterms)
     sample = sample_sum(d, nterms, 100_000);
     p = histogram(sample, normalize=true, color="grey", alpha=0.3, label="Empirical")
@@ -99,82 +100,94 @@ function plot_empirical(d, nterms)
     p, q
 end
 
-function plot_gamma(nterms)
-    # Γ(1, 1)
-    f = saddlepoint_expfam(
-        (t) -> -log(1 - t), 
-        (s) -> -nterms/s, 
-        -1.0, nterms
+function plot_approximations(
+    nterms,
+    distrib,
+    cgf,
+    mle,
+    real_param
     )
 
-    p, q = plot_empirical(Gamma(1, 1), nterms)
-    plot!(p, q, pdf(Gamma(nterms, 1), q), label="True density")
+    f = saddlepoint_expfam(cgf, mle, real_param, nterms)    
+    d = FromCGF{Float64}(cgf)
+    p, q = plot_empirical(distrib, nterms)
     plot!(p, q, f.(q), label="Saddlepoint")
+    for i=2:4
+        e = edgeworth_sum(d, nterms, i)
+        # e is the density of X = sum(Y) / sqrt(n)
+        # so if we want to evaluate the density of Z = sum(Y)/n = X/sqrt(n)
+        # we have se(z) = |dz/dx|e(x(z)) = e(sqrt(n)*z)/sqrt(n)
+        # note here that s = sum(Y),  so x(z) = x(z(s)) = s/sqrt(n)
+        se(s) = e(s/sqrt(nterms))/sqrt(nterms)
+        plot!(p, q, se.(q), label="Edgeworth-$i")
+    end
+    p
 end
 
-function plot_normal(μ, nterms)
-    # N(μ, 1)
-    f = saddlepoint_expfam(
-        (t) -> μ*t + t^2/2, 
-        (s) -> s/nterms, 
-        μ, nterms
+function plot_approximations_err(
+    nterms,
+    distrib,
+    true_distrib,
+    cgf,
+    mle,
+    real_param
     )
 
-    p, q = plot_empirical(Normal(μ, 1), nterms)
-    plot!(p, q, pdf(Normal(nterms*μ, sqrt(nterms)), q), label="True density", color="black")
-    plot!(p, q, f.(q), label="Saddlepoint", color="red")
+    f = saddlepoint_expfam(cgf, mle, real_param, nterms)    
+    d = FromCGF{Float64}(cgf)
+
+    sample = sample_sum(distrib, nterms, 100_000);
+    q = LinRange(minimum(sample), maximum(sample), 1000)
+    tp = pdf(true_distrib, q)
+
+    p = plot(q, log10.(abs.(tp - f.(q)) ./ tp), label="Saddlepoint Err / True")
+    for i=2:4
+        e = edgeworth_sum(d, nterms, i)
+        se(s) = e(s/sqrt(nterms))/sqrt(nterms)
+        plot!(p, q, log10.(abs.(tp - se.(q)) ./ tp), label="Edgeworth-$i Err / True")
+    end
+    p
 end
 
-function plot_exp(nterms)
-    # Exp(1)
-    f = saddlepoint_expfam(
-        (t) -> log(-1 / (-1+t)), 
-        (s) -> -nterms/s, 
-        -1.0, nterms
-    )
-
-    p, q = plot_empirical(Exponential(1), nterms)
-    plot!(p, q, f.(q), label="Saddlepoint")
-end
-
-# base distribution
-d = FromCGF{Float64}((t) -> t^2/2) # N(0,1)
-d = FromCGF{Float64}((t) -> -log(1-t)) # Γ(1,1)
-d = FromCGF{Float64}((t) -> log(-1 / (-1 + t))) # Exp(1)
-
-plot_normal(1, 3)
-plot_gamma(3)
-plot_exp(3)
-    
 
 nterms = 10
-q = LinRange(60, 140, 1000);
 
-# plot densities
-p = plot(q, tp, label="True; n=$nterms")
-for i=2:4
-    e = edgeworth_sum(d, nterms, i)
-    plot!(p, q, e.(q), label="Edgeworth-$i")
-end
-ylims!(0, 0.7)
-p
+# Γ(1, 1)
+plot_approximations(nterms, 
+    Gamma(1, 1),
+    (t) -> -log(1-t),
+    (s) -> -nterms/s,
+    -1.0
+)
 
-# absolute error 
-p = plot()
-for i=2:4
-    e = edgeworth_sum(d, nterms, i)
-    p = plot!(p, q, abs.(tp - e.(q)), label="Edgeworth-$i")
-end
-p
+plot_approximations_err(nterms, 
+    Gamma(1, 1),
+    Gamma(nterms, 1),
+    (t) -> -log(1-t),
+    (s) -> -nterms/s,
+    -1.0
+)
 
-# relative error
-p = plot()
-for i=2:4
-    e = edgeworth_sum(d, nterms, i)
-    p = plot!(p, q, abs.(tp - e.(q)) ./ tp, label="Edgeworth-$i")
-end
-p
+# N(μ, 1)
+μ = 1
+plot_approximations(nterms, 
+    Normal(μ, 1),
+    (t) -> μ*t + t^2/2, 
+    (s) -> s/nterms,
+    μ
+)
+plot_approximations_err(nterms, 
+    Normal(μ, 1),
+    Normal(nterms*μ, nterms),
+    (t) -> μ*t + t^2/2, 
+    (s) -> s/nterms,
+    μ
+)
 
-
-
-
+# Exponential(1)
+plot_approximations(nterms, 
+    Exponential(1),
+    (t) -> log(-1 / (-1 + t)), 
+    (s) -> -nterms/s,
+    -1.0
+)∑

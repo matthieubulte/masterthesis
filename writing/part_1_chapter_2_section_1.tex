@@ -1,0 +1,201 @@
+\section{Properties of characteristic functions}
+
+Throughout this chapter, we consider a family of multivariate continuous distributions $\{ P_\theta \}$ indexed by a parameter $\theta \in \Theta$.
+
+
+\begin{definition}
+    Let $X$ be a random vector in $\Rp$. The characteristic function of $X$ is the function $\zeta_X : \Rp \rightarrow \C$ given by
+    \begin{equation*}
+        \zeta_X(\beta) = \expec{}{\expf{i\beta X}}.
+    \end{equation*}
+    If $X$ has a density function, the characteristic function of $X$ is equal to the Fourier transform of its density.
+\end{definition}
+
+\begin{example}
+    test
+\end{example}
+
+\begin{theorem}
+    Let $X \sim P$ be a random vector in $\Rp$ with characteristic function $\zeta_X$ satisfying
+    \begin{equation} \label{eq-charfun_abs_int}
+        \intRp{\beta}{\abs{\zeta_X(\beta)}} < \infty.
+    \end{equation}
+    Then, the density of $X$ exists and is given by
+    \begin{equation} \label{eq-density-via-charfun}
+        f_X(x) = \left(2\pi\right)^{-p} \intRp{\beta}{ \expf{-i\beta^\top x}\zeta_X(\beta) }.
+    \end{equation}
+\end{theorem}
+
+\begin{proof}
+    Let $A \subset \Rp$ be a bounded rectangle $A = [a_1, b_1] \times \ldots \times [a_p, b_p]$ with $P(X \in \partial A) = 0$. By Theorem 3.10.4 in \cite{durrett_2019}, we have that
+    \begin{equation*}
+        P(X \in A) = \lim_{T \rightarrow \infty} \left(2\pi\right)^{-p}\int_{\left[-T, T\right]^p} \zeta_X(\beta) \prod_{k=1}^p \frac{\expf{-i\beta_k a_k} - \expf{-i\beta_k b_k}}{i \beta_k} \d\beta.
+    \end{equation*}
+    By rewriting various terms under the integral, one obtains
+    \begin{align*}
+        P(X \in A) 
+        &= \lim_{T \rightarrow \infty} \left(2\pi\right)^{-p}\int_{\left[-T, T\right]^p} \zeta_X(\beta) \prod_{k=1}^p \frac{\expf{-i\beta_k a_k} - \expf{-i\beta_k b_k}}{i \beta_k} \d\beta \\
+        &= \lim_{T \rightarrow \infty} \left(2\pi\right)^{-p}\int_{\left[-T, T\right]^p} \zeta_X(\beta) \prod_{k=1}^p \int_{a_k}^{b_k}\expf{-i \beta_k x_k} \d x_k \d\beta \\
+        &= \lim_{T \rightarrow \infty} \left(2\pi\right)^{-p}\int_{\left[-T, T\right]^p} \zeta_X(\beta) \int_A \expf{-i \beta^\top x} \d x \d\beta.
+    \end{align*}
+    By (\ref{eq-charfun_abs_int}) and since $A$ is bounded, the integrand in the previous equation is integrable, and the limit $T \rightarrow \infty$ can be replaced by the proper integral over $\Rp$. Furthermore, using the same absolute convergence property and by Fubini's Theorem the order of integration can be changed, yielding
+    \begin{align*}
+        P(X \in A) 
+        &= \left(2\pi\right)^{-p}\intRp{\beta}{\int_A \zeta_X(\beta) \expf{-i \beta^\top x} \d x} \\
+        &= \int_A \left(2\pi\right)^{-p} \intRp{\beta}{\zeta_X(\beta) \expf{-i \beta^\top x} } \d x.
+    \end{align*}
+    By definition, this shows that the desnity of $X$ exists and is given by (\ref{eq-density-via-charfun}).
+\end{proof}
+
+\begin{lemma} \label{lemma-series}
+    For any $u, v \in \C$ and any $l \in \mathbb{N}$ the following inequality holds
+    \begin{equation}
+        \abs{\exp{u} - \sum_{k=0}^l \frac{v^k}{k!}} \leq \max \left\{ \exp{|u|}, \exp{|v|} \right\}\left(\abs{u - v} + \abs{\frac{v^{l+1}}{(l+1)!}}\right).
+    \end{equation}
+\end{lemma}
+
+\begin{proof}
+    By the triangle inequality,
+    \begin{equation*}
+        \abs{\exp{u} - \sum_{k=0}^l \frac{v^k}{k!}} \leq \abs{\exp{u} - \exp{v}} + \abs{\sum_{k=l+1}^\infty \frac{v^k}{k!}}.
+    \end{equation*}
+    Starting with the second term on the right hand side, we have
+    \begin{align*}
+        \abs{\sum_{k=l+1}^\infty \frac{v^k}{k!}} 
+        & \leq \sum_{k=l+1}^\infty \abs{\frac{v^k}{k!}} 
+        = \abs{\frac{v^{l+1}}{(l+1)!}} \sum_{k=0}^\infty \abs{v^k} \frac{(l+1)!}{(k + l + 1)!} \\
+        & \leq \abs{\frac{v^{l+1}}{(l+1)!}} \sum_{k=0}^\infty \abs{\frac{v^k}{k!}}
+        = \abs{\frac{v^{l+1}}{(l+1)!}} \exp v\\
+        &\leq \abs{\frac{v^{l+1}}{(l+1)!}} \max \left\{ \exp{|u|}, \exp{|v|} \right\}.
+    \end{align*}
+    Furthermore, by Taylor's theorem there exists a point $z \in \C$ lying on the straight line between $u$ and $v$ such that
+    \begin{equation*}
+        \exp u - \exp v = \abs{u - v} \exp z.
+    \end{equation*}
+    Taking absolute values and by convexity of the exponential function, we find the following bound
+    \begin{equation*}
+        \abs{\exp u - \exp v} = \abs{u - v} \exp |z| \leq \abs{u - v} \max \left\{ \exp{|u|}, \exp{|v|} \right\}.
+    \end{equation*}
+    Combining the two bounds found previously completes the proof of the lemma.
+\end{proof}
+
+\begin{definition}
+    The cumulant generating function $K_X : \Rp \rightarrow \R$ of a random vector $X \in \Rp$ is defined as 
+    \begin{equation*}
+        K_X(\beta) = \log \expec{X}{\expf{\beta^\top X}}.
+    \end{equation*}
+    Let $s \in S_p(k)$ be an index vector of length $k$, then if the involved derivatives exist, we define the $s$-cumulant of $X$ as
+    \begin{equation*}
+        \kappa^s = \ddx{\beta_{s_1}}\ldots\ddx{\beta_{s_k}} K(\beta) \bigg|_{\beta=0}.
+    \end{equation*}
+\end{definition}
+
+One directly sees that the cumulant generating function is closely related to the characteristic function since
+\begin{equation*}
+    K_X(\beta) 
+    = \log \expec{X}{\expf{\beta^\top X}} 
+    = \log \expec{X}{\expf{i (-i)\beta^\top X}}
+    = \logf{\zeta_X(-i\beta)}.
+\end{equation*}
+
+This equality also allows us to define the cumulants $\kappa^s$ for $s \in S_p(k)$ in terms of the characteristic function
+\begin{align*}
+    \kappa^s
+    &= \ddx{\beta_{s_1}}\ldots\ddx{\beta_{s_k}} K(\beta) \bigg|_{\beta=0}
+    = \ddx{\beta_{s_1}}\ldots\ddx{\beta_{s_k}} K(\beta) \bigg|_{\beta=0}\\
+    &= \ddx{\beta_{s_1}}\ldots\ddx{\beta_{s_k}} \log \zeta(-i\beta) \bigg|_{\beta=0}
+    = (-i)^{k} \ddx{\beta_{s_1}}\ldots\ddx{\beta_{s_k}} \log \zeta(\beta) \bigg|_{\beta=0}.
+\end{align*}
+
+\begin{theorem}
+    Let $\zeta_X$ be the characteristic function of a random vector $X \in \Rp$ and let $n \in \N$. Assume that all cumulants of $X$ of order up to $k \in \N$ exist and that the second cumulants of $X$ satisfy $\kappa^{(i, j)} = \delta_{ij}$ for all $i, j = 1, \ldots, p$. Let
+    \begin{equation*}
+        \xi(\beta) = \expf{-\frac{1}{2}\norm{\beta}_2^2}\sum_{l=0}^{k-2} \frac{1}{l!} \left[ 1 + \sum_{m=3}^k \sum_{s \in S(m)} \frac{i^m\kappa^s\beta_{s_1}\ldots\beta_{s_m}}{n^{m/2-1}m!} \right]^l.
+    \end{equation*}
+    Then for every $\epsilon > 0$ there exists a $\delta > 0$ and a constant $C_p$ dependent on the dimension of $X$ such that 
+    \begin{equation}\label{eq-edge-bound}
+        \abs{\expf{n\left[\log \zeta_X(\beta n^{-1/2})\right]} - \xi(\beta)} \leq \expf{-\frac{1}{4}\norm{\beta}_2^2}\left[ \frac{\epsilon\norm{\beta}_2^k}{n^{k/2-1}} + \frac{C_p^{k-1}\norm{\beta}_2^{3(k-1)}}{(k-1)!n^{k/2-1/2}} \right]
+    \end{equation}
+    holds for all $\beta \in \Rp$ with $\norm{\beta}_2 < \delta\sqrt{n}$.
+\end{theorem}
+\begin{proof}
+    The idea of this proof is to rewrite the left hand side of the Equation (\ref{eq-edge-bound}) to be able to use Lemma \ref{lemma-series} and find suitable upper bounds on the remaining quantities. To that end, we define $u(\beta) = n u^*(\beta n^{-1/2})$ and $v(\beta) = nv^*(\beta n^{-1/2})$ where $u^*(\beta) = \log \zeta_X(\beta) + \frac{1}{2}\norm{\beta}_2^2$ and 
+    \begin{equation*}
+        v^*(\beta) = \sum_{m=3}^k \sum_{s \in S(m)} \frac{i^m\kappa^s\beta_{s_1}\ldots\beta_{s_m}}{m!}.
+    \end{equation*}
+    We can then rewrite
+    \begin{equation*}
+        \expf{n\left[\log \zeta_X(\beta n^{-1/2})\right]} = \expf{-\frac{1}{2}\norm{\beta}_2^2}\exp u(\beta)
+    \end{equation*}
+    and
+    \begin{equation*}
+        \xi(\beta) = \expf{-\frac{1}{2}\norm{\beta}_2^2}\sum_{l=0}^{k-2} \frac{v(\beta)^l}{l!}.
+    \end{equation*}
+    By Lemma \ref{lemma-series}, we can bound the left hand side of Equation (\ref{eq-edge-bound}) and have
+    \begin{align*}
+        &\abs{\expf{n\left[\log \zeta_X(\beta n^{-1/2})\right]} - \xi(\beta)} \\
+        &= \expf{-\frac{1}{2}\norm{\beta}_2^2}\abs{\exp u(\beta) - \sum_{l=0}^{k-2} \frac{v(\beta)^l}{l!}}\\
+        &\leq \expf{-\frac{1}{2}\norm{\beta}_2^2} \max \left\{ \exp{|u(\beta)|}, \exp{|v(\beta)|} \right\}\left(\abs{u(\beta) - v(\beta)} + \frac{|v(\beta)|^{k-1}}{(k-1)!}\right)
+    \end{align*}
+    We now continue to find suitable bounds on the resulting quantities. First note that both $u$ and $v$ have continuous derivatives in 0 of order up to $k$. Starting with $u^*$, let $s \in S(m)$ for $3 \leq m < k$, then
+    \begin{align*}
+        \ddx{\beta_{s_1}}\ldots\ddx{\beta_{s_m}} u^*(\beta) \bigg|_{\beta=0}
+        &= \ddx{\beta_{s_1}}\ldots\ddx{\beta_{s_m}} \log \zeta_X(\beta) + \frac{1}{2}\norm{\beta}_2^2\bigg|_{\beta=0}\\
+        &=  \ddx{\beta_{s_1}}\ldots\ddx{\beta_{s_m}} \log \zeta_X(\beta)\bigg|_{\beta=0}
+            +
+            \ddx{\beta_{s_1}}\ldots\ddx{\beta_{s_m}} \frac{1}{2}\norm{\beta}_2^2\bigg|_{\beta=0}
+        \\
+        &= (-i)^{-m}\kappa^s = i^m \kappa^s ,
+    \end{align*}
+    where the derivative of the 2-norm of $\beta$ is 0 because $|s| = m \geq 3$. Furthermore, we can compute the same derivatives of $v^*$,
+    \begin{align*}
+        \ddx{\beta_{s_1}}\ldots\ddx{\beta_{s_m}} v^*(\beta) \bigg|_{\beta=0}
+        &= \ddx{\beta_{s_1}}\ldots\ddx{\beta_{s_m}} \sum_{m'=3}^k \sum_{s' \in S(m')} \frac{i^{m'}\kappa^{s'}\beta_{s'_1}\ldots\beta_{s'_{m'}}}{m'!} \bigg|_{\beta=0} \\
+        &= \sum_{m'=3}^k \sum_{s' \in S(m')} \frac{i^{m'}\kappa^{s'}}{m'!} \ddx{\beta_{s_1}}\ldots\ddx{\beta_{s_m}}\beta_{s'_1}\ldots\beta_{s'_{m'}} \bigg|_{\beta=0}.
+    \end{align*}
+    The term $\ddx{\beta_{s_1}}\ldots\ddx{\beta_{s_m}}\beta_{s'_1}\ldots\beta_{s'_{m'}} |_{\beta=0} = 1$ if and only if $s'$ is a permutation of $s$, otherwise 0. Hence
+    \begin{equation*}
+        \ddx{\beta_{s_1}}\ldots\ddx{\beta_{s_m}} v^*(\beta) \bigg|_{\beta=0} 
+        = \sum_{s' \in S(m)} \frac{i^m\kappa^{s'}}{m!}
+        = i^m\kappa^s,
+    \end{equation*}
+    where the last equality holds since $\kappa^s = \kappa^{s'}$ for all permutation $s'$ of $s$. 
+    This shows that all derivatives of order up to $k$ of $u^* - v^*$ (and hence also $u - v$) exist in 0 and are all equal to 0. Therefore, there exists a $\delta > 0$ such that for all $\beta \in \Rp$ with $\norm{\beta}_2 \leq \delta$
+    \begin{equation*}
+        \abs{u^*(\beta) - v^*(\beta)} \leq \epsilon\norm{\beta}_2^k
+    \end{equation*}
+    and if $\norm{\beta} \leq \delta \sqrt{n}$, this bound yields
+    \begin{equation*}
+        \abs{u(\beta) - v(\beta)} = n\abs{u^*(\beta n^{-1/2}) - v(\beta n^{-1/2})} \leq n\epsilon\norm{n^{-1/2}\beta}_2^k = n^{1-k/2}\norm{\beta}_2^k\epsilon.
+    \end{equation*}
+    Furthermore, choose $\delta$ small enough such that $\abs{u^*(\beta)} < \norm{\beta}_2^2/4$ for $\norm{\beta}_2 \leq \delta$. Then for $\norm{\beta}_2 \leq \delta\sqrt{n}$ we have
+    \begin{equation*}
+        \abs{u(\beta)} = n\abs{u^*(\beta n^{-1/2})} \leq n \norm{\beta n^{-1/2}}_2^2/4 = \norm{\beta}_2^2/4.
+    \end{equation*}
+    We observe that all derivatives of $v^*$ in 0 of first and second order are equal to 0 and that the third derivatives of $v^*$ are bounded. By Taylor's theorem, this allows us to find the following bound for all $\norm{\beta}_2 \leq \delta \sqrt{n}$
+    \begin{equation*}
+        |v(\beta)| = |nv^*(\beta n^{-1/2})| < C_p n \norm{\beta n^{-1/2}}_2^3 = C_p \norm{\beta}_2^3 n^{-1/2}
+    \end{equation*}
+    where
+    \begin{equation*}
+        C_p = \sup_{\substack{\norm{\beta}_2 \leq \delta, \\ i,j,k \in \{1,\ldots,p\}}} p^3\abs{ \frac{\text{d}^3v^*(\beta)}{\text{d}\beta_i\text{d}\beta_j\text{d}\beta_k}}.
+    \end{equation*}
+    Hence, for a $\delta$ small enough and $\beta \leq \delta\sqrt{n}$ we have
+    \begin{align*}
+        &\abs{\expf{n\left[\log \zeta_X(\beta n^{-1/2})\right]} - \xi(\beta)} \\
+        &\leq \expf{-\frac{1}{2}\norm{\beta}_2^2} \max \left\{ \exp{|u(\beta)|}, \exp{|v(\beta)|} \right\}\left(\abs{u(\beta) - v(\beta)} + \frac{|v(\beta)|^{k-1}}{(k-1)!}\right)\\
+        &\leq \expf{-\frac{1}{2}\norm{\beta}_2^2}
+            \max \left\{ 
+                \expf{\frac{1}{4}\norm{\beta}_2^2},
+                \expf{C \norm{\beta}_2^3 n^{-1/2}}
+            \right\}\\
+        & \times \left(
+                \frac{\epsilon\norm{\beta}_2^k}{n^{k/2-1}}
+                +
+                \frac{C_p^{k-1} \norm{\beta}_2^{3(k-1)} }{n^{k/2-1/2} k!}
+              \right)\\
+        & \leq \expf{-\frac{1}{4}\norm{\beta}_2^2}\left[ \frac{\epsilon\norm{\beta}_2^k}{n^{k/2-1}} + \frac{C_p^{k-1}\norm{\beta}_2^{3(k-1)}}{(k-1)!n^{k/2-1/2}} \right].
+    \end{align*}
+\end{proof}
+
+Note that this proof doesn't use the fact that $\zeta_X$ is a characteristic function. Indeed, this theorem can be proven in a more general setting without any changes to the statement of the theorem or the proof itself.
