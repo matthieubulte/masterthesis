@@ -16,10 +16,13 @@
 \newcommand{\C}{\mathbb{C}}
 \newcommand{\N}{\mathbb{N}}
 \newcommand{\ddx}[1]{\frac{\d}{\d #1}}
-\newcommand{\Rp}{\R^p}
+\newcommand{\Rp}{{\R^p}}
+\newcommand{\F}{\mathcal{F}}
+\renewcommand{\Finv}{{\mathcal{F}^{-1}}}
 \newcommand{\abs}[1]{\left|#1\right|}
 \newcommand{\intRp}[2]{\int_{\Rp} #2 \d #1}
 \newcommand{\expf}[1]{\exp\left(#1\right)}
+\newcommand{\expfc}[1]{\exp\left\{#1\right\}}
 \newcommand{\logf}[1]{\log\left(#1\right)}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -39,6 +42,8 @@
 \newtheorem{theorem}{Theorem}[section]
 \theoremstyle{def}
 \newtheorem{lemma}[theorem]{Lemma}
+\theoremstyle{def}
+\newtheorem{corollary}[theorem]{Corollary}
 \theoremstyle{def}
 \newtheorem{example}[theorem]{Example}
 \theoremstyle{def}

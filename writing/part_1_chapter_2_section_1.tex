@@ -1,26 +1,25 @@
-\section{Properties of characteristic functions}
-
-Throughout this chapter, we consider a family of multivariate continuous distributions $\{ P_\theta \}$ indexed by a parameter $\theta \in \Theta$.
+\section{Charlier differential Series}
 
 
-\begin{definition}
+\begin{definition}[Characteristic function]
     Let $X$ be a random vector in $\Rp$. The characteristic function of $X$ is the function $\zeta_X : \Rp \rightarrow \C$ given by
     \begin{equation*}
-        \zeta_X(t) = \expec{}{\expf{it\top X}}.
+        \zeta_X(t) = \expec{}{\expf{it^\top X}}.
     \end{equation*}
-    If $X$ has a density function, the characteristic function of $X$ is equal to the Fourier transform of its density.
 \end{definition}
 
-\begin{example}
-    test
-\end{example}
+If $X$ has a density function, the characteristic function of $X$ is equal to the Fourier transform of its density. To facilitate future discussions, we introduce a special notation for the Fourier transform operator $\F$ that will applied both to distribution functions, then denoting the characteristic function, as
+\begin{equation} \label{eq-fourier-distrib}
+    \F[P](t) = \expec{}{\expf{it^\top X}},
+\end{equation}
+where $X \sim P$, but also applied to any function $f \in L^1(\Rp)$ with
+\begin{equation} \label{eq-fourier-density}
+    \F[f](t) = \int_\Rp \expf{it^\top x}f(x)\d x.
+\end{equation}
+The following theorem shows that under integrability condition, the Fourier transform can be inverted and the characteristic function be used to express the density of a distribution.
 
-\begin{theorem}
-    Let $X \sim P$ be a random vector in $\Rp$ with characteristic function $\zeta_X$ satisfying
-    \begin{equation} \label{eq-charfun_abs_int}
-        \intRp{t}{\abs{\zeta_X(t)}} < \infty.
-    \end{equation}
-    Then, the density of $X$ exists and is given by
+\begin{theorem} \label{thm-char-inversion}
+    Let $X \sim P$ be a random vector in $\Rp$ with characteristic function $\zeta_X \in L^1(\Rp)$. Then, the density of $X$ exists and is given by
     \begin{equation} \label{eq-density-via-charfun}
         f_X(x) = \left(2\pi\right)^{-p} \intRp{t}{ \expf{-it^\top x}\zeta_X(t) }.
     \end{equation}
@@ -38,14 +37,177 @@ Throughout this chapter, we consider a family of multivariate continuous distrib
         &= \lim_{T \rightarrow \infty} \left(2\pi\right)^{-p}\int_{\left[-T, T\right]^p} \zeta_X(t) \prod_{k=1}^p \int_{a_k}^{b_k}\expf{-i t_k x_k} \d x_k \d t \\
         &= \lim_{T \rightarrow \infty} \left(2\pi\right)^{-p}\int_{\left[-T, T\right]^p} \zeta_X(t) \int_A \expf{-i t^\top x} \d x \d t.
     \end{align*}
-    By (\ref{eq-charfun_abs_int}) and since $A$ is bounded, the integrand in the previous equation is integrable, and the limit $T \rightarrow \infty$ can be replaced by the proper integral over $\Rp$. Furthermore, using the same absolute convergence property and by Fubini's Theorem the order of integration can be changed, yielding
+    Since $\zeta_X \in L^1(\Rp)$ and since $A$ is bounded, the integrand in the previous equation is integrable, and the limit $T \rightarrow \infty$ can be replaced by the proper integral over $\Rp$. Furthermore, using the same absolute convergence property and by Fubini's Theorem the order of integration can be changed, yielding
     \begin{align*}
         P(X \in A) 
         &= \left(2\pi\right)^{-p}\intRp{t}{\int_A \zeta_X(t) \expf{-i t^\top x} \d x} \\
         &= \int_A \left(2\pi\right)^{-p} \intRp{t}{\zeta_X(t) \expf{-i t^\top x} } \d x.
     \end{align*}
-    By definition, this shows that the desnity of $X$ exists and is given by (\ref{eq-density-via-charfun}).
+    By definition, this shows that the density of $X$ exists and is given by (\ref{eq-density-via-charfun}).
 \end{proof}
+
+While being a useful result on its own, Theorem \ref{thm-char-inversion} can also be used to provide the necessary conditions to invert the Fourier transform of a function that is not a density.
+
+\begin{corollary}
+    Suppose that two uniformly integrable functions $f : \Rp \rightarrow \R$ and $\zeta : \Rp \rightarrow \C$ are related by
+    \begin{equation}\label{eq-fourier-trans}
+        \zeta(t) = \F[f](x).
+    \end{equation}
+    Then, it holds that
+    \begin{equation} \label{eq-fourier-inv}
+        f(x) = \left(2\pi\right)^{-p}\int_\Rp \expf{-i t^\top x} \zeta(t) \d t.
+    \end{equation}
+\end{corollary}
+
+\begin{proof}
+    We decompose $f$ in it's positive and negative part by $f(x) = f^+(x) - f^-(x)$ where $f^+(x) = f(x) \mathbb{1}_{f(x) \geq 0}$ and $f^-(x) = -f(x) \mathbb{1}_{f(x) < 0}$. Then, if $c^+ = \int_\Rp f^+(x) \d x$ and $c^- = \int_\Rp f^-(x) \d x$, the functions $f^+ / c^+$ and $f^- / c^-$ are both densities over $\Rp$ with characteristic functions $\zeta^+$ and $\zeta^-$. We can then replace these quantities in (\ref{eq-fourier-trans}) to have
+    \begin{align*}
+        \zeta(t) 
+        &= \int_\Rp \expf{it^\top x}f(x)\d x \\
+        &= c^+ \int_\Rp \expf{it^\top x} \frac{1}{c^+}f^+(x)\d x - c^- \int_\Rp \expf{it^\top x} \frac{1}{c^-}f^-(x)\d x\\
+        &= c^+ \zeta^+(t) - c^-\zeta^-(t).
+    \end{align*}
+    By applying Theorem \ref{thm-char-inversion} to the positive and negative parts of $f$, we obtain that
+    \begin{equation*}
+        \frac{1}{c^\pm} f^\pm(x) = \left(2\pi\right)^{-p}\int_\Rp \expf{-i t^\top x} \zeta^\pm(t) \d t,
+    \end{equation*}
+    and hence
+    \begin{align*}
+        f(x) 
+        &= f^+(x) - f^-(x) \\
+        &= c^+ \left(2\pi\right)^{-p}\int_\Rp \expf{-i t^\top x} \zeta^+(t) \d t
+         - c^- \left(2\pi\right)^{-p}\int_\Rp \expf{-i t^\top x} \zeta^-(t) \d t \\
+        &= \left(2\pi\right)^{-p}\int_\Rp \expf{-i t^\top x} \left[ c^+\zeta^+(t) - c^-\zeta^-(t)\right] \d t\\
+        &= \left(2\pi\right)^{-p}\int_\Rp \expf{-i t^\top x} \zeta(t) \d t.
+    \end{align*}
+\end{proof}
+
+This theorem lets us extend the notation introduced in Equation (\ref{eq-fourier-density}) and define the inverse Fourier transform operator $\Finv$ as in Equation (\ref{eq-fourier-inv}),
+\begin{equation*}
+    \Finv[\zeta](x) = \left(2\pi\right)^{-p}\int_\Rp \expf{-i t^\top x} \zeta(t) \d t.
+\end{equation*}
+
+
+\begin{lemma} \label{lemma-fourier-derivative}
+    Let $r \in \N$ and $f : \R \rightarrow \Rp$ such that all partial derivatives of $f$ of order up to $r$ exist and for any $\tilde{s} \in S(r-1)$
+    \begin{equation} \label{eq-tails-to-zero}
+        \lim_{\norm{x} \rightarrow \infty} \expf{it^\top x}D^{\tilde{s}}f(x) = 0.
+    \end{equation}
+    Then for any $s \in S(r)$, it holds that
+    \begin{equation*}
+        \F\left[D^s f \right](t) = (-i)^r t^s \F[f].
+    \end{equation*}
+\end{lemma}
+\begin{proof}
+    Let $\tilde{s} = (s_1, \ldots, s_{r-1})$, then, by direct computation of the Fourier transform,
+    \begin{align*}
+        \F\left[D^s f \right](t) 
+        &= (2\pi)^{-p}\intRp{x}{ \expf{it^\top x} D^s f(x) } \\
+        &= (2\pi)^{-p}\int_{\R^{-1}} \int_\R 
+            \expf{it^\top x} \ddx{x_{s_r}} D^{\tilde{s}} f(x) 
+        \d x_{s_r} \d x_{\tilde{s}}.
+    \end{align*}
+    Integrating by part over the axis $x_{s_r}$ and using Assumption (\ref{eq-tails-to-zero}) gives
+    \begin{align*}
+        \F\left[D^s f \right](t)  
+        &= - (2\pi)^{-p}\intRp{x}{
+            (it_{s_r})\expf{it^\top x} D^{\tilde{s}} f(x)
+        } \\
+        &= -it_{s_r} (2\pi)^{-p}\intRp{x}{
+            \expf{it^\top x} D^{\tilde{s}} f(x)
+        } \\
+        &= -it_{s_r} \F\left[D^{\tilde{s}} f \right](t)
+    \end{align*}
+    Iterating the previous steps completes the proof.
+\end{proof}
+
+
+\begin{definition}
+    The cumulant generating function $K_X : \Rp \rightarrow \R$ of a random vector $X \in \Rp$ is defined as 
+    \begin{equation*}
+        K_X(t) = \log \expec{X}{\expf{t^\top X}}.
+    \end{equation*}
+    Let $s \in S_p(k)$ be an index vector of length $k$, then if the involved derivatives exist, we define the $s$-cumulant of $X$ as
+    \begin{equation*}
+        \kappa_s = D^s K(0).
+    \end{equation*}
+\end{definition}
+
+\begin{remark}
+    One can see that the cumulant generating function is closely related to the characteristic function since
+    \begin{equation*}
+        K_X(t) 
+        = \log \expec{X}{\expf{t^\top X}} 
+        = \log \expec{X}{\expf{i (-i)t^\top X}}
+        = \logf{\zeta_X(-it)}.
+    \end{equation*}
+
+    This equality also allows us to define the cumulants $\kappa_s$ for $s \in S_p(k)$ in terms of the characteristic function
+    \begin{equation*}
+        \kappa_s = D^s K(0) 
+        = \frac{\d^k}{\d x_{s_1} \ldots \d x_{s_k}} \log \zeta(-it) \bigg|_{t=0}
+        = (-i)^{k} D^s \log \zeta(0).
+    \end{equation*}
+\end{remark}
+
+We now present a heuristic development of the idea behind the Edgeworth expansion. Consider two distributions $P$ and $Q$ over $\Rp$ with densities $f$ and $q$, characteristic functions $\zeta$ and $\xi$, and cumulants $\kappa_s$ and $\gamma_s$ for $s \in S(k)$, $k \in \N$. We wish to utilize the cumulants of both distribution to construct an approximation of $P$.
+
+By formal expansion of the difference between the cumulant generating functions of $P$ and $Q$ around 0, we obtain for any $t \in \Rp$
+\begin{align*}
+    \log \frac{\zeta(t)}{\xi(t)}
+    = \log \zeta(t) - \log \xi(t) 
+    &= \sum_{r=0}^\infty \sum_{s \in S(r)} (\kappa_s - \gamma_s)\frac{(-i)^r t^s}{r!}\\
+    &= \sum_{r=1}^\infty \sum_{s \in S(r)} (\kappa_s - \gamma_s)\frac{(-i)^r t^s}{r!},
+\end{align*}
+where the last equality holds from $\zeta(0) = 1 = \xi(0)$. Exponentiating on both side and isolating $\zeta(t)$, we find that
+\begin{equation*}
+    \zeta(t) = \xi(t)\expfc{\sum_{r=1}^\infty \sum_{s \in S(r)} (\kappa_s - \gamma_s)\frac{(-i)^r t^s}{r!}}.
+\end{equation*}
+
+Let $\alpha^s = \kappa_s - \gamma_s$, we can then continue by taking a formal expansion of the exponential function to find
+\begin{align*}
+    \zeta(t)
+    &= \xi(t)\expfc{\sum_{r=1}^\infty \sum_{s \in S(r)} \alpha^s\frac{(-i)^r t^s}{r!}}\\
+    &= \xi(t)\sum_{j=0}^\infty \frac{1}{j!} \left\{\sum_{r=1}^\infty \sum_{s \in S(r)} \alpha^s\frac{(-i)^r t^s}{r!}\right\}^j \\
+    &=
+    \sum_{j=0}^\infty \frac{1}{j!} 
+    \sum_{\substack{r_1 = 1\\ \ldots \\r_j = 1}}^\infty
+    \sum_{\substack{s_1 \in S(r_1)\\ \ldots \\s_j \in S(r_j)}}
+    \alpha^{s_1}\ldots\alpha^{s_j}
+    \frac{
+        \xi(t) (-i)^{r_1 + \ldots + r_j}
+        t^{s_1} \ldots t^{s_j}
+    }{
+        r_1! \ldots r_j!
+    }.
+\end{align*}
+
+By Lemma \ref{lemma-fourier-derivative}, one recognizes the Fourier transform of derivatives of the density $q$ of $Q$
+\begin{equation*}
+    \xi(t) (-i)^{r_1 + \ldots + r_j}
+        t^{s_1} \ldots t^{s_j} = \F \left[ D^{s_1} \ldots D^{s_j} q \right].
+\end{equation*}
+The density of $P$ can thus be retrieved by Fourier inversion, giving
+\begin{equation*}
+    f(x) 
+    = \sum_{j=0}^\infty \frac{1}{j!} 
+        \sum_{\substack{r_1 = 1\\ \ldots \\r_j = 1}}^\infty
+        \sum_{\substack{s_1 \in S(r_1)\\ \ldots \\s_j \in S(r_j)}}
+        \alpha^{s_1}\ldots\alpha^{s_j}
+        \frac{
+            D^{s_1} \ldots D^{s_j} q(x)
+        }{
+            r_1! \ldots r_j!
+        }.
+\end{equation*}
+
+
+
+\section{Properties of characteristic functions}
+
+Throughout this chapter, we consider a family of multivariate continuous distributions $\{ P_\theta \}$ indexed by a parameter $\theta \in \Theta$.
+
+
 
 \begin{lemma} \label{lemma-series}
     For any $u, v \in \C$ and any $l \in \mathbb{N}$ the following inequality holds
@@ -79,38 +241,11 @@ Throughout this chapter, we consider a family of multivariate continuous distrib
     Combining the two bounds found previously completes the proof of the lemma.
 \end{proof}
 
-\begin{definition}
-    The cumulant generating function $K_X : \Rp \rightarrow \R$ of a random vector $X \in \Rp$ is defined as 
-    \begin{equation*}
-        K_X(t) = \log \expec{X}{\expf{t^\top X}}.
-    \end{equation*}
-    Let $s \in S_p(k)$ be an index vector of length $k$, then if the involved derivatives exist, we define the $s$-cumulant of $X$ as
-    \begin{equation*}
-        \kappa^s = \ddx{t_{s_1}}\ldots\ddx{t_{s_k}} K(t) \bigg|_{t=0}.
-    \end{equation*}
-\end{definition}
-
-One directly sees that the cumulant generating function is closely related to the characteristic function since
-\begin{equation*}
-    K_X(t) 
-    = \log \expec{X}{\expf{t^\top X}} 
-    = \log \expec{X}{\expf{i (-i)t^\top X}}
-    = \logf{\zeta_X(-it)}.
-\end{equation*}
-
-This equality also allows us to define the cumulants $\kappa^s$ for $s \in S_p(k)$ in terms of the characteristic function
-\begin{align*}
-    \kappa^s
-    &= \ddx{t_{s_1}}\ldots\ddx{t_{s_k}} K(t) \bigg|_{t=0}
-    = \ddx{t_{s_1}}\ldots\ddx{t_{s_k}} K(t) \bigg|_{t=0}\\
-    &= \ddx{t_{s_1}}\ldots\ddx{t_{s_k}} \log \zeta(-it) \bigg|_{t=0}
-    = (-i)^{k} \ddx{t_{s_1}}\ldots\ddx{t_{s_k}} \log \zeta(t) \bigg|_{t=0}.
-\end{align*}
 
 \begin{theorem}
     Let $\zeta_X$ be the characteristic function of a random vector $X \in \Rp$ and let $n \in \N$. Assume that all cumulants of $X$ of order up to $k \in \N$ exist and that the second cumulants of $X$ satisfy $\kappa^{(i, j)} = \delta_{ij}$ for all $i, j = 1, \ldots, p$. Let
     \begin{equation*}
-        \xi(t) = \expf{-\frac{1}{2}\norm{t}_2^2}\sum_{l=0}^{k-2} \frac{1}{l!} \left[ 1 + \sum_{m=3}^k \sum_{s \in S(m)} \frac{i^m\kappa^s t_{s_1}\ldots t_{s_m}}{n^{m/2-1}m!} \right]^l.
+        \xi(t) = \expf{-\frac{1}{2}\norm{t}_2^2}\sum_{l=0}^{k-2} \frac{1}{l!} \left[ 1 + \sum_{m=3}^k \sum_{s \in S(m)} \frac{i^m\kappa_s t_{s_1}\ldots t_{s_m}}{n^{m/2-1}m!} \right]^l.
     \end{equation*}
     Then for every $\epsilon > 0$ there exists a $\delta > 0$ and a constant $C_p$ dependent on the dimension of $X$ such that 
     \begin{equation}\label{eq-edge-bound}
@@ -121,7 +256,7 @@ This equality also allows us to define the cumulants $\kappa^s$ for $s \in S_p(k
 \begin{proof}
     The idea of this proof is to rewrite the left hand side of the Equation (\ref{eq-edge-bound}) to be able to use Lemma \ref{lemma-series} and find suitable upper bounds on the remaining quantities. To that end, we define $u(t) = n u^*(t n^{-1/2})$ and $v(t) = nv^*(t n^{-1/2})$ where $u^*(t) = \log \zeta_X(t) + \frac{1}{2}\norm{t}_2^2$ and 
     \begin{equation*}
-        v^*(t) = \sum_{m=3}^k \sum_{s \in S(m)} \frac{i^m\kappa^s t_{s_1}\ldots t_{s_m}}{m!}.
+        v^*(t) = \sum_{m=3}^k \sum_{s \in S(m)} \frac{i^m\kappa_s t_{s_1}\ldots t_{s_m}}{m!}.
     \end{equation*}
     We can then rewrite
     \begin{equation*}
@@ -145,7 +280,7 @@ This equality also allows us to define the cumulants $\kappa^s$ for $s \in S_p(k
             +
             \ddx{t_{s_1}}\ldots\ddx{t_{s_m}} \frac{1}{2}\norm{t}_2^2\bigg|_{t=0}
         \\
-        &= (-i)^{-m}\kappa^s = i^m \kappa^s ,
+        &= (-i)^{-m}\kappa_s = i^m \kappa_s ,
     \end{align*}
     where the derivative of the 2-norm of $t$ is 0 because $|s| = m \geq 3$. Furthermore, we can compute the same derivatives of $v^*$,
     \begin{align*}
@@ -157,9 +292,9 @@ This equality also allows us to define the cumulants $\kappa^s$ for $s \in S_p(k
     \begin{equation*}
         \ddx{t_{s_1}}\ldots\ddx{t_{s_m}} v^*(t) \bigg|_{t=0} 
         = \sum_{s' \in S(m)} \frac{i^m\kappa^{s'}}{m!}
-        = i^m\kappa^s,
+        = i^m\kappa_s,
     \end{equation*}
-    where the last equality holds since $\kappa^s = \kappa^{s'}$ for all permutation $s'$ of $s$. 
+    where the last equality holds since $\kappa_s = \kappa^{s'}$ for all permutation $s'$ of $s$. 
     This shows that all derivatives of order up to $k$ of $u^* - v^*$ (and hence also $u - v$) exist in 0 and are all equal to 0. Therefore, there exists a $\delta > 0$ such that for all $t \in \Rp$ with $\norm{t}_2 \leq \delta$
     \begin{equation*}
         \abs{u^*(t) - v^*(t)} \leq \epsilon\norm{t}_2^k
