@@ -129,9 +129,17 @@ This theorem lets us extend the notation introduced in Equation (\ref{eq-fourier
     \end{equation*}
     Let $s \in S_p(k)$ be an index vector of length $k$, then if the involved derivatives exist, we define the $s$-cumulant of $X$ as
     \begin{equation*}
-        \kappa_s = D^s K(0).
+        \kappa_s = D^s K_X(0).
     \end{equation*}
 \end{definition}
+
+\begin{example} \label{ex-cumulants-mvn}
+    Let $X \sim N(\mu, \Sigma)$ with $\mu \in \Rp$ and $\Sigma \in \Sp$, then the cumulant generating function $K(t; \mu, \Sigma)$ of $X$ is a quadratic function given by
+    \begin{equation*}
+        K(t; \mu, \Sigma) = t^\top\mu + t^\top\Sigma t.
+    \end{equation*}
+    It is then clear that all cumulants of $X$ exist, where first order cumulants are the components $\mu$, second order cumulants are the components of $\Sigma$, and cumulants of higher order are 0.
+\end{example}
 
 \begin{remark}
     One can see that the cumulant generating function is closely related to the characteristic function since
@@ -141,12 +149,11 @@ This theorem lets us extend the notation introduced in Equation (\ref{eq-fourier
         = \log \expec{X}{\expf{i (-i)t^\top X}}
         = \logf{\zeta_X(-it)}.
     \end{equation*}
-
     This equality also allows us to define the cumulants $\kappa_s$ for $s \in S_p(k)$ in terms of the characteristic function
     \begin{equation*}
         \kappa_s = D^s K(0) 
-        = \frac{\d^k}{\d x_{s_1} \ldots \d x_{s_k}} \log \zeta(-it) \bigg|_{t=0}
-        = (-i)^{k} D^s \log \zeta(0).
+        = \frac{\d^k}{\d x_{s_1} \ldots \d x_{s_k}} \log \zeta_X(-it) \bigg|_{t=0}
+        = (-i)^{k} D^s \log \zeta_X(0).
     \end{equation*}
 \end{remark}
 
@@ -159,21 +166,21 @@ By formal expansion of the difference between the cumulant generating functions 
     &= \sum_{r=0}^\infty \sum_{s \in S(r)} (\kappa_s - \gamma_s)\frac{(-i)^r t^s}{r!}\\
     &= \sum_{r=1}^\infty \sum_{s \in S(r)} (\kappa_s - \gamma_s)\frac{(-i)^r t^s}{r!},
 \end{align*}
-where the last equality holds from $\zeta(0) = 1 = \xi(0)$. Exponentiating on both side and isolating $\zeta(t)$, we find that
+where the last equality holds from $\zeta(0) = 1 = \xi(0)$. Exponentiating on both sides of the equation and isolating $\zeta(t)$, we find that
 \begin{equation*}
     \zeta(t) = \xi(t)\expfc{\sum_{r=1}^\infty \sum_{s \in S(r)} (\kappa_s - \gamma_s)\frac{(-i)^r t^s}{r!}}.
 \end{equation*}
 
-Let $\alpha^s = \kappa_s - \gamma_s$, we can then continue by taking a formal expansion of the exponential function to find
+Let $\alpha_s = \kappa_s - \gamma_s$, we can then continue by taking a formal expansion of the exponential function to find
 \begin{align*}
     \zeta(t)
-    &= \xi(t)\expfc{\sum_{r=1}^\infty \sum_{s \in S(r)} \alpha^s\frac{(-i)^r t^s}{r!}}\\
-    &= \xi(t)\sum_{j=0}^\infty \frac{1}{j!} \left\{\sum_{r=1}^\infty \sum_{s \in S(r)} \alpha^s\frac{(-i)^r t^s}{r!}\right\}^j \\
+    &= \xi(t)\expfc{\sum_{r=1}^\infty \sum_{s \in S(r)} \alpha_s\frac{(-i)^r t^s}{r!}}\\
+    &= \xi(t)\sum_{j=0}^\infty \frac{1}{j!} \left\{\sum_{r=1}^\infty \sum_{s \in S(r)} \alpha_s\frac{(-i)^r t^s}{r!}\right\}^j \\
     &=
     \sum_{j=0}^\infty \frac{1}{j!} 
     \sum_{\substack{r_1 = 1\\ \ldots \\r_j = 1}}^\infty
     \sum_{\substack{s_1 \in S(r_1)\\ \ldots \\s_j \in S(r_j)}}
-    \alpha^{s_1}\ldots\alpha^{s_j}
+    \alpha_{s_1}\ldots\alpha_{s_j}
     \frac{
         \xi(t) (-i)^{r_1 + \ldots + r_j}
         t^{s_1} \ldots t^{s_j}
@@ -181,26 +188,38 @@ Let $\alpha^s = \kappa_s - \gamma_s$, we can then continue by taking a formal ex
         r_1! \ldots r_j!
     }.
 \end{align*}
-
-By Lemma \ref{lemma-fourier-derivative}, one recognizes the Fourier transform of derivatives of the density $q$ of $Q$
+One can see that the summation over multiple index sets $s_k$ and index set lengths $r_k$ is redundant, and we can simplify the notation by introduction pseudo-moments $\alpha^*_s$ such that
 \begin{equation*}
-    \xi(t) (-i)^{r_1 + \ldots + r_j}
-        t^{s_1} \ldots t^{s_j} = \F \left[ D^{s_1} \ldots D^{s_j} q \right].
+    \zeta(t) = 
+    \sum_{j=0}^\infty 
+    \sum_{s \in S(j)}
+    \alpha^*_s (-1)^j \frac{\xi(t) (-i)^{j} t^{s}}{j!}.
 \end{equation*}
-The density of $P$ can thus be retrieved by Fourier inversion, giving
+By Lemma \ref{lemma-fourier-derivative}, we recognize the Fourier transform of derivatives of the density $q$ of $Q$
 \begin{equation*}
+    \xi(t) (-i)^{j} t^s  = \F \left[ D^s q \right],
+\end{equation*}
+which allows us to retrieve the density of $P$ by Fourier inversion
+\begin{equation}\label{eq-edge-abstract}
+    f(x) = 
+    \sum_{j=0}^\infty 
+    \sum_{s \in S(j)}
+    \alpha^*_s \frac{(-1)^j D^s q(x)}{j!}.
+\end{equation}
+
+A convenient choice for $Q$ is the multivariate Normal distribution $\mathcal{N}_p(\mu_P, \Sigma_P)$ where $\mu_P$ and $\Sigma_P$ are the first and second moments of $P$. Then, from \ref{ex-cumulants-mvn}, we then have that $\alpha_s = 0$ and so $\alpha^*_s = 0$ for $s \in S(j)$, $j= 1, 2$. Furthermore, we also have that for $s \in S(j), j > 2$, $\alpha_s = \kappa_s$. Using this in (\ref{eq-edge-abstract}) gives
+\begin{align*}
     f(x) 
-    = \sum_{j=0}^\infty \frac{1}{j!} 
-        \sum_{\substack{r_1 = 1\\ \ldots \\r_j = 1}}^\infty
-        \sum_{\substack{s_1 \in S(r_1)\\ \ldots \\s_j \in S(r_j)}}
-        \alpha^{s_1}\ldots\alpha^{s_j}
-        \frac{
-            D^{s_1} \ldots D^{s_j} q(x)
-        }{
-            r_1! \ldots r_j!
-        }.
+    &= \sum_{j=0}^\infty  \sum_{s \in S(j)} \alpha^*_s \frac{(-1)^j D^s q(x)}{j!}\\
+    &= \phi(x; \mu_P, \Sigma_P) + \sum_{j=3}^\infty  \sum_{s \in S(j)} \alpha^*_s \frac{(-1)^j D^s q(x)}{j!}\\
+    &= \phi(x; \mu_P, \Sigma_P) \left\{
+        1 + \sum_{j=3}^\infty  \sum_{s \in S(j)} \frac{1}{j!}\alpha^*_s h_s(x; \mu_P, \Sigma_P)
+    \right\},
+\end{align*} 
+where $h_s(\cdot; \mu_P, \Sigma_P)$ are a mutivariate generalization of the Hermite polynomials
+\begin{equation*}
+    h_s(x; \mu_P, \Sigma_P) = (-1)^j D^s q(x) / q(x).
 \end{equation*}
-
 
 
 \section{Properties of characteristic functions}
