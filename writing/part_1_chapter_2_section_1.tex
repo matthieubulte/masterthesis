@@ -2,9 +2,9 @@
 
 
 \begin{definition}[Characteristic function]
-    Let $X$ be a random vector in $\Rp$. The characteristic function of $X$ is the function $\zeta_X : \Rp \rightarrow \C$ given by
+    Let $X$ be a random vector in $\Rp$. The characteristic function of $X$ is the function $\zeta : \Rp \rightarrow \C$ given by
     \begin{equation*}
-        \zeta_X(t) = \expec{}{\expf{it^\top X}}.
+        \zeta(t) = \expec{}{\expf{it^\top X}}.
     \end{equation*}
 \end{definition}
 
@@ -19,37 +19,37 @@ where $X \sim P$, but also applied to any function $f \in L^1(\Rp)$ with
 The following theorem shows that under integrability condition, the Fourier transform can be inverted and the characteristic function be used to express the density of a distribution.
 
 \begin{theorem} \label{thm-char-inversion}
-    Let $X \sim P$ be a random vector in $\Rp$ with characteristic function $\zeta_X \in L^1(\Rp)$. Then, the density of $X$ exists and is given by
+    Let $X \sim P$ be a random vector in $\Rp$ with characteristic function $\zeta \in L^1(\Rp)$. Then, the density of $X$ exists and is given by
     \begin{equation} \label{eq-density-via-charfun}
-        f_X(x) = \left(2\pi\right)^{-p} \intRp{t}{ \expf{-it^\top x}\zeta_X(t) }.
+        f_X(x) = \left(2\pi\right)^{-p} \intRp{t}{ \expf{-it^\top x}\zeta(t) }.
     \end{equation}
 \end{theorem}
 
 \begin{proof}
     Let $A \subset \Rp$ be a bounded rectangle $A = [a_1, b_1] \times \ldots \times [a_p, b_p]$ with $P(X \in \partial A) = 0$. By Theorem 3.10.4 in \cite{durrett_2019}, we have that
     \begin{equation*}
-        P(X \in A) = \lim_{T \rightarrow \infty} \left(2\pi\right)^{-p}\int_{\left[-T, T\right]^p} \zeta_X(t) \prod_{k=1}^p \frac{\expf{-it_k a_k} - \expf{-it_k b_k}}{i t_k} \d t.
+        P(X \in A) = \lim_{T \rightarrow \infty} \left(2\pi\right)^{-p}\int_{\left[-T, T\right]^p} \zeta(t) \prod_{k=1}^p \frac{\expf{-it_k a_k} - \expf{-it_k b_k}}{i t_k} \d t.
     \end{equation*}
     By rewriting various terms under the integral, one obtains
     \begin{align*}
         P(X \in A) 
-        &= \lim_{T \rightarrow \infty} \left(2\pi\right)^{-p}\int_{\left[-T, T\right]^p} \zeta_X(t) \prod_{k=1}^p \frac{\expf{-it_k a_k} - \expf{-it_k b_k}}{i t_k} \d t \\
-        &= \lim_{T \rightarrow \infty} \left(2\pi\right)^{-p}\int_{\left[-T, T\right]^p} \zeta_X(t) \prod_{k=1}^p \int_{a_k}^{b_k}\expf{-i t_k x_k} \d x_k \d t \\
-        &= \lim_{T \rightarrow \infty} \left(2\pi\right)^{-p}\int_{\left[-T, T\right]^p} \zeta_X(t) \int_A \expf{-i t^\top x} \d x \d t.
+        &= \lim_{T \rightarrow \infty} \left(2\pi\right)^{-p}\int_{\left[-T, T\right]^p} \zeta(t) \prod_{k=1}^p \frac{\expf{-it_k a_k} - \expf{-it_k b_k}}{i t_k} \d t \\
+        &= \lim_{T \rightarrow \infty} \left(2\pi\right)^{-p}\int_{\left[-T, T\right]^p} \zeta(t) \prod_{k=1}^p \int_{a_k}^{b_k}\expf{-i t_k x_k} \d x_k \d t \\
+        &= \lim_{T \rightarrow \infty} \left(2\pi\right)^{-p}\int_{\left[-T, T\right]^p} \zeta(t) \int_A \expf{-i t^\top x} \d x \d t.
     \end{align*}
-    Since $\zeta_X \in L^1(\Rp)$ and since $A$ is bounded, the integrand in the previous equation is integrable, and the limit $T \rightarrow \infty$ can be replaced by the proper integral over $\Rp$. Furthermore, using the same absolute convergence property and by Fubini's Theorem the order of integration can be changed, yielding
+    Since $\zeta \in L^1(\Rp)$ and since $A$ is bounded, the integrand in the previous equation is integrable, and the limit $T \rightarrow \infty$ can be replaced by the proper integral over $\Rp$. Furthermore, using the same absolute convergence property and by Fubini's Theorem the order of integration can be changed, yielding
     \begin{align*}
         P(X \in A) 
-        &= \left(2\pi\right)^{-p}\intRp{t}{\int_A \zeta_X(t) \expf{-i t^\top x} \d x} \\
-        &= \int_A \left(2\pi\right)^{-p} \intRp{t}{\zeta_X(t) \expf{-i t^\top x} } \d x.
+        &= \left(2\pi\right)^{-p}\intRp{t}{\int_A \zeta(t) \expf{-i t^\top x} \d x} \\
+        &= \int_A \left(2\pi\right)^{-p} \intRp{t}{\zeta(t) \expf{-i t^\top x} } \d x.
     \end{align*}
     By definition, this shows that the density of $X$ exists and is given by (\ref{eq-density-via-charfun}).
 \end{proof}
 
 While being a useful result on its own, Theorem \ref{thm-char-inversion} can also be used to provide the necessary conditions to invert the Fourier transform of a function that is not a density.
 
-\begin{corollary}
-    Suppose that two uniformly integrable functions $f : \Rp \rightarrow \R$ and $\zeta : \Rp \rightarrow \C$ are related by
+\begin{corollary} \label{corr-fourier-inv}
+    Suppose that $f \in L^1(\Rp)$ and $\zeta \in L^1(\Rp)$ are related by
     \begin{equation}\label{eq-fourier-trans}
         \zeta(t) = \F[f](x).
     \end{equation}
@@ -129,8 +129,9 @@ This theorem lets us extend the notation introduced in Equation (\ref{eq-fourier
     \end{equation*}
     Let $s \in S_p(k)$ be an index vector of length $k$, then if the involved derivatives exist, we define the $s$-cumulant of $X$ as
     \begin{equation*}
-        \kappa_s = D^s K_X(0).
+        \kappa_s(X) = D^s K_X(0).
     \end{equation*}
+    In contexts where the random variable studied $X$ is clear, we will use the notation $K(t)$ and $\kappa_s$ instead of $K_X(t)$ and $\kappa_s(X)$.
 \end{definition}
 
 \begin{example} \label{ex-cumulants-mvn}
@@ -141,61 +142,76 @@ This theorem lets us extend the notation introduced in Equation (\ref{eq-fourier
     It is then clear that all cumulants of $X$ exist, where first order cumulants are the components $\mu$, second order cumulants are the components of $\Sigma$, and cumulants of higher order are 0.
 \end{example}
 
+\begin{lemma}
+    Let $X_1, \ldots, X_n \simiid P$, then the following holds for any $s \in S(k)$
+    \begin{itemize}
+        \item {
+        $\kappa_s(X_1 + \ldots + X_n) = n\kappa_s(X_1)$
+        }
+        \item {
+            For all $c \in \R$, $\kappa_s(c X_1) = c^k\kappa_s(X_1)$
+        }
+    \end{itemize}
+\end{lemma}
+
 \begin{remark}
     One can see that the cumulant generating function is closely related to the characteristic function since
     \begin{equation*}
-        K_X(t) 
-        = \log \expec{X}{\expf{t^\top X}} 
-        = \log \expec{X}{\expf{i (-i)t^\top X}}
-        = \logf{\zeta_X(-it)}.
+        K(t) 
+        = \log \expec{}{\expf{t^\top X}} 
+        = \log \expec{}{\expf{i (-i)t^\top X}}
+        = \logf{\zeta(-it)}.
     \end{equation*}
     This equality also allows us to define the cumulants $\kappa_s$ for $s \in S_p(k)$ in terms of the characteristic function
     \begin{equation*}
         \kappa_s = D^s K(0) 
-        = \frac{\d^k}{\d x_{s_1} \ldots \d x_{s_k}} \log \zeta_X(-it) \bigg|_{t=0}
-        = (-i)^{k} D^s \log \zeta_X(0).
+        = \frac{\d^k}{\d x_{s_1} \ldots \d x_{s_k}} \log \zeta(-it) \bigg|_{t=0}
+        = (-i)^{k} D^s \log \zeta(0),
+    \end{equation*}
+    and hence
+    \begin{equation*}
+        D^s \log \zeta(0) = i^k \kappa_s.
     \end{equation*}
 \end{remark}
-
 We now present a heuristic development of the idea behind the Edgeworth expansion. Consider two distributions $P$ and $Q$ over $\Rp$ with densities $f$ and $q$, characteristic functions $\zeta$ and $\xi$, and cumulants $\kappa_s$ and $\gamma_s$ for $s \in S(k)$, $k \in \N$. We wish to utilize the cumulants of both distribution to construct an approximation of $P$.
 
 By formal expansion of the difference between the cumulant generating functions of $P$ and $Q$ around 0, we obtain for any $t \in \Rp$
 \begin{align*}
     \log \frac{\zeta(t)}{\xi(t)}
     = \log \zeta(t) - \log \xi(t) 
-    &= \sum_{r=0}^\infty \sum_{s \in S(r)} (\kappa_s - \gamma_s)\frac{(-i)^r t^s}{r!}\\
-    &= \sum_{r=1}^\infty \sum_{s \in S(r)} (\kappa_s - \gamma_s)\frac{(-i)^r t^s}{r!},
+    &= \sum_{r=0}^\infty \sum_{s \in S(r)} (\kappa_s - \gamma_s)\frac{i^r t^s}{r!}\\
+    &= \sum_{r=1}^\infty \sum_{s \in S(r)} (\kappa_s - \gamma_s)\frac{i^r t^s}{r!},
 \end{align*}
 where the last equality holds from $\zeta(0) = 1 = \xi(0)$. Exponentiating on both sides of the equation and isolating $\zeta(t)$, we find that
 \begin{equation*}
-    \zeta(t) = \xi(t)\expfc{\sum_{r=1}^\infty \sum_{s \in S(r)} (\kappa_s - \gamma_s)\frac{(-i)^r t^s}{r!}}.
+    \zeta(t) = \xi(t)\expfc{\sum_{r=1}^\infty \sum_{s \in S(r)} (\kappa_s - \gamma_s)\frac{i^r t^s}{r!}}.
 \end{equation*}
 
 Let $\alpha_s = \kappa_s - \gamma_s$, we can then continue by taking a formal expansion of the exponential function to find
 \begin{align*}
     \zeta(t)
-    &= \xi(t)\expfc{\sum_{r=1}^\infty \sum_{s \in S(r)} \alpha_s\frac{(-i)^r t^s}{r!}}\\
-    &= \xi(t)\sum_{j=0}^\infty \frac{1}{j!} \left\{\sum_{r=1}^\infty \sum_{s \in S(r)} \alpha_s\frac{(-i)^r t^s}{r!}\right\}^j \\
+    &= \xi(t)\expfc{\sum_{r=1}^\infty \sum_{s \in S(r)} \alpha_s\frac{i^r t^s}{r!}}\\
+    &= \xi(t)\sum_{j=0}^\infty \frac{1}{j!} \left\{\sum_{r=1}^\infty \sum_{s \in S(r)} \alpha_s\frac{i^r t^s}{r!}\right\}^j \\
     &=
     \sum_{j=0}^\infty \frac{1}{j!} 
     \sum_{\substack{r_1 = 1\\ \ldots \\r_j = 1}}^\infty
     \sum_{\substack{s_1 \in S(r_1)\\ \ldots \\s_j \in S(r_j)}}
     \alpha_{s_1}\ldots\alpha_{s_j}
     \frac{
-        \xi(t) (-i)^{r_1 + \ldots + r_j}
+        \xi(t) i^{r_1 + \ldots + r_j}
         t^{s_1} \ldots t^{s_j}
     }{
         r_1! \ldots r_j!
     }.
 \end{align*}
-One can see that the summation over multiple index sets $s_k$ and index set lengths $r_k$ is redundant, and we can simplify the notation by introduction pseudo-moments $\alpha^*_s$ such that
+We can simplify the notation by replacing the summation over multiple $r_k, s_k$ by a sum over a single pair $r, s$ and grouping together the coefficients of the power $t^s$. To do this, we introduce the pseudo-cumulants $\alpha^*_s$ such that
 \begin{equation*}
     \zeta(t) = 
     \sum_{j=0}^\infty 
     \sum_{s \in S(j)}
-    \alpha^*_s (-1)^j \frac{\xi(t) (-i)^{j} t^{s}}{j!}.
+    \alpha^*_s \frac{\xi(t) i^{j} t^{s}}{j!}.
 \end{equation*}
-By Lemma \ref{lemma-fourier-derivative}, we recognize the Fourier transform of derivatives of the density $q$ of $Q$
+One can deduce that for $s \in S(k)$, the pseudo-cumulant $\alpha^*_s$ is composed of cumulants of order up to $k$. By Lemma \ref{lemma-fourier-derivative}, we recognize the Fourier transform of derivatives of the density $q$ of $Q$
 \begin{equation*}
     \xi(t) (-i)^{j} t^s  = \F \left[ D^s q \right],
 \end{equation*}
@@ -206,21 +222,69 @@ which allows us to retrieve the density of $P$ by Fourier inversion
     \sum_{s \in S(j)}
     \alpha^*_s \frac{(-1)^j D^s q(x)}{j!}.
 \end{equation}
-
 A convenient choice for $Q$ is the multivariate Normal distribution $\mathcal{N}_p(\mu_P, \Sigma_P)$ where $\mu_P$ and $\Sigma_P$ are the first and second moments of $P$. Then, from \ref{ex-cumulants-mvn}, we then have that $\alpha_s = 0$ and so $\alpha^*_s = 0$ for $s \in S(j)$, $j= 1, 2$. Furthermore, we also have that for $s \in S(j), j > 2$, $\alpha_s = \kappa_s$. Using this in (\ref{eq-edge-abstract}) gives
-\begin{align*}
+\begin{align}
     f(x) 
-    &= \sum_{j=0}^\infty  \sum_{s \in S(j)} \alpha^*_s \frac{(-1)^j D^s q(x)}{j!}\\
-    &= \phi(x; \mu_P, \Sigma_P) + \sum_{j=3}^\infty  \sum_{s \in S(j)} \alpha^*_s \frac{(-1)^j D^s q(x)}{j!}\\
+    &= \sum_{j=0}^\infty  \sum_{s \in S(j)} \alpha^*_s \frac{(-1)^j D^s q(x)}{j!} \nonumber \\
+    &= \phi(x; \mu_P, \Sigma_P) + \sum_{j=3}^\infty  \sum_{s \in S(j)} \alpha^*_s \frac{(-1)^j D^s q(x)}{j!} \nonumber \\
     &= \phi(x; \mu_P, \Sigma_P) \left\{
         1 + \sum_{j=3}^\infty  \sum_{s \in S(j)} \frac{1}{j!}\alpha^*_s h_s(x; \mu_P, \Sigma_P)
-    \right\},
-\end{align*} 
-where $h_s(\cdot; \mu_P, \Sigma_P)$ are a mutivariate generalization of the Hermite polynomials
+    \right\}, \label{eq-edgeworth-full}
+\end{align} 
+where $h_s(\cdot; \mu_P, \Sigma_P)$ are a multivariate generalization of the Hermite polynomials
 \begin{equation*}
-    h_s(x; \mu_P, \Sigma_P) = (-1)^j D^s q(x) / q(x).
+    h_s(x; \mu_P, \Sigma_P) = (-1)^j D^s \phi(x; \mu_P, \Sigma_P) / \phi(x; \mu_P, \Sigma_P).
 \end{equation*}
 
+Consider now applying this transformation to the standardized sum $Y = n^{-1/2}\sum_{i=1}^n X_i$ where $X_i \simiid P$. Then for any $s \in S(k)$, using the additivity and homogeneity of cumulants, the $s$-cumulants of $Y$ are given by 
+\begin{equation*}
+    \kappa_s(Y) = n^{1-k/2} \kappa_s(X_1) = o(n^{1-k/2}).
+\end{equation*}
+
+We can form the \textit{Edgeworth series} $e_k(y; \kappa(X))$ by discarding terms of order $o(n^{-k/2})$ in Equation (\ref{eq-edgeworth-full}), giving
+\begin{equation} \label{eq-edgeworth}
+    f_Y(y) = e_k(y; \kappa(X)) + o(n^{-k/2}).
+\end{equation}
+
+While the argument provided above for the definition of the Edgeworth series is not suffenciently rigorous to prove Equation (\ref{eq-edgeworth}), we will later show that the Edgeworth series $e_k(y; \kappa(X))$ indeed approximates the density of a standardized sum with an error of $o(n^{-k/2})$.
+
+\begin{theorem} \label{thm-edgeworth}
+    Let $P$ be a distribution with mean 0 and covariance matrix $\mathbb{1}$. Let $k \in \N_{\geq 2}$ such that all cumulants $\kappa$ of $P$ of order up to $k$ exist. Further assume that the characteristic function $\zeta$ of $P$ is $L^1(\Rp)$.
+    Let $n \in \N$ and $X_1, \ldots, X_n \simiid P$ and $Y$ be the standardized sum
+    \begin{equation*}
+        Y = n^{-1/2}\sum_{i=1}^n X_i,
+    \end{equation*}
+    then the Edgeworth series $e_k(y; \kappa)$ found by only keeping the first $k$ cumulants of $P$ in Equation (\ref{eq-edgeworth-full}) approximates $f_Y$, the density of $Y$, with an error of order $o(n^{1 - k/2})$.
+\end{theorem}
+
+\begin{proof}
+    Let $\xi$ be the Fourier transform of $e_k(\cdot; \kappa)$, then by Corollay \ref{corr-fourier-inv}, we can bound the the absolute difference between $f_Y$ and $e_k(\cdot; \kappa)$ as
+    \begin{equation*}
+        |f_Y(t) - e_k(t; \kappa)| \leq (2\pi)^{-p}\intRp{t}{|\zeta(tn^{-1/2})^n - \xi(t)|},
+    \end{equation*}
+    where $\zeta(tn^{-1/2})^n$ is the characteristic function of $Y$. Since both $\zeta$ and $\xi$ are $L^1(\Rp)$, the integral is well defined and provides a valid upper bound. We proceed by splitting the range of integration in two parts: one parts in which $t$ is small such that Theorem \ref{thm-edge-inv-tech} can be used, and the rest of the integral will be handled separately.
+
+    By construction of the Edgeworth series, the Fourier transform of $e_k(\cdot; \kappa)$ corresponds to the function given in Equation (\ref{eq-edgeworth-fourier}) of Theorem \ref{thm-edge-inv-tech}. Hence, for any $\varepsilon$, there is a $\delta$ such that (\ref{eq-edge-bound}) holds and we can bound the \textit{small $t$} part of the integral as
+    \begin{align*}
+        \int_{B_2(\delta\sqrt{n})} &|\zeta(tn^{-1/2})^n - \xi(t)| \d t\\
+        &\leq (2\pi)^{-p}\int_{B_2(\delta\sqrt{n})}\expf{-\frac{1}{4}\norm{t}_2^2}\left[ \frac{\epsilon\norm{t}_2^k}{n^{k/2-1}} + \frac{C_0^{k-1}\norm{t}_2^{3(k-1)}}{(k-1)!n^{k/2-1/2}} \right] \d t \\
+        &\leq \frac{\epsilon C_1}{n^{k/2-1}}\expec{T}{\norm{T}^k_2} + \frac{C_2^{k-1}}{(k-1)!n^{k/2-1/2}}\expec{T}{\norm{T}_2^{3(k-1)}}
+        = o(n^{1-k/2}),
+    \end{align*}
+    in which $T \sim N(0, 2\mathbb{1}_p)$ and $C_0, C_1, C_2 \in \R$ are constants that do not depend on $n$. 
+
+    For the remaining part of the integral, where $\norm{t}_2 \geq \delta \sqrt{n}$, we bound the integral by the triangle inequality and consider each term separately,
+    \begin{align*}
+        \int_{\Rp \setminus B_2(\delta\sqrt{n})} &|\zeta(tn^{-1/2})^n - \xi(t)| \d t \\
+        &\leq \int_{\Rp \setminus B_2(\delta\sqrt{n})} |\xi(t)| \d t + \int_{\Rp \setminus B_2(\delta\sqrt{n})} |\zeta(tn^{-1/2})^n| \d t\\
+        &= I_1 + I_2.
+    \end{align*}
+    By definition of $\xi$, the integral $I_2$ has an exponential decay, much faster than the $o(n^{1 - k/2})$ we are trying to show. As for the integral $I_1$, using that $|\zeta(t)| < 1$ for $t \neq 0$ and $|\zeta(t)| \rightarrow 0$ for $n \rightarrow \infty$, there exists a $q \in (0, 1)$ such that for $n$ large enough if $\norm{t}_2 \geq \delta\sqrt{n}$ then $|\zeta(tn^{-1/2})| \leq q$. Thus
+    \begin{equation*}
+        I_1 \leq q^{n-1} \int_{\Rp \setminus B_2(\delta\sqrt{n})} |\zeta(tn^{-1/2})| \d t \leq q^{n-1}\intRp{t}{|\zeta(t)|} = o(q^n) = o(n^{1-k/2}),
+    \end{equation*}
+    where we have used that $\zeta \in L^1(\Rp)$. This concludes the proof.
+\end{proof}
 
 \section{Properties of characteristic functions}
 
@@ -261,25 +325,25 @@ Throughout this chapter, we consider a family of multivariate continuous distrib
 \end{proof}
 
 
-\begin{theorem}
-    Let $\zeta_X$ be the characteristic function of a random vector $X \in \Rp$ and let $n \in \N$. Assume that all cumulants of $X$ of order up to $k \in \N$ exist and that the second cumulants of $X$ satisfy $\kappa^{(i, j)} = \delta_{ij}$ for all $i, j = 1, \ldots, p$. Let
-    \begin{equation*}
-        \xi(t) = \expf{-\frac{1}{2}\norm{t}_2^2}\sum_{l=0}^{k-2} \frac{1}{l!} \left[ 1 + \sum_{m=3}^k \sum_{s \in S(m)} \frac{i^m\kappa_s t_{s_1}\ldots t_{s_m}}{n^{m/2-1}m!} \right]^l.
-    \end{equation*}
+\begin{theorem} \label{thm-edge-inv-tech}
+    Let $\zeta$ be the characteristic function of a random vector $X \in \Rp$ and let $n \in \N$. Assume that all cumulants of $X$ of order up to $k \in \N$ exist and that the second cumulants of $X$ satisfy $\kappa^{(i, j)} = \delta_{ij}$ for all $i, j = 1, \ldots, p$. Let
+    \begin{equation} \label{eq-edgeworth-fourier}
+        \xi(t) = \expf{-\frac{1}{2}\norm{t}_2^2}\sum_{l=0}^{k-2} \frac{1}{l!} \left[ 1 + \sum_{m=3}^k \sum_{s \in S(m)} \frac{i^m\kappa_s t^s}{n^{m/2-1}m!} \right]^l.
+    \end{equation}
     Then for every $\epsilon > 0$ there exists a $\delta > 0$ and a constant $C_p$ dependent on the dimension of $X$ such that 
     \begin{equation}\label{eq-edge-bound}
-        \abs{\expf{n\left[\log \zeta_X(t n^{-1/2})\right]} - \xi(t)} \leq \expf{-\frac{1}{4}\norm{t}_2^2}\left[ \frac{\epsilon\norm{t}_2^k}{n^{k/2-1}} + \frac{C_p^{k-1}\norm{t}_2^{3(k-1)}}{(k-1)!n^{k/2-1/2}} \right]
+        \abs{\zeta(t n^{-1/2})^n - \xi(t)} \leq \expf{-\frac{1}{4}\norm{t}_2^2}\left[ \frac{\epsilon\norm{t}_2^k}{n^{k/2-1}} + \frac{C_p^{k-1}\norm{t}_2^{3(k-1)}}{(k-1)!n^{k/2-1/2}} \right]
     \end{equation}
     holds for all $t \in \Rp$ with $\norm{t}_2 < \delta\sqrt{n}$.
 \end{theorem}
 \begin{proof}
-    The idea of this proof is to rewrite the left hand side of the Equation (\ref{eq-edge-bound}) to be able to use Lemma \ref{lemma-series} and find suitable upper bounds on the remaining quantities. To that end, we define $u(t) = n u^*(t n^{-1/2})$ and $v(t) = nv^*(t n^{-1/2})$ where $u^*(t) = \log \zeta_X(t) + \frac{1}{2}\norm{t}_2^2$ and 
+    The idea of this proof is to rewrite the left hand side of the Equation (\ref{eq-edge-bound}) to be able to use Lemma \ref{lemma-series} and find suitable upper bounds on the remaining quantities. To that end, we define $u(t) = n u^*(t n^{-1/2})$ and $v(t) = nv^*(t n^{-1/2})$ where $u^*(t) = \log \zeta(t) + \frac{1}{2}\norm{t}_2^2$ and 
     \begin{equation*}
-        v^*(t) = \sum_{m=3}^k \sum_{s \in S(m)} \frac{i^m\kappa_s t_{s_1}\ldots t_{s_m}}{m!}.
+        v^*(t) = \sum_{m=3}^k \sum_{s \in S(m)} \frac{i^m\kappa_s t^s}{m!}.
     \end{equation*}
     We can then rewrite
     \begin{equation*}
-        \expf{n\left[\log \zeta_X(t n^{-1/2})\right]} = \expf{-\frac{1}{2}\norm{t}_2^2}\exp u(t)
+        \zeta(t n^{-1/2})^n = \expf{n\left[\log \zeta(t n^{-1/2})\right]} = \expf{-\frac{1}{2}\norm{t}_2^2}\exp u(t)
     \end{equation*}
     and
     \begin{equation*}
@@ -287,15 +351,15 @@ Throughout this chapter, we consider a family of multivariate continuous distrib
     \end{equation*}
     By Lemma \ref{lemma-series}, we can bound the left hand side of Equation (\ref{eq-edge-bound}) and have
     \begin{align*}
-        &\abs{\expf{n\left[\log \zeta_X(t n^{-1/2})\right]} - \xi(t)} \\
-        &= \expf{-\frac{1}{2}\norm{t}_2^2}\abs{\exp u(t) - \sum_{l=0}^{k-2} \frac{v(t)^l}{l!}}\\
+        &\abs{\zeta(t n^{-1/2})^n - \xi(t)} 
+        = \expf{-\frac{1}{2}\norm{t}_2^2}\abs{\exp u(t) - \sum_{l=0}^{k-2} \frac{v(t)^l}{l!}}\\
         &\leq \expf{-\frac{1}{2}\norm{t}_2^2} \max \left\{ \exp{|u(t)|}, \exp{|v(t)|} \right\}\left(\abs{u(t) - v(t)} + \frac{|v(t)|^{k-1}}{(k-1)!}\right)
     \end{align*}
     We now continue to find suitable bounds on the resulting quantities. First note that both $u$ and $v$ have continuous derivatives in 0 of order up to $k$. Starting with $u^*$, let $s \in S(m)$ for $3 \leq m < k$, then
     \begin{align*}
-        \ddx{t_{s_1}}\ldots\ddx{t_{s_m}} u^*(t) \bigg|_{t=0}
-        &= \ddx{t_{s_1}}\ldots\ddx{t_{s_m}} \log \zeta_X(t) + \frac{1}{2}\norm{t}_2^2\bigg|_{t=0}\\
-        &=  \ddx{t_{s_1}}\ldots\ddx{t_{s_m}} \log \zeta_X(t)\bigg|_{t=0}
+        D^s u^*(0)
+        &= \ddx{t_{s_1}}\ldots\ddx{t_{s_m}} \log \zeta(t) + \frac{1}{2}\norm{t}_2^2\bigg|_{t=0}\\
+        &=  \ddx{t_{s_1}}\ldots\ddx{t_{s_m}} \log \zeta(t)\bigg|_{t=0}
             +
             \ddx{t_{s_1}}\ldots\ddx{t_{s_m}} \frac{1}{2}\norm{t}_2^2\bigg|_{t=0}
         \\
@@ -332,11 +396,11 @@ Throughout this chapter, we consider a family of multivariate continuous distrib
     \end{equation*}
     where
     \begin{equation*}
-        C_p = \sup_{\substack{\norm{t}_2 \leq \delta, \\ i,j,k \in \{1,\ldots,p\}}} p^3\abs{ \frac{\text{d}^3v^*(t)}{\text{d}t_i\text{d}t_j\text{d}t_k}}.
+        C_p = \sup_{\substack{\norm{t}_2 \leq \delta, \\ s \in S(3)}} p^3\abs{ D^sv^*(t) }.
     \end{equation*}
     Hence, for a $\delta$ small enough and $t \leq \delta\sqrt{n}$ we have
     \begin{align*}
-        &\abs{\expf{n\left[\log \zeta_X(t n^{-1/2})\right]} - \xi(t)} \\
+        &\abs{\zeta(t n^{-1/2})^n - \xi(t)} \\
         &\leq \expf{-\frac{1}{2}\norm{t}_2^2} \max \left\{ \exp{|u(t)|}, \exp{|v(t)|} \right\}\left(\abs{u(t) - v(t)} + \frac{|v(t)|^{k-1}}{(k-1)!}\right)\\
         &\leq \expf{-\frac{1}{2}\norm{t}_2^2}
             \max \left\{ 
@@ -352,4 +416,4 @@ Throughout this chapter, we consider a family of multivariate continuous distrib
     \end{align*}
 \end{proof}
 
-Note that this proof doesn't use the fact that $\zeta_X$ is a characteristic function. Indeed, this theorem can be proven in a more general setting without any changes to the statement of the theorem or the proof itself.
+Note that this proof doesn't use the fact that $\zeta$ is a characteristic function. Indeed, this theorem can be proven in a more general setting without any changes to the statement of the theorem or the proof itself.
