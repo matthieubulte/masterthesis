@@ -72,9 +72,8 @@ function edgeworth_sum(d::CDistribution{T}, nsum, order) where {T}
 
     function density(z)
         κ₁ = sqrt(nsum)*mean
-
         x = (z - κ₁) / sqrt(var)
-        return exp(-x^2/2)/sqrt(2pi) * polynomial(x)
+        return exp(-x^2/2)/sqrt(var*2pi) * polynomial(x)
     end
 
     return density
@@ -157,6 +156,7 @@ function plot_approximations_err(
     real_param;
     saddlepoint=false,
     xlim=nothing,
+    ylim=nothing,
     relative=true,
     kwargs...
     )
@@ -191,6 +191,9 @@ function plot_approximations_err(
 
         plot!(p, q, err, label=L"\textrm{Edgeworth-%$i}", color=:black, linestyle=ls[i-1], kwargs...)
     end
+    if !isnothing(ylim)
+        ylims!(ylim)
+    end
     xlabel!(L"\textrm{y}")
     if relative
         ylabel!(L"\textrm{relative error (log}_{10})")
@@ -201,6 +204,40 @@ function plot_approximations_err(
 end
 
 inkscapegen(s) = println("inkscape code/plots/$(s).svg -o writing/figures/$(s).eps --export-ignore-filters --export-ps-level=3")
+
+plot_empirical(Gamma(2.0, 2), 1, dosqrt=false)[1]
+
+
+nterms=10; α = 2.0; θ = 1;
+p = plot_approximations(nterms, 
+    Gamma(α, θ),
+    (t) -> -α*log(θ)-α*log(1/θ-t),
+    (s) -> -nterms/s,
+    -1.0;
+    real_distrib=Gamma(nterms*α, θ/sqrt(nterms)),
+    saddlepoint=false,
+    xlim=(0.5, 6)
+)
+plot!(p, size=(400,500), legendfontsize=10, legend=:topright)
+
+# Γ(2, 1)
+for nterms = [1; 10]
+    α = 2.0; θ = 1.0;
+    lims = nterms == 1 ? (0, 6) : (2, 10)
+
+    p = plot_approximations(nterms, 
+        Gamma(α, θ),
+        (t) -> -α*log(θ)-α*log(1/θ-t),
+        (s) -> -nterms/s,
+        -1.0;
+        real_distrib=Gamma(nterms*α, θ/sqrt(nterms)),
+        saddlepoint=false,
+        xlim=lims
+    )
+    plot!(p, size=(400,500), legendfontsize=10, legend=:topright)
+    Plots.svg(p, "plots/edgeworth_gamma21_$(nterms)_terms")
+    inkscapegen("edgeworth_gamma21_$(nterms)_terms")
+end
 
 # Γ(1, 1)
 for nterms = [1; 10]
@@ -219,8 +256,9 @@ for nterms = [1; 10]
     inkscapegen("edgeworth_gamma11_$(nterms)_terms")
 end
 
+# Err plots Γ(1, 1)
 for relative=[true; false]
-    nterms = 10; rel= relative ? "rel" : "abs";
+    α = 1.0; θ = 1.0; nterms = 10; rel= relative ? "rel" : "abs";
     p = plot_approximations_err(nterms, 
         Gamma(α, 1/λ),
         Gamma(nterms*α, θ/sqrt(nterms)),
@@ -233,6 +271,23 @@ for relative=[true; false]
     plot!(p, size=(400,500), legendfontsize=10, legend=:topright)
     Plots.svg(p, "plots/edgeworth_err_$(rel)_gamma11_10_terms")
     inkscapegen("edgeworth_err_$(rel)_gamma11_10_terms")
+end
+
+# Err plots Γ(2, 1)
+for relative=[true; false]
+    α = 2.0; θ = 1.0; nterms = 10; rel= relative ? "rel" : "abs";
+    p = plot_approximations_err(nterms, 
+        Gamma(α, 1/λ),
+        Gamma(nterms*α, θ/sqrt(nterms)),
+        (t) -> -α*log(θ)-α*log(1/θ-t),
+        (s) -> -nterms/s,
+        -1.0;
+        relative=relative,
+        xlim=(2, 10)
+    )
+    plot!(p, size=(400,500), legendfontsize=10, legend=:topright)
+    Plots.svg(p, "plots/edgeworth_err_$(rel)_gamma21_10_terms")
+    inkscapegen("edgeworth_err_$(rel)_gamma21_10_terms")
 end
 
 

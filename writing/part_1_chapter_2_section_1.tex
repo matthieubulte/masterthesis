@@ -246,10 +246,10 @@ We can form the \textit{Edgeworth series} $e_k(y; \kappa(X))$ by discarding term
     f_Y(y) = e_k(y; \kappa(X)) + o(n^{-k/2}).
 \end{equation}
 
-While the argument provided above for the definition of the Edgeworth series is not suffenciently rigorous to prove Equation (\ref{eq-edgeworth}), we will later show that the Edgeworth series $e_k(y; \kappa(X))$ indeed approximates the density of a standardized sum with an error of $o(n^{-k/2})$.
+While the argument provided above for the definition of the Edgeworth series is not suffenciently rigorous to prove Equation (\ref{eq-edgeworth}), we now show that the Edgeworth series $e_k(y; \kappa(X))$ indeed approximates the density of a standardized sum with an error of $o(n^{-k/2})$.
 
 \begin{theorem} \label{thm-edgeworth}
-    Let $P$ be a distribution with mean 0 and covariance matrix $\mathbb{1}$. Let $k \in \N_{\geq 2}$ such that all cumulants $\kappa$ of $P$ of order up to $k$ exist. Let $n \in \N$ and $X_1, \ldots, X_n \simiid P$ and $Y$ be the standardized sum
+    Let $P$ be a distribution and $k \in \N_{\geq 2}$ such that all cumulants $\kappa$ of $P$ of order up to $k$ exist. Let $n \in \N$ and $X_1, \ldots, X_n \simiid P$ and $Y$ be the standardized sum
     \begin{equation*}
         Y = n^{-1/2}\sum_{i=1}^n X_i.
     \end{equation*}
@@ -257,7 +257,7 @@ While the argument provided above for the definition of the Edgeworth series is 
 \end{theorem}
 
 \begin{proof}
-    Let $\xi$ be the Fourier transform of $e_k(\cdot; \kappa)$, then by Corollay \ref{corr-fourier-inv}, we can bound the the absolute difference between $f_Y$ and $e_k(\cdot; \kappa)$ as
+    Wthout loss of generality, we assume that $X_i$ has a mean equal to 0 and a covariance matrix equal to the identity. Otherwise, the variables $X_i$ can be standardized to fulfill there conditions via an affine transformation and the density in terms of the original variables can thus be easily retrived. Let $\xi$ be the Fourier transform of $e_k(\cdot; \kappa)$, then by Corollay \ref{corr-fourier-inv}, we can bound the the absolute difference between $f_Y$ and $e_k(\cdot; \kappa)$ as
     \begin{equation*}
         |f_Y(t) - e_k(t; \kappa)| \leq (2\pi)^{-p}\intRp{t}{|\zeta(tn^{-1/2})^n - \xi(t)|},
     \end{equation*}
