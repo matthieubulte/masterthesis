@@ -3,88 +3,47 @@
 using TaylorSeries, SpecialPolynomials, SymPy
 
 include("vendor_extra.jl")
-include("expfam.jl")
-include("distributions.jl")
+include("cgflib.jl")
 
-function H(n)
-#   return basis(ChebyshevHermite, n)
-  return symbols("H$n")
-end
-
-function remove_asympt(expr, term, opower)
-    infty = SymPy.sympy.oo
-    bigo = SymPy.sympy.O(term^opower, (term, infty))
-    return (expr + bigo).removeO()
-end
-
-function edgeworth(d::CDistribution{T}, order) where {T<:Number}
+function edgeworth_coefficients(cgf, order; T=Float64)
     z = Taylor1(T, order)
     poly_exp = exp(z)
     
-    cum_order = order * 3
+    cum_order = order * 2 + 1
     x = Taylor1(T, cum_order)
 
-    poly_D = cumulant_gen_fn(d, x)
+    poly_D = cgf(x)
     poly_N = x^2/2 # this is the cumulant generating function of N(0,1)
         
     # in this polynomial, the powers is taken on the differential operator applied to
     # the normal distribution. this means that we can simply replace the monomials
     # in the expansion by Hermite polynomials
-    expansion = exp(poly_D - poly_N)
-
-    hermites = [ H(i) for i=1:cum_order ]
-    
-    return 1 + sum(hermites .* expansion.coeffs[2:end])
+    exp(poly_D - poly_N).coeffs
 end
 
-
-function edgeworth_sum(d, nterms, order)
-    n = Pos(string("n", abs(rand(Int8)))) # just generate a random symbol
-    symd = convert(Sym, d)
-
-    mean, var = cumulants(symd, 2)
-    scaled_d = AffineTransformed(symd, -mean, 1/sqrt(var*n))
-    std_sum = IIDSum(scaled_d, n)
+function edgeworth_sum(cgf, nsum, order; T=Float64)
+    final_type = promote_rule(T, typeof(nsum))
+    n = Pos(gensym("n"))
     
-    expansion = edgeworth(std_sum, order)
-    expansion = collect(expand(expansion), n)
-    expansion = remove_asympt(expansion, n, -(order + 1)/2)
-    return expansion.subs(n, nterms)
+    mean, var = cumulants(cgf, 2; T=T)
+    sumcgf = affine(cgf, -mean, 1/sqrt(var*n)) |> cgf -> iidsum(cgf, n)
+
+    # compute coefficients of the edgeworth expansion
+    expansion_coeffs = edgeworth_coefficients(sumcgf, order; T=Sym)
+
+    # prepare the coefficients by...
+    preparecoeff = c -> truncate_order(c, n, -(order-1)/2) |> # 1. removing terms of higher order
+                   c -> subs(c, n, nsum) |>                   # 2. substitute back symbolic n with it's value
+                   c -> convert(final_type, c)                # 3. convert coeffs from Sym back to intended type
+    coeffs = preparecoeff.(expansion_coeffs)
+
+    # construct the polynomial based on the hermite basis and computed coefficients
+    polynomial = sum([ coeffs[i] * basis(ChebyshevHermite, i-1)
+                        for i=1:findlast(!iszero, coeffs) ])
+
+    function density(z)
+        κ₁ = sqrt(nsum)*mean
+        x = (z - κ₁) / sqrt(var)
+        return exp(-x^2/2)/sqrt(var*2pi) * polynomial(x)
+    end
 end
-
-
-
-# base distribution
-# d = EFNormal(3)
-d = SymbolicDist(10)
-# d = EFExponential(2)
-order = 2
-nterms = Pos("n")
-
-edgeworth_sum(d, nterms, order)
-
-using Debugger
-Debugger.@enter edgeworth_sum(d, nterms, order)
-
-# ---------------------------------------------------------------
-
-
-# function mean_model(fam::MMExponentialFamily{M}, n_sum_terms)
-#     distrib = to_distribution(fam)
-#     @model function mod()
-#         x ~ filldist(distrib, n_sum_terms)
-#         centered_mean = sum(x) - n_sum_terms * d_mean
-#         y ~ Dirac(centered_mean)
-#     end
-#     return mod()
-# end
-
-# function sample_noparams(model)
-#     chain = sample(model, Prior(), mcmc_samples)
-#     return chain[:y]
-# end
-
-# mcmc_samples = 1_000
-# model = mean_model(EFExponential(1.0), 1000)
-
-# @time density(sample_noparams(model))

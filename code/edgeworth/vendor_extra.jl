@@ -20,3 +20,9 @@ end
 function Pos(s)
     return symbols(s, real=True, positive=True)
 end
+
+function truncate_order(expr, term, opower)
+    infty = SymPy.sympy.oo
+    bigo = SymPy.sympy.O(term^opower, (term, infty))
+    return (expr + bigo).removeO()
+end
