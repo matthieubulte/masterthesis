@@ -249,12 +249,11 @@ We can form the \textit{Edgeworth series} $e_k(y; \kappa(X))$ by discarding term
 While the argument provided above for the definition of the Edgeworth series is not suffenciently rigorous to prove Equation (\ref{eq-edgeworth}), we will later show that the Edgeworth series $e_k(y; \kappa(X))$ indeed approximates the density of a standardized sum with an error of $o(n^{-k/2})$.
 
 \begin{theorem} \label{thm-edgeworth}
-    Let $P$ be a distribution with mean 0 and covariance matrix $\mathbb{1}$. Let $k \in \N_{\geq 2}$ such that all cumulants $\kappa$ of $P$ of order up to $k$ exist. Further assume that the characteristic function $\zeta$ of $P$ is $L^1(\Rp)$.
-    Let $n \in \N$ and $X_1, \ldots, X_n \simiid P$ and $Y$ be the standardized sum
+    Let $P$ be a distribution with mean 0 and covariance matrix $\mathbb{1}$. Let $k \in \N_{\geq 2}$ such that all cumulants $\kappa$ of $P$ of order up to $k$ exist. Let $n \in \N$ and $X_1, \ldots, X_n \simiid P$ and $Y$ be the standardized sum
     \begin{equation*}
-        Y = n^{-1/2}\sum_{i=1}^n X_i,
+        Y = n^{-1/2}\sum_{i=1}^n X_i.
     \end{equation*}
-    then the Edgeworth series $e_k(y; \kappa)$ found by only keeping the first $k$ cumulants of $P$ in Equation (\ref{eq-edgeworth-full}) approximates $f_Y$, the density of $Y$, with an error of order $o(n^{1 - k/2})$.
+    Further assume that the characteristic function $\zeta$ of $P$ is $L^q(\Rp)$ for some $q \in [1, n)$. Then the Edgeworth series $e_k(y; \kappa)$ constructed by only keeping the first $k$ cumulants of $P$ in Equation (\ref{eq-edgeworth-full}) approximates $f_Y$, the density of $Y$, with an error of order $o(n^{1 - k/2})$.
 \end{theorem}
 
 \begin{proof}
@@ -279,11 +278,11 @@ While the argument provided above for the definition of the Edgeworth series is 
         &\leq \int_{\Rp \setminus B_2(\delta\sqrt{n})} |\xi(t)| \d t + \int_{\Rp \setminus B_2(\delta\sqrt{n})} |\zeta(tn^{-1/2})^n| \d t\\
         &= I_1 + I_2.
     \end{align*}
-    By definition of $\xi$, the integral $I_2$ has an exponential decay, much faster than the $o(n^{1 - k/2})$ we are trying to show. As for the integral $I_1$, using that $|\zeta(t)| < 1$ for $t \neq 0$ and $|\zeta(t)| \rightarrow 0$ for $n \rightarrow \infty$, there exists a $q \in (0, 1)$ such that for $n$ large enough if $\norm{t}_2 \geq \delta\sqrt{n}$ then $|\zeta(tn^{-1/2})| \leq q$. Thus
+    By definition of $\xi$, the integral $I_1$ has an exponential decay, much faster than the $o(n^{1 - k/2})$ we are trying to show. As for the integral $I_2$, using that $|\zeta(t)| < 1$ for $t \neq 0$ and $|\zeta(t)| \rightarrow 0$ for $n \rightarrow \infty$, there exists a $a \in (0, 1)$ such that for $n$ large enough if $\norm{t}_2 \geq \delta\sqrt{n}$ then $|\zeta(tn^{-1/2})| \leq a$. Thus
     \begin{equation*}
-        I_1 \leq q^{n-1} \int_{\Rp \setminus B_2(\delta\sqrt{n})} |\zeta(tn^{-1/2})| \d t \leq q^{n-1}\intRp{t}{|\zeta(t)|} = o(q^n) = o(n^{1-k/2}),
+        I_1 \leq a^{n-q} \int_{\Rp \setminus B_2(\delta\sqrt{n})} |\zeta(tn^{-1/2})|^q \d t \leq a^{n-q}\sqrt{n}\intRp{t}{|\zeta(t)|^q} = o(\sqrt{n}a^n) = o(n^{1-k/2}),
     \end{equation*}
-    where we have used that $\zeta \in L^1(\Rp)$. This concludes the proof.
+    where we have used that $\zeta \in L^q(\Rp)$ for some $q \in [1, n)$. This concludes the proof.
 \end{proof}
 
 \section{Properties of characteristic functions}

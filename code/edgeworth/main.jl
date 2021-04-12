@@ -1,6 +1,6 @@
 # ---------------------------------------------------------------
 
-using TaylorSeries, SpecialPolynomials, SymPy, Distributions, Plots, ReverseDiff
+using TaylorSeries, SpecialPolynomials, SymPy, Distributions, Plots, ReverseDiff, LaTeXStrings
 
 include("edgeworth/vendor_extra.jl")
 include("edgeworth/distributions.jl")
@@ -93,8 +93,12 @@ function saddlepoint_expfam(K, compθ̂, θ, nsum)
 end
 
 
-function plot_empirical(d, nterms)
+function plot_empirical(d, nterms; dosqrt=false)
     sample = sample_sum(d, nterms, 100_000);
+    if dosqrt
+        sample ./= sqrt(nterms)
+    end
+
     p = histogram(sample, normalize=true, color="grey", alpha=0.3, label="Empirical")
     q = LinRange(minimum(sample), maximum(sample), 1000);
     p, q
@@ -105,22 +109,42 @@ function plot_approximations(
     distrib,
     cgf,
     mle,
-    real_param
+    real_param;
+    real_distrib=nothing,
+    saddlepoint=false,
+    xlim=nothing
     )
 
-    f = saddlepoint_expfam(cgf, mle, real_param, nterms)    
     d = FromCGF{Float64}(cgf)
-    p, q = plot_empirical(distrib, nterms)
-    plot!(p, q, f.(q), label="Saddlepoint")
+    if isnothing(real_distrib)
+        p, q = plot_empirical(distrib, nterms; dosqrt=true)
+    else
+        if !isnothing(xlim)
+            q = LinRange(xlim[1], xlim[2], 1000)
+        else
+            _, q = plot_empirical(distrib, nterms; dosqrt=true)
+        end
+        p = plot(q, pdf(real_distrib, q), label=L"\textrm{Truth}; n \textbf{=} %$nterms", color=:black)
+    end
+
+    if saddlepoint
+        f = saddlepoint_expfam(cgf, mle, real_param, nterms)    
+        plot!(p, q, f.(q), label="Saddlepoint")
+    end
+    
+    ls = [:dash, :dot, :dashdot]
     for i=2:4
         e = edgeworth_sum(d, nterms, i)
         # e is the density of X = sum(Y) / sqrt(n)
         # so if we want to evaluate the density of Z = sum(Y)/n = X/sqrt(n)
         # we have se(z) = |dz/dx|e(x(z)) = e(sqrt(n)*z)/sqrt(n)
         # note here that s = sum(Y),  so x(z) = x(z(s)) = s/sqrt(n)
-        se(s) = e(s/sqrt(nterms))/sqrt(nterms)
-        plot!(p, q, se.(q), label="Edgeworth-$i")
+        # se(s) = e(s/sqrt(nterms))/sqrt(nterms)
+        se(s) = e(s)
+        plot!(p, q, se.(q), label=L"\textrm{Edgeworth-%$i}", color=:black, linestyle=ls[i-1])
     end
+    xlabel!(L"\textrm{y}")
+    ylabel!(L"\textrm{f(y)}")
     p
 end
 
@@ -130,43 +154,87 @@ function plot_approximations_err(
     true_distrib,
     cgf,
     mle,
-    real_param
+    real_param;
+    saddlepoint=false,
+    xlim=nothing,
+    relative=true,
+    kwargs...
     )
 
-    f = saddlepoint_expfam(cgf, mle, real_param, nterms)    
     d = FromCGF{Float64}(cgf)
-
-    sample = sample_sum(distrib, nterms, 100_000);
-    q = LinRange(minimum(sample), maximum(sample), 1000)
+    if isnothing(xlim)
+        sample = sample_sum(distrib, nterms, 100_000) ./ sqrt(nterms);
+        q = LinRange(minimum(sample), maximum(sample), 1000)
+    else
+        q = LinRange(xlim[1], xlim[2], 1000)
+    end
     tp = pdf(true_distrib, q)
 
-    p = plot(q, log10.(abs.(tp - f.(q)) ./ tp), label="Saddlepoint Err / True")
+    if saddlepoint
+        f = saddlepoint_expfam(cgf, mle, real_param, nterms)    
+        p = plot(q, log10.(abs.(tp - f.(q)) ./ tp), label="Saddlepoint Err / True")
+    else
+        p = plot()
+    end
+
+    ls = [:dash, :dot, :dashdot]
     for i=2:4
         e = edgeworth_sum(d, nterms, i)
-        se(s) = e(s/sqrt(nterms))/sqrt(nterms)
-        plot!(p, q, log10.(abs.(tp - se.(q)) ./ tp), label="Edgeworth-$i Err / True")
+        # se(s) = e(s/sqrt(nterms))/sqrt(nterms)
+        se = e
+
+        if relative
+            err = log10.(abs.(tp - se.(q)) ./ tp)
+        else
+            err = abs.(tp - se.(q))
+        end
+
+        plot!(p, q, err, label=L"\textrm{Edgeworth-%$i}", color=:black, linestyle=ls[i-1], kwargs...)
+    end
+    xlabel!(L"\textrm{y}")
+    if relative
+        ylabel!(L"\textrm{relative error (log}_{10})")
+    else
+        ylabel!(L"\textrm{absolute error}")
     end
     p
 end
 
-
-nterms = 10
+inkscapegen(s) = println("inkscape code/plots/$(s).svg -o writing/figures/$(s).eps --export-ignore-filters --export-ps-level=3")
 
 # Γ(1, 1)
-plot_approximations(nterms, 
-    Gamma(1, 1),
-    (t) -> -log(1-t),
-    (s) -> -nterms/s,
-    -1.0
-)
+for nterms = [1; 10]
+    α = 1.0; θ = 1.0;
+    p = plot_approximations(nterms, 
+        Gamma(α, θ),
+        (t) -> -α*log(θ)-α*log(1/θ-t),
+        (s) -> -nterms/s,
+        -1.0;
+        real_distrib=Gamma(nterms*α, θ/sqrt(nterms)),
+        saddlepoint=false,
+        xlim=(0, 6)
+    )
+    plot!(p, size=(400,500), legendfontsize=10, legend=:topright)
+    Plots.svg(p, "plots/edgeworth_gamma11_$(nterms)_terms")
+    inkscapegen("edgeworth_gamma11_$(nterms)_terms")
+end
 
-plot_approximations_err(nterms, 
-    Gamma(1, 1),
-    Gamma(nterms, 1),
-    (t) -> -log(1-t),
-    (s) -> -nterms/s,
-    -1.0
-)
+for relative=[true; false]
+    nterms = 10; rel= relative ? "rel" : "abs";
+    p = plot_approximations_err(nterms, 
+        Gamma(α, 1/λ),
+        Gamma(nterms*α, θ/sqrt(nterms)),
+        (t) -> -α*log(θ)-α*log(1/θ-t),
+        (s) -> -nterms/s,
+        -1.0;
+        relative=relative,
+        xlim=(0,6)
+    )
+    plot!(p, size=(400,500), legendfontsize=10, legend=:topright)
+    Plots.svg(p, "plots/edgeworth_err_$(rel)_gamma11_10_terms")
+    inkscapegen("edgeworth_err_$(rel)_gamma11_10_terms")
+end
+
 
 # N(μ, 1)
 μ = 1
