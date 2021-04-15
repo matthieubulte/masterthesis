@@ -1,0 +1,13 @@
+We now introduce another approach based on the Edgeworth series to create accurate density approximations that avoids some of the issues of the Edgeworth series that we have demonstrated in the previous section.
+
+We now introduce the idea of \textit{exponential tilting}. Consider a random random variable $X \sim \Rp$ with cumulant generative function $K$ and density $f$. We introduce the exponential family $\mathcal{T}_P = \{ P_\gamma \}_{\gamma \in \Rp}$ where each $P_\gamma \in \mathcal{T}_P$ is characterized by its density function $f_\gamma$ given by
+\begin{equation*}
+    f_\gamma(x) = f(x)\expf{\gamma^\top x - K(\gamma)}.
+\end{equation*}
+Note that by the definition of the cumulant generating function, $K(\gamma)$ is the right normalization factor for $f_\gamma$ and hence $f_\gamma$ integrates to 1 and is a valid density function. Furthermore, the original distribution $P$ is an element of $\mathcal{T}_P$ with $P = P_0$. Given two distributions in $\mathcal{T}_P$, their densities only differ by the ratio of $\expf{\gamma^\top x - K(\gamma)}$. Since the following holds for any $\gamma \in \Rp$
+\begin{equation}
+    f(x) = f_\gamma(x)\expf{K(\gamma) - \gamma^\top x},
+\end{equation}
+we can construct an approximation of $f$ by choosing $\gamma$ such that $f_\gamma$ can be accurately approximated.
+
+Let us now consider a distribution $P$ with cumulant generating function $K$. For $X_1, \ldots X_n \simiid P$ we define the mean $\bar X = n^{-1}\sum_{i=1}^n X_i$ and whish to use the previous argumentation to construct an approximation to the distribution of $\bar X$. With $\bar f$ and $n K(\cdot / n)$ being the density and cumulant generating function of $\bar X$, 

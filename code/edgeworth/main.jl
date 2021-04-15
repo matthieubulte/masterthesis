@@ -209,3 +209,19 @@ for relative=[true; false]
     Plots.svg(p, "plots/edgeworth_err_$(rel)_gamma21_10_terms")
     inkscapegen("edgeworth_err_$(rel)_gamma21_10_terms")
 end
+
+
+
+
+using Symbolics, SymbolicUtils, LinearAlgebra
+
+@variables x[1:10]
+
+e = exp(-x'x)
+
+Dx = Differential.(x)
+
+substitute(
+    expand_derivatives((Dx[2] ∘ Dx[1])(e))    
+, Dict([ x[i] => 0 for i=1:10]))
+

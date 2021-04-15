@@ -8,6 +8,8 @@
     We show several example of the behaviour of the Edgeworth approximation under different conditions in Figure \ref{fig-edgeworth}. In the upper pane of Figure \ref{fig-edgeworth}, we compare the Edgeworth approximation of order $k=2, 3, 4$ to the true density of a standardized sum of $n=1$ and $n=10$ random variables with a $\Gamma(p, 1)$ distribution for $p=1,2$. For $p=1$, the $\Gamma(p, 1)$ is an exponential distribution. For $n = 1$, the discontinuity a $y = 0$ of the exponential distribution results in high oscillations of the Edgeworth series as demonstrated in Figure \ref{fig-single-gamma11} which even leads to negative values of the density approximation. Increasing to $p = 2$, we can see in Figure \ref{fig-single-gamma21} that the approximation is better behaved but unsurprisingly still does not approximate the $\Gamma(2, 1)$ distribution well. For both $p=1$ and $p=2$, increasing the number of terms summed to $n = 10$ results in seemingly good approximations to the density of the standardized sum as shown in Figures \ref{fig-10-gamma11} and \ref{fig-10-gamma21}.
 
     While Figure \ref{fig-edgeworth} seem to visually show good results of the approximation of the Edgeworth series, it is hard to assess the quality of the approximations in regions of low probability. We display in Figure \ref{fig-edgeworth-err} the error of the Edgeworth series of orders $k=2,3,4$ in approximating a standardized sum of $n=10$ $\Gamma(p, 1)$ variables for $p=1$ and $p=2$. The upper pane demonstrates the control of the absolute approximation error studied in Theorem \ref{thm-edgeworth}. However, the lower panel of Figure \ref{fig-edgeworth-err} shows that the relative error can still reach very high values even as the order of the approximation increases. This is explained by the fact that even if the relative error is controlled, it might still be big relative to the true density in low probability regions.
+    
+    In many settings, one is interested in using distribution approximations to compute p-values in statistical tests. In this setting, one is trying to find statistical evidence against a null hypotheses by demonstrating a low p-value of the null hypothesis model. Hence, the Edgeworth series itself can be ill suited for direct applications. However, as we will see in the next section, the Edgeworth series and approximation results around it can still be used to construct approximations that are usable in such settings.
 
     \begin{figure}[h]
         \textbf{Density approximation of $\Gamma(p,1)$ standardized sums}
@@ -49,6 +51,6 @@
         \label{fig-edgeworth-err}
     \end{figure}
 
-    
+
     
 \end{example}

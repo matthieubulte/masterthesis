@@ -173,7 +173,7 @@ This theorem lets us extend the notation introduced in Equation (\ref{eq-fourier
         D^s \log \zeta(0) = i^k \kappa_s.
     \end{equation*}
 \end{remark}
-We now present a heuristic development of the idea behind the Edgeworth expansion. Consider two distributions $P$ and $Q$ over $\Rp$ with densities $f$ and $q$, characteristic functions $\zeta$ and $\xi$, and cumulants $\kappa_s$ and $\gamma_s$ for $s \in S(k)$, $k \in \N$. We wish to utilize the cumulants of both distribution to construct an approximation of $P$.
+We now present a heuristic development of the idea behind the Edgeworth expansion. Consider two distributions $P$ and $Q$ over $\Rp$ with densities $f$ and $q$, characteristic functions $\zeta$ and $\xi$, and cumulants $\kappa_s$ and $\gamma_s$ for $s \in S(k)$, $k \in \N$. Assume that $P$ has a mean equal to $0$ and a covariance matrix equal to $\mathbb{1}_p$. We wish to utilize the cumulants of both distribution to construct an approximation of $P$.
 
 By formal expansion of the difference between the cumulant generating functions of $P$ and $Q$ around 0, we obtain for any $t \in \Rp$
 \begin{align*}
@@ -186,7 +186,7 @@ where the last equality holds from $\zeta(0) = 1 = \xi(0)$. Exponentiating on bo
 \begin{equation*}
     \zeta(t) = \xi(t)\expfc{\sum_{r=1}^\infty \sum_{s \in S(r)} (\kappa_s - \gamma_s)\frac{i^r t^s}{r!}}.
 \end{equation*}
-
+\
 Let $\alpha_s = \kappa_s - \gamma_s$, we can then continue by taking a formal expansion of the exponential function to find
 \begin{align*}
     \zeta(t)
@@ -222,31 +222,38 @@ which allows us to retrieve the density of $P$ by Fourier inversion
     \sum_{s \in S(j)}
     \alpha^*_s \frac{(-1)^j D^s q(x)}{j!}.
 \end{equation}
-A convenient choice for $Q$ is the multivariate Normal distribution $\mathcal{N}_p(\mu_P, \Sigma_P)$ where $\mu_P$ and $\Sigma_P$ are the first and second moments of $P$. Then, from \ref{ex-cumulants-mvn}, we then have that $\alpha_s = 0$ and so $\alpha^*_s = 0$ for $s \in S(j)$, $j= 1, 2$. Furthermore, we also have that for $s \in S(j), j > 2$, $\alpha_s = \kappa_s$. Using this in (\ref{eq-edge-abstract}) gives
+A convenient choice for $Q$ is the multivariate Normal distribution $\mathcal{N}_p(0, \mathbb{1}_p)$. Then, from \ref{ex-cumulants-mvn}, we then have that $\alpha_s = 0$ and so $\alpha^*_s = 0$ for $s \in S(j)$, $j= 1, 2$. Furthermore, we also have that for $s \in S(j), j > 2$, $\alpha_s = \kappa_s$. Using this in (\ref{eq-edge-abstract}) gives
 \begin{align}
     f(x) 
     &= \sum_{j=0}^\infty  \sum_{s \in S(j)} \alpha^*_s \frac{(-1)^j D^s q(x)}{j!} \nonumber \\
-    &= \phi(x; \mu_P, \Sigma_P) + \sum_{j=3}^\infty  \sum_{s \in S(j)} \alpha^*_s \frac{(-1)^j D^s q(x)}{j!} \nonumber \\
-    &= \phi(x; \mu_P, \Sigma_P) \left\{
+    &= \phi(x) + \sum_{j=3}^\infty  \sum_{s \in S(j)} \alpha^*_s \frac{(-1)^j D^s q(x)}{j!} \nonumber \\
+    &= \phi(x) \left\{
         1 + \sum_{j=3}^\infty  \sum_{s \in S(j)} \frac{1}{j!}\alpha^*_s h_s(x; \mu_P, \Sigma_P)
     \right\}, \label{eq-edgeworth-full}
 \end{align} 
-where $h_s(\cdot; \mu_P, \Sigma_P)$ are a multivariate generalization of the Hermite polynomials
+where $h_s(\cdot)$ are a multivariate generalization of the Hermite polynomials
 \begin{equation*}
-    h_s(x; \mu_P, \Sigma_P) = (-1)^j D^s \phi(x; \mu_P, \Sigma_P) / \phi(x; \mu_P, \Sigma_P).
+    h_s(x) = (-1)^j \frac{D^s \phi(x)}{\phi(x)}.
 \end{equation*}
-
+\
 Consider now applying this transformation to the standardized sum $Y = n^{-1/2}\sum_{i=1}^n X_i$ where $X_i \simiid P$. Then for any $s \in S(k)$, using the additivity and homogeneity of cumulants, the $s$-cumulants of $Y$ are given by 
 \begin{equation*}
     \kappa_s(Y) = n^{1-k/2} \kappa_s(X_1) = o(n^{1-k/2}).
 \end{equation*}
-
-We can form the \textit{Edgeworth series} $e_k(y; \kappa(X))$ by discarding terms of order $o(n^{-k/2})$ in Equation (\ref{eq-edgeworth-full}), giving
+\
+We can form the \textit{Edgeworth series} $e_k(y; \kappa(X))$ by discarding terms of order $o(n^{1-k/2})$ in Equation (\ref{eq-edgeworth-full}), giving
 \begin{equation} \label{eq-edgeworth}
-    f_Y(y) = e_k(y; \kappa(X)) + o(n^{-k/2}).
+    f_Y(y) = e_k(y; \kappa(X)) + o(n^{1-k/2}).
 \end{equation}
+\
+While the argument provided above for the definition of the Edgeworth series is not suffenciently rigorous to prove Equation (\ref{eq-edgeworth}), we now show that the Edgeworth series $e_k(y; \kappa(X))$ indeed approximates the density of a standardized sum with an error of $o(n^{1-k/2})$.
 
-While the argument provided above for the definition of the Edgeworth series is not suffenciently rigorous to prove Equation (\ref{eq-edgeworth}), we now show that the Edgeworth series $e_k(y; \kappa(X))$ indeed approximates the density of a standardized sum with an error of $o(n^{-k/2})$.
+\begin{remark} \label{rem-centering}
+    The initial assumption of having a mean of 0 and covariance matrix equal to the identity is not a restriction of the approach. Indeed, if $X$ has a mean $\mu$ and covariance matrix $\Sigma$, the Edgeworth series $e_k^Z$ can be constructed for the random variable $Z = \Sigma^{-1/2}(X - \mu)$ and used to construct an approximation $e^X_k$ of the density of $X$ via
+    \begin{equation*}
+        e^X_k(x; \kappa) = \abs{\Sigma}^{-1/2} e_k^Z(\Sigma^{-1/2}(x - \mu)).
+    \end{equation*}
+\end{remark}
 
 \begin{theorem} \label{thm-edgeworth}
     Let $P$ be a distribution and $k \in \N_{\geq 2}$ such that all cumulants $\kappa$ of $P$ of order up to $k$ exist. Let $n \in \N$ and $X_1, \ldots, X_n \simiid P$ and $Y$ be the standardized sum
@@ -257,7 +264,7 @@ While the argument provided above for the definition of the Edgeworth series is 
 \end{theorem}
 
 \begin{proof}
-    Wthout loss of generality, we assume that $X_i$ has a mean equal to 0 and a covariance matrix equal to the identity. Otherwise, the variables $X_i$ can be standardized to fulfill there conditions via an affine transformation and the density in terms of the original variables can thus be easily retrived. Let $\xi$ be the Fourier transform of $e_k(\cdot; \kappa)$, then by Corollay \ref{corr-fourier-inv}, we can bound the the absolute difference between $f_Y$ and $e_k(\cdot; \kappa)$ as
+    Wthout loss of generality, we assume that $X_i$ has a mean equal to 0 and a covariance matrix equal to the identity, see Remark \ref{rem-centering}. Let $\xi$ be the Fourier transform of $e_k(\cdot; \kappa)$, then by Corollay \ref{corr-fourier-inv}, we can bound the the absolute difference between $f_Y$ and $e_k(\cdot; \kappa)$ as
     \begin{equation*}
         |f_Y(t) - e_k(t; \kappa)| \leq (2\pi)^{-p}\intRp{t}{|\zeta(tn^{-1/2})^n - \xi(t)|},
     \end{equation*}
@@ -284,6 +291,8 @@ While the argument provided above for the definition of the Edgeworth series is 
     \end{equation*}
     where we have used that $\zeta \in L^q(\Rp)$ for some $q \in [1, n)$. This concludes the proof.
 \end{proof}
+
+
 
 \section{Properties of characteristic functions}
 
