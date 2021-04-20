@@ -1,3 +1,4 @@
+using Combinatorics
 include("vendor_extra.jl")
 
 function cumulants(cgf, order; T=Number)
@@ -10,14 +11,35 @@ end
 iidsum(cgf, n) = (t) -> n * cgf(t)
 affine(cgf, loc, scale) = (t) -> cgf(t * scale) + t * loc * scale
 
+daffine(d, loc, scale) = (x) -> d((x-loc)*scale)*scale
+dscale(d, scale) = daffine(d, 0, scale)
+
 gamma(α, θ) = (t) -> -α*log(θ)-α*log(1/θ-t)
+_uniform = (t) -> t == 0 ? 1 : log((exp(t/2) - exp(-t/2))/t)
+uniform(a, b) = affine(_uniform, 0.5, b - a)
+
 sym(order) = let 
-    syms = symbols(join(["κ$i" for i=1:order], " "))
     function(t)
-        o = 0; f = 1;
+        o = zero(t); f = one(t);
         for i=1:order
-          f *= i
-          o += symbols("κ$i") * t^i / f
+            f *= i
+            o += symbols("κ$i") * t^i / f
+        end
+        o
+    end
+end
+
+symmv(dim, order) = let 
+    function(t; T=eltype(t))
+        o = zero(T);
+        for i=1:order
+            for s=combinations(1:dim, i)
+                oo = one(T)
+                for j=1:i
+                    oo *= symbols("k$(s[j])", real=true) * t[s[j]]
+                end
+                o += oo
+            end
         end
         o
     end

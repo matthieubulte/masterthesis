@@ -5,9 +5,63 @@ We now introduce the idea of \textit{exponential tilting}. Consider a random ran
     f_\gamma(x) = f(x)\expf{\gamma^\top x - K(\gamma)}.
 \end{equation*}
 Note that by the definition of the cumulant generating function, $K(\gamma)$ is the right normalization factor for $f_\gamma$ and hence $f_\gamma$ integrates to 1 and is a valid density function. Furthermore, the original distribution $P$ is an element of $\mathcal{T}_P$ with $P = P_0$. Given two distributions in $\mathcal{T}_P$, their densities only differ by the ratio of $\expf{\gamma^\top x - K(\gamma)}$. Since the following holds for any $\gamma \in \Rp$
-\begin{equation}
+\begin{equation} \label{eq-saddlepoint-original}
     f(x) = f_\gamma(x)\expf{K(\gamma) - \gamma^\top x},
 \end{equation}
 we can construct an approximation of $f$ by choosing $\gamma$ such that $f_\gamma$ can be accurately approximated.
 
-Let us now consider a distribution $P$ with cumulant generating function $K$. For $X_1, \ldots X_n \simiid P$ we define the mean $\bar X = n^{-1}\sum_{i=1}^n X_i$ and whish to use the previous argumentation to construct an approximation to the distribution of $\bar X$. With $\bar f$ and $n K(\cdot / n)$ being the density and cumulant generating function of $\bar X$, 
+Let us now consider a distribution $P$ with cumulant generating function $K$. We wish to use the previous argumentation to approximate the density $f$ of the mean $S$ of $n$ i.i.d.\,random variables distributed according to $P$. The cumulant generating function of $S$ in Equation (\ref{eq-saddlepoint-original}), we get
+\begin{equation*}
+    f(s) = f_\gamma(s)\expf{nK(\gamma / n) - \gamma^\top s}.
+\end{equation*}
+We can now get back to the question of the choice of $\gamma$. We are interested in choosing $\gamma$ such that the Edgeworth approximation of $\bar f_\gamma(x)$ is accurate. As seen in Remark \ref{rem-edge-mean}, the second order Edgeworth approximation of odd order gains half an order of accuracy when evaluated at the mean of the distribution. Since $\gamma$ can be chosen freely and differently for each value $s$ at which the density $f(s)$ is evaluated, we can choose $\gamma$ such that $s$ is the mean of the distribution $P_\gamma$. Given $\gamma \in \Rp$, the cumulant generating function of $P_\gamma$ is equal to
+\begin{equation*}
+    K_\gamma(t) = n\left[K((\gamma + t)/n) - K(\gamma/n)\right].
+\end{equation*}
+One sees that derivatives of the cumulant generating function $K_\gamma$ can be expressed in terms of the cumulant generating function $K$ by
+\begin{equation} \label{eq-deriv-Kgamma}
+    K_\gamma^s(t) = n^{1 - k} K((\gamma + t) / n),
+\end{equation}
+for any $s \in S(k)$. Thus, using a well-known property of exponential families, the expectated value of the distribution $P_\gamma$ can be expressed in terms of the gradient of the cumulant generating function of $X$,
+\begin{equation*}
+    \expec{S \sim P_\gamma}{S} = K'(\gamma / n).
+\end{equation*}
+For any $s \in \Rp$, we can now find a distribution $P_{\hat\gamma_s} \in \mathcal{T}_P$ with mean $s$ by solving
+\begin{equation} \label{eq-gamma}
+    K'(\hat\gamma_s / n) = s.
+\end{equation}
+We choose to call the solution of this equation $\hat\gamma_s$ to emphasize the fact that instead of choosing one unique $\gamma$ and then construct an approximation of the density of $P_\gamma$ over $\Rp$, we find a different $\hat\gamma_s$ at each $s \in \Rp$ such that the Edgeworth approximation of the density of $P_{\hat\gamma_s}$ is accurate in $s$. Note that if $\hat\gamma_s$ solves (\ref{eq-gamma}), it is also the maximum likelihood estimator of $\gamma$ within the model $\mathcal{T}_P$. We can then construct the Edgeworth approximation $e_k(s; \kappa(\hat\gamma_s))$ to the density $f_{\hat\gamma_s}$ with
+\begin{equation*}
+    f_{\hat\gamma_s}(s) = e_k(s; \kappa(\hat\gamma_s)) + o(n^{1-k/2}).
+\end{equation*}
+Replacing this in the expression of $f$ in terms of $f_{\hat\gamma_s}$ gives
+\begin{align}
+    f(s) &= \expf{nK(\hat\gamma_s / n) - \hat\gamma_s^\top s}\left[e_k(s; \kappa(\hat\gamma_s)) + o(n^{1-k/2})\right]\nonumber\\
+    &= g_k(s; K)\left[1 + o(n^{1-k/2})\right]. \label{eq-saddle-exp}
+\end{align}
+We call $g_k(s; K)$ the \textit{Saddlepoint approximation} of order $k$. A special case of particular interest is the first order Saddlepoint approximation. In this case, the Edgeworth approximation of $P_{\hat\gamma_s}$ is equal to its normal approximation and is given by
+\begin{equation*}
+    e_3(s; \kappa(\hat\gamma_s)) = (2\pi)^{-p/2}|\Sigma_{\hat\gamma_s}|^{-1/2}\expf{-\frac{1}{2}(s - \mu_{\hat\gamma_s})^\top \Sigma_{\hat\gamma_s}^{-1/2}(s - \mu_{\hat\gamma_s}) },
+\end{equation*}
+where $\mu_{\hat\gamma_s}$ and $\Sigma_{\hat\gamma_s}$ are the mean and covariance of $P_{\hat\gamma_s}$. By the choice of $\hat\gamma_s$, we have that $\mu_{\hat\gamma_s} = s$ and hence the term in the exponential is equal to zero. Furthermore, the covariance matrix $\Sigma_{\hat\gamma_s}$ is equal to $K_{\hat\gamma_s}''(\hat\gamma_s)$, the Hessian of $K_{\hat\gamma_s}$ evaluated at $\hat\gamma_s$. From Equation (\ref{eq-deriv-Kgamma}), $K''_{\hat\gamma_s}(\hat\gamma_s) = n^{-1} K''(\hat\gamma_s/n)$ and we get 
+\begin{equation*}
+    g_3(s; K) = \sqrt{n} (2\pi)^{-p/2}|K''(\hat\gamma_s/n)|^{-1/2} \expf{nK(\hat\gamma_s / n) - \hat\gamma_s^\top s}.
+\end{equation*}
+In this case, we see that the Saddlepoint approximation is always positive, and by Remark \ref{rem-hermite-odd} and the choice of $\hat\gamma_s$, it has a relative error of $o(n^{-1})$. The construction of the Saddlepoint approximation easily leads to the following theorem.
+
+\begin{theorem}
+    Let $P$ be a distribution with cumulant genrating function $K$ and $k \in \N_{\geq 2}$ such that all cumulants of $P$ of order up to $k$ exist. Suppose that $K$ is defined in an open neighborhood $U$ of 0 and that for every $s \in \Rp$, Equation (\ref{eq-gamma}) has a unique solution $\hat\gamma_s \in U$. 
+
+    Let $n \in \N$ and $X_1, \ldots, X_n \simiid P$ and $S$ be the mean
+    \begin{equation*}
+        S = n^{-1} \sum_{i=1}^n X_i.
+    \end{equation*}
+
+    Then the Saddlepoint approximation $g_k(\cdot; K)$ given in Equation (\ref{eq-saddle-exp}) approximates $f_S$, the density of $S$, with an relative error of order $o(n^{1-\ceil{k/2}})$.
+\end{theorem}
+
+While the Saddlepoint approximation shows many advantages over the Edgeworth approximation, it is important to note that the Saddlepoint approximation uses information from the complete cumulant generating function of the approximated density. The Edgeworth approximation on the other hand only uses the first $k$ moments of the distributions, which are evaluations of derivatives of the cumulant generating function in 0. 
+
+\begin{example}
+
+\end{example}

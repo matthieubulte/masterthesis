@@ -142,7 +142,7 @@ This theorem lets us extend the notation introduced in Equation (\ref{eq-fourier
     It is then clear that all cumulants of $X$ exist, where first order cumulants are the components $\mu$, second order cumulants are the components of $\Sigma$, and cumulants of higher order are 0.
 \end{example}
 
-\begin{lemma}
+\begin{lemma} \label{lem-cumulants-props}
     Let $X_1, \ldots, X_n \simiid P$, then the following holds for any $s \in S(k)$
     \begin{itemize}
         \item {
@@ -150,6 +150,13 @@ This theorem lets us extend the notation introduced in Equation (\ref{eq-fourier
         }
         \item {
             For all $c \in \R$, $\kappa_s(c X_1) = c^k\kappa_s(X_1)$
+        }
+        \item {
+            For all $c \in \Rp$, $\kappa_s(X_1 + c) =
+            \begin{cases}
+                \kappa_s(X_1) + c_i, &\text{if}\ s=(i)\\
+                \kappa_s(X_1),& \text{otherwise}
+            \end{cases}$
         }
     \end{itemize}
 \end{lemma}
@@ -173,28 +180,28 @@ This theorem lets us extend the notation introduced in Equation (\ref{eq-fourier
         D^s \log \zeta(0) = i^k \kappa_s.
     \end{equation*}
 \end{remark}
-We now present a heuristic development of the idea behind the Edgeworth expansion. Consider two distributions $P$ and $Q$ over $\Rp$ with densities $f$ and $q$, characteristic functions $\zeta$ and $\xi$, and cumulants $\kappa_s$ and $\gamma_s$ for $s \in S(k)$, $k \in \N$. Assume that $P$ has a mean equal to $0$ and a covariance matrix equal to $\mathbb{1}_p$. We wish to utilize the cumulants of both distribution to construct an approximation of $P$.
+We now present a heuristic development of the idea behind the Edgeworth expansion. Consider two distributions $P$ and $Q$ over $\Rp$ with densities $f$ and $q$, characteristic functions $\zeta$ and $\xi$, and cumulants $\kappa_s$ and $\gamma_s$ for $s \in S(k)$, $k \in \N$. Assume that both $P$ and $Q$ have a mean equal to $0$ and a covariance matrix equal to $\mathbb{1}_p$. We wish to utilize the cumulants of both distribution to construct an approximation of $P$.
 
 By formal expansion of the difference between the cumulant generating functions of $P$ and $Q$ around 0, we obtain for any $t \in \Rp$
 \begin{align*}
     \log \frac{\zeta(t)}{\xi(t)}
     = \log \zeta(t) - \log \xi(t) 
     &= \sum_{r=0}^\infty \sum_{s \in S(r)} (\kappa_s - \gamma_s)\frac{i^r t^s}{r!}\\
-    &= \sum_{r=1}^\infty \sum_{s \in S(r)} (\kappa_s - \gamma_s)\frac{i^r t^s}{r!},
+    &= \sum_{r=3}^\infty \sum_{s \in S(r)} (\kappa_s - \gamma_s)\frac{i^r t^s}{r!},
 \end{align*}
-where the last equality holds from $\zeta(0) = 1 = \xi(0)$. Exponentiating on both sides of the equation and isolating $\zeta(t)$, we find that
+where the last equality holds from the assumption of shared mean and covariance of $P$ and $Q$. Exponentiating on both sides of the equation and isolating $\zeta(t)$, we find that
 \begin{equation*}
-    \zeta(t) = \xi(t)\expfc{\sum_{r=1}^\infty \sum_{s \in S(r)} (\kappa_s - \gamma_s)\frac{i^r t^s}{r!}}.
+    \zeta(t) = \xi(t)\expfc{\sum_{r=3}^\infty \sum_{s \in S(r)} (\kappa_s - \gamma_s)\frac{i^r t^s}{r!}}.
 \end{equation*}
 \
 Let $\alpha_s = \kappa_s - \gamma_s$, we can then continue by taking a formal expansion of the exponential function to find
 \begin{align*}
     \zeta(t)
-    &= \xi(t)\expfc{\sum_{r=1}^\infty \sum_{s \in S(r)} \alpha_s\frac{i^r t^s}{r!}}\\
-    &= \xi(t)\sum_{j=0}^\infty \frac{1}{j!} \left\{\sum_{r=1}^\infty \sum_{s \in S(r)} \alpha_s\frac{i^r t^s}{r!}\right\}^j \\
+    &= \xi(t)\expfc{\sum_{r=3}^\infty \sum_{s \in S(r)} \alpha_s\frac{i^r t^s}{r!}}\\
+    &= \xi(t)\sum_{j=0}^\infty \frac{1}{j!} \left\{\sum_{r=3}^\infty \sum_{s \in S(r)} \alpha_s\frac{i^r t^s}{r!}\right\}^j \\
     &=
     \sum_{j=0}^\infty \frac{1}{j!} 
-    \sum_{\substack{r_1 = 1\\ \ldots \\r_j = 1}}^\infty
+    \sum_{\substack{r_1 = 3\\ \ldots \\r_j = 3}}^\infty
     \sum_{\substack{s_1 \in S(r_1)\\ \ldots \\s_j \in S(r_j)}}
     \alpha_{s_1}\ldots\alpha_{s_j}
     \frac{
@@ -211,7 +218,13 @@ We can simplify the notation by replacing the summation over multiple $r_k, s_k$
     \sum_{s \in S(j)}
     \alpha^*_s \frac{\xi(t) i^{j} t^{s}}{j!}.
 \end{equation*}
-One can deduce that for $s \in S(k)$, the pseudo-cumulant $\alpha^*_s$ is composed of cumulants of order up to $k$. By Lemma \ref{lemma-fourier-derivative}, we recognize the Fourier transform of derivatives of the density $q$ of $Q$
+One sees that for $s \in S(j)$, the pseudo-cumulant $\alpha^*_s$ is the sum over products of the form $\alpha_{s_1}\ldots\alpha_{s_l}$ where $s_1 \in S(j_1), \ldots, s_l \in S(j_l)$ are such that $j_1 + \ldots + j_l = j$ and the indices in $s$ and $s_1, \ldots, s_l$ match. For instance, for $j = 1, 2, 3$, the pseudo-cumulants $\alpha^*$ are of the form
+\begin{align*}
+    \alpha^*_{(k)} &= \alpha_{(k)} \\
+    \alpha^*_{(k, l)} &= \alpha_{(k, l)} + \alpha_{(k)}\alpha_{(l)}\\
+    \alpha^*_{(k, l, m)} &= \alpha_{(k, l, m)} + \alpha_{(k, l)}\alpha_{(m)} + \alpha_{(k)}\alpha_{(l)}\alpha_{(m)},
+\end{align*}
+where the exact coefficient in front of the $\alpha$ terms are not relevant and ignored for conciseness. Coming back, by Lemma \ref{lemma-fourier-derivative}, we recognize the Fourier transform of derivatives of the density $q$ of $Q$
 \begin{equation*}
     \xi(t) (-i)^{j} t^s  = \F \left[ D^s q \right],
 \end{equation*}
@@ -222,13 +235,13 @@ which allows us to retrieve the density of $P$ by Fourier inversion
     \sum_{s \in S(j)}
     \alpha^*_s \frac{(-1)^j D^s q(x)}{j!}.
 \end{equation}
-A convenient choice for $Q$ is the multivariate Normal distribution $\mathcal{N}_p(0, \mathbb{1}_p)$. Then, from \ref{ex-cumulants-mvn}, we then have that $\alpha_s = 0$ and so $\alpha^*_s = 0$ for $s \in S(j)$, $j= 1, 2$. Furthermore, we also have that for $s \in S(j), j > 2$, $\alpha_s = \kappa_s$. Using this in (\ref{eq-edge-abstract}) gives
+A convenient choice for $Q$ is the multivariate Normal distribution $\mathcal{N}_p(0, \mathbb{1}_p)$. Then, we have that for $s \in S(j), j > 2$, $\alpha_s = \kappa_s$. Using this in (\ref{eq-edge-abstract}) gives
 \begin{align}
     f(x) 
     &= \sum_{j=0}^\infty  \sum_{s \in S(j)} \alpha^*_s \frac{(-1)^j D^s q(x)}{j!} \nonumber \\
     &= \phi(x) + \sum_{j=3}^\infty  \sum_{s \in S(j)} \alpha^*_s \frac{(-1)^j D^s q(x)}{j!} \nonumber \\
     &= \phi(x) \left\{
-        1 + \sum_{j=3}^\infty  \sum_{s \in S(j)} \frac{1}{j!}\alpha^*_s h_s(x; \mu_P, \Sigma_P)
+        1 + \sum_{j=3}^\infty  \sum_{s \in S(j)} \frac{1}{j!}\alpha^*_s h_s(x)
     \right\}, \label{eq-edgeworth-full}
 \end{align} 
 where $h_s(\cdot)$ are a multivariate generalization of the Hermite polynomials
@@ -236,7 +249,11 @@ where $h_s(\cdot)$ are a multivariate generalization of the Hermite polynomials
     h_s(x) = (-1)^j \frac{D^s \phi(x)}{\phi(x)}.
 \end{equation*}
 \
-Consider now applying this transformation to the standardized sum $Y = n^{-1/2}\sum_{i=1}^n X_i$ where $X_i \simiid P$. Then for any $s \in S(k)$, using the additivity and homogeneity of cumulants, the $s$-cumulants of $Y$ are given by 
+\begin{remark} \label{rem-hermite-odd}
+    It can be easily shown that for any index tuple $s \in S(k)$ with $k$ odd, the generalized Hermite polynomial $h_s$ is null in 0, that is, $h_s(0) = 0$.
+\end{remark}
+\
+Consider now applying this transformation to the standardized sum $Y = n^{-1/2}\sum_{i=1}^n X_i$ where $X_i \simiid P$. Then for any $s \in S(k)$, using properties of cumulants given in Lemma \ref{lem-cumulants-props}, the $s$-cumulants of $Y$ are given by 
 \begin{equation*}
     \kappa_s(Y) = n^{1-k/2} \kappa_s(X_1) = o(n^{1-k/2}).
 \end{equation*}
@@ -292,6 +309,15 @@ While the argument provided above for the definition of the Edgeworth series is 
     where we have used that $\zeta \in L^q(\Rp)$ for some $q \in [1, n)$. This concludes the proof.
 \end{proof}
 
+\begin{remark} \label{rem-edge-mean}
+    By inspecting the coefficients in the Edgeworth expansion, we observe that the first term in the series, at $j = 3$, is a sum over third order cumulants of $Y$ with order $o(n^{-1/2})$. We can also write this as
+    \begin{equation}
+        e_3(y; \kappa(X)) = \phi(x) \left\{
+            1 + n^{-1/2} \sum_{s \in S(3)} \kappa_s h_s(y).
+        \right\}
+    \end{equation}
+    Together with Remarks \ref{rem-hermite-odd} and \ref{rem-centering}, this shows that the Edgeworth series evaluated at the mean of the distribution only contains terms of order $o(n^{-k/2})$ for $k > 1$. Another way of interpreting this result is that the second order Edgeworth series, corresponding to a Normal approximation, has an error of order $o(n^{-1})$ when evaluated at the mean of the distribution since the error term of order $o(n^{-1/2})$ is zero.
+\end{remark}
 
 
 \section{Properties of characteristic functions}
