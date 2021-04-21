@@ -92,7 +92,6 @@ function plot_approximations_err(
     p
 end
 
-
 nterms=10; α = 2.0; θ = 1.0;
 
 p = plot_approximations(nterms, 
@@ -105,8 +104,7 @@ p = plot_approximations_err(nterms,
     gamma(α, θ),
     _pdf(Gamma(nterms*α, θ/sqrt(nterms)));
     xlim=(2, 10),
-    incl_saddlepoint=false,
-    relative=false
+    relative=true
 )
 
 # Γ(2, 1)
