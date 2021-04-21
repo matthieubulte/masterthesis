@@ -92,7 +92,6 @@ function plot_approximations_err(
     p
 end
 
-nterms=10; α = 2.0; θ = 1.0;
 
 p = plot_approximations(nterms, 
     gamma(α, θ),
@@ -100,11 +99,12 @@ p = plot_approximations(nterms,
     xlim=(2, 10)
 )
 
+nterms=10; α = 1.0; θ = 1.0;
 p = plot_approximations_err(nterms, 
     gamma(α, θ),
     _pdf(Gamma(nterms*α, θ/sqrt(nterms)));
-    xlim=(2, 10),
-    relative=true
+    xlim=(0, 8),
+    relative=false
 )
 
 # Γ(2, 1)
@@ -161,4 +161,18 @@ for relative=[true; false]
     plot!(p, size=(400,500), legendfontsize=10, legend=:topright)
     Plots.svg(p, "plots/edgeworth_err_$(rel)_gamma21_10_terms")
     inkscapegen("edgeworth_err_$(rel)_gamma21_10_terms")
+end
+
+# Err plots Γ(2, 1) with saddlepoint
+for relative=[true; false]
+    α = 2.0; θ = 1.0; nterms = 10; rel= relative ? "rel" : "abs";
+    p = plot_approximations_err(nterms, 
+        gamma(α, θ),
+        _pdf(Gamma(nterms*α, θ/sqrt(nterms))),
+        relative=relative,
+        xlim=(2, 10)
+    )
+    plot!(p, size=(400,500), legendfontsize=10, legend=:topright)
+    Plots.svg(p, "plots/saddlepoint_and_edgeworth_err_$(rel)_gamma21_10_terms")
+    inkscapegen("saddlepoint_and_edgeworth_err_$(rel)_gamma21_10_terms")
 end
