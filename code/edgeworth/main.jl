@@ -20,14 +20,14 @@ end
 function plot_approximations(
     nterms,
     cgf,
-    real_distrib;
+    truepdf;
     incl_saddlepoint=true,
     incl_edgeworth=true,
     xlim=nothing
     )
 
     q = LinRange(xlim[1], xlim[2], 1000)
-    p = plot(q, pdf(real_distrib, q), label=L"\textrm{Truth}; n \textbf{=} %$nterms", color=:black)
+    p = plot(q, truepdf, label=L"\textrm{Truth}; n \textbf{=} %$nterms", color=:black)
     
     if incl_saddlepoint
         f = dscale(saddlepoint(cgf, nterms), 1/sqrt(nterms))
@@ -38,7 +38,7 @@ function plot_approximations(
         ls = [:dash, :dot, :dashdot]
         for i=2:4
             e = edgeworth_sum(cgf, nterms, i)
-            plot!(p, q, e.(q), label=L"\textrm{Edgeworth-%$i}", color=:black, linestyle=ls[i-1])
+            plot!(p, q, e.(q), label=L"\textrm{Edgeworth-%$i}", linestyle=ls[i-1])
         end
     end
 
@@ -50,7 +50,7 @@ end
 function plot_approximations_err(
     nterms,
     cgf,
-    true_distrib;
+    truepdf;
     incl_saddlepoint=true,
     incl_edgeworth=true,
     xlim=nothing,
@@ -59,58 +59,55 @@ function plot_approximations_err(
     )
 
     q = LinRange(xlim[1], xlim[2], 1000)
-    tp = pdf(true_distrib, q)
+    tp = truepdf.(q)
+
+    relerror(f) = log10.(abs.(tp - f.(q)) ./ tp)
+    abserror(f) = abs.(tp - f.(q))
+    err = relative ? relerror : abserror
+
+    p = plot()
 
     if incl_saddlepoint
         f = dscale(saddlepoint(cgf, nterms), 1/sqrt(nterms))
-        p = plot(q, log10.(abs.(tp - f.(q)) ./ tp), label=L"\textrm{Saddlepoint}", color=:black)
-    else
-        p = plot()
+        p = plot!(p, q, err(f),
+            label=L"\textrm{Saddlepoint}",
+            color=:black)
     end
 
     if incl_edgeworth
         ls = [:dash, :dot, :dashdot]
         for i=2:4
             e = edgeworth_sum(cgf, nterms, i)
-            err = abs.(tp - e.(q))
-            if relative
-                err = log10.(err ./ tp)
-            end
-
-            plot!(p, q, err, label=L"\textrm{Edgeworth-%$i}", color=:black, linestyle=ls[i-1], kwargs...)
+            plot!(p, q, err(e), 
+                label=L"\textrm{Edgeworth-%$i}", 
+                color=:black, linestyle=ls[i-1],
+                kwargs...)
         end
     end
 
     xlabel!(L"\textrm{y}")
-    ylab = relative ? L"\textrm{relative error (log}_{10})"
-                    : L"\textrm{absolute error}"
+    ylab = relative ? L"\textrm{relative error (log}_{10})" : L"\textrm{absolute error}"
     ylabel!(ylab)
 
     p
 end
 
 
-nterms=10; α = 2.0; θ = 1.0; q = LinRange(1e-8, 2.5, 1000);
+nterms=10; α = 2.0; θ = 1.0;
 
-f = dscale(saddlepoint(gamma(α, θ), nterms), 1/sqrt(nterms))
-f = dscale(saddlepoint(_uniform(0, 1), nterms), 1/sqrt(nterms))
-
-
-histogram(sample_sum(Uniform(0, 1), nterms, 10000) ./ sqrt(nterms); normalize=true, color="grey", alpha=0.3); plot!(q, f, label="Saddlepoint")
-
-
-
-
-plot!(q, pdf.(Gamma(nterms*α, θ/sqrt(nterms)), q), label="Truth")
-
+p = plot_approximations(nterms, 
+    gamma(α, θ),
+    _pdf(Gamma(nterms*α, θ/sqrt(nterms)));
+    xlim=(2, 10)
+)
 
 p = plot_approximations_err(nterms, 
     gamma(α, θ),
-    Gamma(nterms*α, θ/sqrt(nterms));
-    compsaddlepoint=true,
-    xlim=(0, 6)
+    _pdf(Gamma(nterms*α, θ/sqrt(nterms)));
+    xlim=(2, 10),
+    incl_saddlepoint=false,
+    relative=false
 )
-plot!(p, size=(400,500), legendfontsize=10, legend=:topright)
 
 # Γ(2, 1)
 for nterms = [1; 10]
@@ -119,7 +116,7 @@ for nterms = [1; 10]
 
     p = plot_approximations(nterms, 
         gamma(α, θ),
-        Gamma(nterms*α, θ/sqrt(nterms));
+        _pdf(Gamma(nterms*α, θ/sqrt(nterms)));
         xlim=lims
     )
     plot!(p, size=(400,500), legendfontsize=10, legend=:topright)
@@ -132,7 +129,7 @@ for nterms = [1; 10]
     α = 1.0; θ = 1.0;
     p = plot_approximations(nterms, 
         gamma(α, θ),
-        Gamma(nterms*α, θ/sqrt(nterms));
+        _pdf(Gamma(nterms*α, θ/sqrt(nterms)));
         xlim=(0, 6)
     )
     plot!(p, size=(400,500), legendfontsize=10, legend=:topright)
@@ -159,7 +156,7 @@ for relative=[true; false]
     α = 2.0; θ = 1.0; nterms = 10; rel= relative ? "rel" : "abs";
     p = plot_approximations_err(nterms, 
         gamma(α, θ),
-        Gamma(nterms*α, θ/sqrt(nterms)),
+        _pdf(Gamma(nterms*α, θ/sqrt(nterms))),
         relative=relative,
         xlim=(2, 10)
     )
@@ -167,19 +164,3 @@ for relative=[true; false]
     Plots.svg(p, "plots/edgeworth_err_$(rel)_gamma21_10_terms")
     inkscapegen("edgeworth_err_$(rel)_gamma21_10_terms")
 end
-
-
-
-
-using Symbolics, SymbolicUtils, LinearAlgebra
-
-@variables x[1:10]
-
-e = exp(-x'x)
-
-Dx = Differential.(x)
-
-substitute(
-    expand_derivatives((Dx[2] ∘ Dx[1])(e))    
-, Dict([ x[i] => 0 for i=1:10]))
-

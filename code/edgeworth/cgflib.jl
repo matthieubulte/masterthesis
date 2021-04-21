@@ -11,8 +11,25 @@ end
 iidsum(cgf, n) = (t) -> n * cgf(t)
 affine(cgf, loc, scale) = (t) -> cgf(t * scale) + t * loc * scale
 
+function irwinhall(n)
+    function (x)
+        d = 0
+        m1 = 1
+        
+        for k = 0:n
+            d += m1 * binomial(n, k) * (x-k)^(n-1) * sign(x - k)
+            m1 *= -1
+        end
+
+        d / factorial(n - 1) / 2
+    end
+end
+
 daffine(d, loc, scale) = (x) -> d((x-loc)*scale)*scale
 dscale(d, scale) = daffine(d, 0, scale)
+
+_pdf(d) = (x) -> pdf(d, x)
+
 
 gamma(α, θ) = (t) -> -α*log(θ)-α*log(1/θ-t)
 _uniform = (t) -> t == 0 ? 1 : log((exp(t/2) - exp(-t/2))/t)

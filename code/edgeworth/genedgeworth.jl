@@ -5,14 +5,6 @@ using TaylorSeries, SpecialPolynomials, SymPy
 include("vendor_extra.jl")
 include("cgflib.jl")
 
-# dim = 5
-# x = Taylor1(Sym, 5)
-# e = exp(x)
-# k = symmv(dim, 5)(ones(Rational, dim); T=Sym)
-
-# ek = e(k)
-# ekk = ek.expand()
-
 function edgeworth_coefficients(cgf, order; T=Float64)
     z = Taylor1(T, order)
     poly_exp = exp(z)
