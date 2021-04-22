@@ -107,6 +107,51 @@ p = plot_approximations_err(nterms,
     relative=false
 )
 
+
+@vars _t
+_θ̂, _θ = Neg("_θ̂ _θ")
+_n, _s, = Pos("_n _s")
+
+A = t -> -log(-t)
+K = t -> A(_θ + t) - A(_θ)
+Kpp = diff(diff(K(_t), _t), _t)
+ℓ = θ -> _n*log(-θ *exp(θ * _s))
+
+a = sqrt(Kpp(_θ̂ - _θ) * _n) * exp(ℓ(_θ) - ℓ(_θ̂)) / sqrt(2pi)
+a.simplify()
+
+λ = 1.0; θ = -λ; nterms=10;
+s = sample_sum(Exponential(1/λ), nterms, 100000) ./ nterms; sort!(s); θ̂ = -1 ./ s;
+
+pstar = (θ̂) -> let 
+    s = -1 / θ̂
+    -sqrt(nterms) * exp.(nterms * ((θ - θ̂) * s + log(-θ) - log(-θ̂))) / θ̂ / sqrt(2pi)
+end
+
+histogram(θ̂; normalize=true); plot!(θ̂, pstar.(θ̂), leg=false); xlims!(-3, 0)
+
+_θ = ϕ -> -1 / ϕ
+_ϕ = _θ
+dθdϕ = (ϕ) -> 1 / ϕ^2
+
+pstarϕ̂ = (ϕ) -> pstar(_θ(ϕ)) * abs(dθdϕ(ϕ))
+
+ϕ̂ = _ϕ.(θ̂);
+
+histogram(ϕ̂; normalize=true); 
+
+# truth
+plot(ϕ̂, pdf(Gamma(nterms, 1/(λ*nterms)), ϕ̂))
+
+# p star
+plot!(ϕ̂, pstarϕ̂.(ϕ̂))
+
+# normal
+plot!(ϕ̂, pdf(Normal(1/λ, 1/sqrt(nterms*λ^2)), ϕ̂))
+
+
+
+
 # Γ(2, 1)
 for nterms = [1; 10]
     α = 2.0; θ = 1.0;
@@ -175,4 +220,4 @@ for relative=[true; false]
     plot!(p, size=(400,500), legendfontsize=10, legend=:topright)
     Plots.svg(p, "plots/saddlepoint_and_edgeworth_err_$(rel)_gamma21_10_terms")
     inkscapegen("saddlepoint_and_edgeworth_err_$(rel)_gamma21_10_terms")
-end
+end 

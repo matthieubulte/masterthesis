@@ -90,7 +90,78 @@ While the Saddlepoint approximation shows many advantages over the Edgeworth app
     \end{align*}
     Consider now the Stirling's formula for the gamma function
     \begin{equation*}
-        \Gamma(z) = \sqrt{2\pi}z^{z-1/2}\expf{-z}(1 + O(z^{-1})).
+        \Gamma(z) \approx \sqrt{2\pi}z^{z-1/2}\expf{-z}.
     \end{equation*}
     We recognize that the second term in the expression of $g_3(s; K)$ corresponds to the inverse of the Stirling's approximation to $\Gamma(np)$. The Saddlepoint approximation to the density of the mean of $\Gamma(p, \lambda)$ variables thus corresponds to the density of the true distribution $\Gamma(np, n\lambda)$ of the mean, where the gamma function has been replaced by the Stirling's approximation. This has the interesting consequence that the relative error of the Saddlepoint approximation does not depend on $s$, the point at which the density is evaluated, but rather only depends on $n$. This behaviour is also exposed in Figure \ref{fig-saddlepoint-err} where the relative error of the Saddlepoint approximation is a straight horizontal line. Daniels \cite{daniels1954saddlepoint} characterizes the class of distributions for which the uniform relative approximation error holds.
+\end{example}
+
+Consider now applying the Saddlepoint approximation to an exponential family $\mathcal{P} = \left\{P_\theta\right\}_{\theta}$ with natural parameter $\theta \in \Rp$. The density $f_\theta$ of $P_\theta \in \mathcal{P}$ is given by
+\begin{equation*}
+    f_\theta(x) = \expf{\theta^\top x - \mathcal{H}(\theta) - \mathcal{G}(t)}.
+\end{equation*}
+Given a random sample $x = (x_1, \ldots, x_n)$ of $P_\theta$, the loglikelihood function is given by
+\begin{equation*}
+    \ell(\theta; x) = \theta^\top \sum_{i=1}^n x_i - n \mathcal{H}(\theta) = n\left[\bar x - \mathcal{H}(\theta)\right],
+\end{equation*}
+where $\bar x$ is the sample mean. Hence, the maximum likelihood estimator of $\theta$ is the value $\hat\theta_{\bar x} \in \Rp$ satisfying the score equation
+\begin{equation*}
+    \mathcal{H}'(\hat\theta_{\bar x}) = \bar x.
+\end{equation*}
+In the exponential family $\mathcal{P}$, it can be shown that the cumulant generating function of any member $P_\theta \in \mathcal{P}$ is given by $K_\theta(t) = \mathcal{H}(\theta + t) - \mathcal{H}(\theta)$ and thus $K'_\theta(t) = \mathcal{H}'(\theta + t)$. Using the cumulant generating function in the score equation gives
+\begin{equation*}
+    K'_\theta(\hat\theta_{\bar x} - \theta) = \bar x.
+\end{equation*}
+Considering the Saddlepoint Equation given in (\ref{eq-saddlepoint}), we notice that the  parameter $\hat\gamma_{\bar x}$ of the tilted family nearly correspounds to the maximum likelihood estimator $\hat\theta$ with
+\begin{equation*}
+    \hat\gamma_{\bar x}/n = \hat\theta_{\bar x} - \theta.
+\end{equation*}
+Using this in the first order Saddlepoint approximation (\ref{eq-saddle-3}), we obtain that the Saddlepoint approximation for the mean $\bar X$ of $n$ independent random variables distributed according to $P_\theta$ is
+\begin{align*}
+    g_3(\bar x; K_\theta) 
+    &= \sqrt{n} (2\pi)^{-p/2}|K_\theta''(\hat\theta_{\bar x} - \theta)|^{-1/2} \expf{nK_\theta(\hat\theta_{\bar x} - \theta) - (\hat\theta_{\bar x} - \theta)^\top \bar x}\\
+    &= \sqrt{n} (2\pi)^{-p/2}|\mathcal{H}''(\hat\theta)|^{-1/2} \expf{n(\mathcal{H}(\hat\theta) - \mathcal{H}(\theta_{\bar x})) - (\hat\theta_{\bar x} - \theta)^\top \bar x}\\
+    &= \sqrt{n} (2\pi)^{-p/2}|j(\hat\theta_{\bar x})|^{-1/2} \expf{\ell(\theta; \bar x) - \ell(\hat\theta_{\bar x}; \bar x)},
+\end{align*}
+where we have used that $\mathcal{H}''(\hat\theta)$ is equal to the observed Fisher information $j(\hat\theta)$. Daniels \cite{daniels1958} notes that this approximation can further be used to approximate the distribution of the maximum likelihood estimator. Let $\hat\Theta$ be the random variable solving the score equation $\mathcal{H}'(\hat\Theta) = \bar X$, then, by change of variable, we can use the approximation above to construct an approximation $p^*$ to the distribution of $\hat\Theta$,
+\begin{equation*}
+    p^*(\hat\theta; \theta, \bar x) = \sqrt{n} (2\pi)^{-p/2}|j(\hat\theta)|^{-1/2} \expf{\ell(\theta; \bar x) - \ell(\hat\theta; \bar x)} \abs{\frac{\d \hat\theta}{\d \bar x}}^{-1}.
+\end{equation*}
+To compute the determinant of the Jacobian of the transformation $\hat\theta(\bar x)$, we can differentiate the score equation with respect to $\hat\theta$ to find $\mathcal{H}''(\hat\theta) = (\d \bar x / \d \hat\theta)$ and hence $(\d \hat\theta / \d \bar x) = \mathcal{H}''(\hat\theta)^{-1} = j(\hat\theta)^{-1}$, giving
+\begin{equation} \label{eq-pstar}
+    p^*(\hat\theta; \theta, \bar x) = \sqrt{n} (2\pi)^{-p/2}|j(\hat\theta)|^{1/2} \expf{\ell(\theta; \bar x) - \ell(\hat\theta; \bar x)}.
+\end{equation}
+The $p^*$ approximation can also be used in many different situation where the distribution of refence is not necessarily an exponential family. It has been derived and studied in a much broader generality by a series of articles and books by Barndorff-Nielsen \cite{BarndorffNielsen1980,BarndorffNielsen1983}.  
+
+Suppose now that the exponential family $\mathcal{P}$ has an alternative parametrization $\{ P_\phi \}$ such that there exists a diffeomorphism $\phi = \phi(\theta)$ satisfying $\hat\phi = \phi(\hat\theta)$, where $\hat\phi$ and $\hat\theta$ are the maximum likelihood estimators in their respective parametrizations. Then, 
+\begin{align*}
+    p^*(\hat\phi; \phi, \bar x) 
+&= \sqrt{n} (2\pi)^{-p/2}|j_\phi(\hat\phi)|^{1/2} \expf{\ell(\phi; \bar x) - \ell(\hat\phi; \bar x)}\\
+&= \sqrt{n} (2\pi)^{-p/2}\left(|j_\theta(\theta(\hat\phi))|\abs{\frac{\d \hat\theta}{\d \hat\phi}}^{-2}\right)^{1/2} \expf{\ell(\theta(\phi); \bar x) - \ell(\theta(\hat\phi); \bar x)}\\
+&= p^*(\theta(\hat\phi); \theta(\phi), \bar x)\abs{\frac{\d \hat\theta}{\d \hat\phi}}^{-1}.
+\end{align*}
+Hence, the $p^*$ approximation is \textit{invariant under reparametrization}. 
+
+
+\begin{example}
+    Consider now estimating the density of the maximum likelihood estimator of the parameter $\lambda \in \R_+$ of an exponential distribution. The density of the distribution $\text{Exp}(\lambda)$ is
+    \begin{equation*}
+        f_\lambda(x) = \lambda \expf{-\lambda x}.
+    \end{equation*}
+    To make direct use of the $p^*$ approximation in Equation (\ref{eq-pstar}), we must work in the natural parametrization of the exponential distribution. For $\lambda \in R_+$, the corresponding natural parameter is $\theta = -\lambda \in \R_-$ and the density of $\text{Exp}(\theta)$ is then $f_\theta(x) = \expf{ \theta x + \logf{-\theta}}$. Given a i.i.d.\,sample $x_1, \ldots, x_n$ of $\text{Exp}(\theta)$, we have the likelihood
+    \begin{equation*}
+        \ell(\theta; \bar x) = n\left[\theta \bar x + \logf{-\theta}\right],
+    \end{equation*}
+    where $\bar x$ is the sample mean. The maximum likelihood estimator of $\theta$ is then $\hat\theta = -1/\bar x$ and the observed information  is equal to $j(\theta) = 1/\theta^2$. The $p^*$ approximation to the density of $\hat\theta$ is then
+    \begin{equation*}
+        p^*(\hat\theta; \theta, \bar x) = \sqrt{n} \frac{|\theta|^n}{|\hat\theta|^{n-1}}\expf{n\bar x(\theta - \hat\theta)} / \sqrt{2\pi}.
+    \end{equation*}
+    Using the invariance of the $p^*$ approximation, we can obtain a $p^*$ approximation to the density of the maximum likelihood parameter $\hat\lambda$ in the original parametrization,
+    \begin{equation*}
+        p^*(\hat\lambda; \lambda, \bar x) = p^*(\theta(\hat\lambda); \theta(\lambda), \bar x) \abs{\d \hat\theta / \d \hat\lambda}^{-1} = \sqrt{n} \frac{|\lambda|^n}{|\hat\lambda|^{n-1}}\expf{n\bar x(\hat\lambda - \lambda)} / \sqrt{2\pi}.
+    \end{equation*}
+    Since $\text{Exp}(\lambda) = \Gamma(1, \lambda)$, the distribution of $\bar X$ is $\Gamma(n, \lambda/n)$ and hence $\hat\lambda = \bar x$ is $\text{Inv-}\Gamma(n, \lambda/n)$. 
+
+
+
+
 \end{example}

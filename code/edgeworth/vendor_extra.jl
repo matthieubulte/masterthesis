@@ -16,11 +16,15 @@ function Base.:*(a::Taylor1{T}, b::T) where {T<:Number}
 end
 
 function Real(s)
-    return symbols(s, real=True)
+    return symbols(s, real=true)
 end
 
 function Pos(s)
-    return symbols(s, real=True, positive=True)
+    return symbols(s, real=true, positive=true)
+end
+
+function Neg(s)
+    return symbols(s, real=true, positive=false)
 end
 
 function truncate_order(expr, term, opower)
