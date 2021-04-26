@@ -39,15 +39,21 @@ Replacing this in the expression of $f$ in terms of $f_{\hat\gamma_s}$ gives
     f(s) &= \expf{nK(\hat\gamma_s / n) - \hat\gamma_s^\top s}\left[e_k(s; \kappa(\hat\gamma_s)) + o(n^{1-k/2})\right]\nonumber\\
     &= g_k(s; K)\left[1 + o(n^{1-k/2})\right]. \label{eq-saddle-exp}
 \end{align}
-We call $g_k(s; K)$ the \textit{Saddlepoint approximation} of order $k$. A special case of particular interest is the first order Saddlepoint approximation. In this case, the Edgeworth approximation of $P_{\hat\gamma_s}$ is equal to its normal approximation and is given by
+A special case of particular interest is for $k = 3$. In this case, the Edgeworth approximation of $P_{\hat\gamma_s}$ is equal to its normal approximation and is given by
 \begin{equation*}
     e_3(s; \kappa(\hat\gamma_s)) = (2\pi)^{-p/2}|\Sigma_{\hat\gamma_s}|^{-1/2}\expf{-\frac{1}{2}(s - \mu_{\hat\gamma_s})^\top \Sigma_{\hat\gamma_s}^{-1/2}(s - \mu_{\hat\gamma_s}) },
 \end{equation*}
 where $\mu_{\hat\gamma_s}$ and $\Sigma_{\hat\gamma_s}$ are the mean and covariance of $P_{\hat\gamma_s}$. By the choice of $\hat\gamma_s$, we have that $\mu_{\hat\gamma_s} = s$ and hence the term in the exponential is equal to zero. Furthermore, the covariance matrix $\Sigma_{\hat\gamma_s}$ is equal to $K_{\hat\gamma_s}''(\hat\gamma_s)$, the Hessian of $K_{\hat\gamma_s}$ evaluated at $\hat\gamma_s$. From Equation (\ref{eq-deriv-Kgamma}), $K''_{\hat\gamma_s}(\hat\gamma_s) = n^{-1} K''(\hat\gamma_s/n)$ and we get 
 \begin{equation} \label{eq-saddle-3}
-    g_3(s; K) = \sqrt{n} (2\pi)^{-p/2}|K''(\hat\gamma_s/n)|^{-1/2} \expf{nK(\hat\gamma_s / n) - \hat\gamma_s^\top s}.
+    g_3(s; K) = \left(\frac{n}{2\pi}\right)^{p/2}|K''(\hat\gamma_s/n)|^{-1/2} \expf{nK(\hat\gamma_s / n) - \hat\gamma_s^\top s}.
 \end{equation}
-In this case, we see that the Saddlepoint approximation is always positive, and by Remark \ref{rem-hermite-odd} and the choice of $\hat\gamma_s$, it has a relative error of $o(n^{-1})$. The construction of the Saddlepoint approximation leads to the following theorem justifying Equation (\ref{eq-saddle-exp}).
+We call this approximation the \textit{Saddlepoint approximation}. We can see that the Saddlepoint approximation is always positive, and by Remark \ref{rem-hermite-odd} and the choice of $\hat\gamma_s$,
+\begin{align}
+    f(s) 
+    &= g_3(s; K)(1 + o(n^{-1}))\nonumber\\
+    &= g_3(s; K)\left[1 + \frac{b(\hat\gamma_s / n)}{2n} + o(n^{-2})\right], \label{eq-saddle-o2}
+\end{align}
+where $b(\hat\gamma_s / n)$ is the coefficient of the terms of order $O(n^{-1})$ in the Edgeworth expansion of the tilted density. We justify this expansion error in the following theorem.
 
 \begin{theorem}
     Let $P$ be a distribution with cumulant genrating function $K$ and $k \in \N_{\geq 2}$ such that all cumulants of $P$ of order up to $k$ exist. Suppose that $K$ is defined in an open neighborhood $U$ of 0 and that for every $s \in \Rp$, Equation (\ref{eq-saddlepoint}) has a unique solution $\hat\gamma_s \in U$. 
@@ -183,5 +189,6 @@ Hence, the $p^*$ approximation is \textit{invariant under reparametrization}.
         \label{fig-pstar-approx}
     \end{figure}    
 
+    \input{thm-char-integrable-convolution}
 
 \end{example}

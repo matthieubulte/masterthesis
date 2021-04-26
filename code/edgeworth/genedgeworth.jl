@@ -5,7 +5,7 @@ using TaylorSeries, SpecialPolynomials, SymPy
 include("vendor_extra.jl")
 include("cgflib.jl")
 
-function edgeworth_coefficients(cgf, order; T=Float64)
+function pseudocumulants(cgf, order; T=Float64)
     cum_order = order * 3
     x = Taylor1(T, cum_order)
 
@@ -27,14 +27,14 @@ function edgeworth_sum(cgf, nsum, order; T=Float64)
              cgf -> iidsum(cgf, n)
 
     # compute coefficients of the edgeworth expansion
-    expansion_coeffs = edgeworth_coefficients(sumcgf, order; T=Sym)
+    αstar = pseudocumulants(sumcgf, order; T=Sym)
 
     # prepare the coefficients by...
-    preparecoeff = c -> collect(expand(c), n) |> # 0. make sure terms are ready to be manipulated
+    preparecoeff = c -> collect(expand(c), n) |>              # 0. making sure terms are ready to be manipulated
                    c -> truncate_order(c, n, -(order-1)/2) |> # 1. removing terms of higher order
                    c -> subs(c, n, nsum) |>                   # 2. substitute back symbolic n with it's value
                    c -> convert(final_type, c)                # 3. convert coeffs from Sym back to intended type
-    coeffs = preparecoeff.(expansion_coeffs)
+    coeffs = preparecoeff.(αstar)
 
     # construct the polynomial based on the hermite basis and computed coefficients
     polynomial = sum([ coeffs[i] * basis(ChebyshevHermite, i-1)
