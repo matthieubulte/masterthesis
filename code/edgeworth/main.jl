@@ -6,6 +6,7 @@ include("edgeworth/vendor_extra.jl")
 include("edgeworth/cgflib.jl")
 include("edgeworth/genedgeworth.jl")
 include("edgeworth/gensaddlepoint.jl")
+include("edgeworth/genpstar.jl")
 
 inkscapegen(s) = println("inkscape code/plots/$(s).svg -o writing/figures/$(s).eps --export-ignore-filters --export-ps-level=3")
 
@@ -31,7 +32,7 @@ function plot_approximations(
     
     if incl_saddlepoint
         f = dscale(saddlepoint(cgf, nterms), 1/sqrt(nterms))
-        plot!(p, q, f.(q), label="Saddlepoint")
+        plot!(p, q, f.(q), label=L"\textrm{Saddlepoint}")
     end
     
     if incl_edgeworth
@@ -50,7 +51,7 @@ end
 function plot_approximations_err(
     nterms,
     cgf,
-    truepdf;
+    truedistrib;
     incl_saddlepoint=true,
     incl_edgeworth=true,
     xlim=nothing,
@@ -58,98 +59,120 @@ function plot_approximations_err(
     kwargs...
     )
 
-    q = LinRange(xlim[1], xlim[2], 1000)
-    tp = truepdf.(q)
-
-    relerror(f) = log10.(abs.(tp - f.(q)) ./ tp)
-    abserror(f) = abs.(tp - f.(q))
-    err = relative ? relerror : abserror
-
     p = plot()
 
     if incl_saddlepoint
-        f = dscale(saddlepoint(cgf, nterms), 1/sqrt(nterms))
-        p = plot!(p, q, err(f),
+        plot_approximation_err!(p,
+            truedistrib,
+            dscale(saddlepoint(cgf, nterms), 1/sqrt(nterms));
+            xlim=xlim,
             label=L"\textrm{Saddlepoint}",
-            color=:black)
+            color=:black
+        )
     end
 
     if incl_edgeworth
         ls = [:dash, :dot, :dashdot]
         for i=2:4
-            e = edgeworth_sum(cgf, nterms, i)
-            plot!(p, q, err(e), 
-                label=L"\textrm{Edgeworth-%$i}", 
-                color=:black, linestyle=ls[i-1],
-                kwargs...)
+            plot_approximation_err!(p,
+                truedistrib,
+                edgeworth_sum(cgf, nterms, i);
+                xlim=xlim,
+                label=L"\textrm{Edgeworth-%$i}",
+                color=:black, linestyle=ls[i-1]
+            )
         end
     end
-
-    xlabel!(L"\textrm{y}")
-    ylab = relative ? L"\textrm{relative error (log}_{10})" : L"\textrm{absolute error}"
-    ylabel!(ylab)
 
     p
 end
 
 
-p = plot_approximations(nterms, 
-    gamma(α, θ),
-    _pdf(Gamma(nterms*α, θ/sqrt(nterms)));
-    xlim=(2, 10)
-)
+function plot_approximation_err!(p,
+    truedistrib,
+    approx;
+    xlabel=L"\textrm{y}",
+    xlim=nothing,
+    ylim=nothing,
+    relative=true,
+    kwargs...
+    )
 
-nterms=10; α = 1.0; θ = 1.0;
-p = plot_approximations_err(nterms, 
-    gamma(α, θ),
-    _pdf(Gamma(nterms*α, θ/sqrt(nterms)));
-    xlim=(0, 8),
-    relative=false
-)
+    q = LinRange(xlim[1], xlim[2], 1000)
+    tp = pdf(truedistrib, q)
 
+    relerror(f) = log10.(abs.(tp - f.(q)) ./ tp)
+    abserror(f) = abs.(tp - f.(q))
+    err = relative ? relerror : abserror
 
-@vars _t
-_θ̂, _θ = Neg("_θ̂ _θ")
-_n, _s, = Pos("_n _s")
+    plot!(p, q, err(approx); kwargs...)
 
-A = t -> -log(-t)
-K = t -> A(_θ + t) - A(_θ)
-Kpp = diff(diff(K(_t), _t), _t)
-ℓ = θ -> _n*log(-θ *exp(θ * _s))
+    xlabel!(p, xlabel)
+    ylab = relative ? L"\textrm{relative error (log}_{10})" : L"\textrm{absolute error}"
+    ylabel!(p, ylab)
+    if !isnothing(ylim)
+        ylims!(ylim[1], ylim[2])
+    end
 
-a = sqrt(Kpp(_θ̂ - _θ) * _n) * exp(ℓ(_θ) - ℓ(_θ̂)) / sqrt(2pi)
-a.simplify()
-
-λ = 1.0; θ = -λ; nterms=10;
-s = sample_sum(Exponential(1/λ), nterms, 100000) ./ nterms; sort!(s); θ̂ = -1 ./ s;
-
-pstar = (θ̂) -> let 
-    s = -1 / θ̂
-    -sqrt(nterms) * exp.(nterms * ((θ - θ̂) * s + log(-θ) - log(-θ̂))) / θ̂ / sqrt(2pi)
+    p
 end
 
-histogram(θ̂; normalize=true); plot!(θ̂, pstar.(θ̂), leg=false); xlims!(-3, 0)
 
-_θ = ϕ -> -1 / ϕ
-_ϕ = _θ
-dθdϕ = (ϕ) -> 1 / ϕ^2
+begin
+    λ = 2.0; θ = -λ; nterms=10;
+    s = sample_sum(Exponential(1/λ), nterms, 100000) ./ nterms; sort!(s); θ̂ = -1 ./ s;
 
-pstarϕ̂ = (ϕ) -> pstar(_θ(ϕ)) * abs(dθdϕ(ϕ))
+    pstarθ̂ = pstar((θ, θ̂) -> nterms*(log(-θ) - θ/θ̂), θ, nterms)
 
-ϕ̂ = _ϕ.(θ̂);
+    λ̂ = -θ̂;
+    pstarλ̂ = (λ) -> pstarθ̂(-λ)
 
-histogram(ϕ̂; normalize=true); 
+    rel = true; xlim=(0.2, 5)
+    p = plot_approximation_err!(plot(),
+        InverseGamma(nterms, λ*nterms),
+        pstarλ̂;
+        xlim=xlim,
+        relative=rel,
+        color=:black, label=L"p^*"
+    )
+    plot_approximation_err!(p,
+        InverseGamma(nterms, λ*nterms),
+        _pdf(Normal(λ, λ ./ sqrt(nterms)));
+        xlim=xlim,
+        relative=rel,
+        color=:black, label=L"\textrm{Normal}",
+        linestyle=:dot, xlabel=L"\hat\lambda", ylim=(-4,5)
+    )
+    plot!(p, size=(400,500), legendfontsize=10, legend=:topright)
 
-# truth
-plot(ϕ̂, pdf(Gamma(nterms, 1/(λ*nterms)), ϕ̂))
+    Plots.svg(p, "plots/pstar_exp_err")
+    inkscapegen("pstar_exp_err")
+end
 
-# p star
-plot!(ϕ̂, pstarϕ̂.(ϕ̂))
+begin
+    λ = 2.0; θ = -λ; nterms=10;
+    s = sample_sum(Exponential(1/λ), nterms, 100000) ./ nterms; sort!(s); θ̂ = -1 ./ s;
 
-# normal
-plot!(ϕ̂, pdf(Normal(1/λ, 1/sqrt(nterms*λ^2)), ϕ̂))
+    pstarθ̂ = pstar((θ, θ̂) -> nterms*(log(-θ) - θ/θ̂), θ, nterms)
 
+    λ̂ = -θ̂;
+    pstarλ̂ = (λ) -> pstarθ̂(-λ)
 
+    xlim=(0.2, 5)
+    q = LinRange(xlim[1], xlim[2], 1000)
+    p = plot(q, pdf(InverseGamma(nterms, λ*nterms), q), label=L"\textrm{Truth}", color=:black)
+
+    plot!(p, q, pstarλ̂.(q), color=:black, label=L"p^*", linestyle=:dash)
+
+    plot!(p, q, pdf(Normal(λ, λ ./ sqrt(nterms)), q), color=:black, label=L"\textrm{Normal}", linestyle=:dot)
+
+    xlabel!(p, L"\hat\lambda")
+    ylabel!(p, L"f(\hat\lambda)")
+    plot!(p, size=(400,500), legendfontsize=10, legend=:topright)
+
+    Plots.svg(p, "plots/pstar_exp_dens")
+    inkscapegen("pstar_exp_dens")
+end
 
 
 # Γ(2, 1)
@@ -172,7 +195,7 @@ for nterms = [1; 10]
     α = 1.0; θ = 1.0;
     p = plot_approximations(nterms, 
         gamma(α, θ),
-        _pdf(Gamma(nterms*α, θ/sqrt(nterms)));
+        Gamma(nterms*α, θ/sqrt(nterms));
         xlim=(0, 6)
     )
     plot!(p, size=(400,500), legendfontsize=10, legend=:topright)
@@ -199,7 +222,7 @@ for relative=[true; false]
     α = 2.0; θ = 1.0; nterms = 10; rel= relative ? "rel" : "abs";
     p = plot_approximations_err(nterms, 
         gamma(α, θ),
-        _pdf(Gamma(nterms*α, θ/sqrt(nterms))),
+        Gamma(nterms*α, θ/sqrt(nterms)),
         relative=relative,
         xlim=(2, 10)
     )
@@ -213,7 +236,7 @@ for relative=[true; false]
     α = 2.0; θ = 1.0; nterms = 10; rel= relative ? "rel" : "abs";
     p = plot_approximations_err(nterms, 
         gamma(α, θ),
-        _pdf(Gamma(nterms*α, θ/sqrt(nterms))),
+        Gamma(nterms*α, θ/sqrt(nterms)),
         relative=relative,
         xlim=(2, 10)
     )

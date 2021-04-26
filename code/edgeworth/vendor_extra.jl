@@ -1,4 +1,4 @@
-using TaylorSeries, SymPy
+using TaylorSeries, SymPy, ReverseDiff
 
 Base.:*(b::T, a::Taylor1{T}) where {T<:Number} = a * b
 
@@ -32,3 +32,5 @@ function truncate_order(expr, term, opower)
     bigo = SymPy.sympy.O(term^opower, (term, infty))
     return (expr + bigo).removeO()
 end
+
+∇²(f) = x -> ReverseDiff.hessian(t -> f(t[1]), [x])[1]

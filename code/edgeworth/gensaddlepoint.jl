@@ -1,9 +1,7 @@
-using NLSolve, SymPy, ReverseDiff
+using NLsolve
 
-include("edgeworth/vendor_extra.jl")
-include("edgeworth/cgflib.jl")
-
-∇²(f) = x -> ReverseDiff.hessian(t -> f(t[1]), [x])[1]
+include("./vendor_extra.jl")
+include("./cgflib.jl")
 
 function symβ̂(K)
     @vars t s

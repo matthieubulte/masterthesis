@@ -6,9 +6,6 @@ include("vendor_extra.jl")
 include("cgflib.jl")
 
 function edgeworth_coefficients(cgf, order; T=Float64)
-    z = Taylor1(T, order)
-    poly_exp = exp(z)
-    
     cum_order = order * 3
     x = Taylor1(T, cum_order)
 
@@ -49,3 +46,33 @@ function edgeworth_sum(cgf, nsum, order; T=Float64)
         return exp(-x^2/2)/sqrt(var*2pi) * polynomial(x)
     end
 end
+
+
+# function edge(cgf, nsum, order; T=Float64)
+#     final_type = promote_rule(T, typeof(nsum))
+#     n = Pos(gensym("n"))
+
+#     mean, var = cumulants(cgf, 2; T=T)
+#     sumcgf = affine(cgf, -mean, 1/sqrt(var*n)) |> 
+#                 cgf -> iidsum(cgf, n)
+
+#     taylororder = 3*order
+#     expansion = exp(sumcgf(t) - t^2/2).series(t, n=taylororder).removeO()
+
+#     prepare = s -> collect(expand(s), n) |>
+#               s -> truncate_order(s, n, -(order-1)/2) |>
+#               s -> subs(s, n, nsum) |>
+#               s -> collect(s, t).coeff.(t.^(0:taylororder))
+
+#     hermitecoeffs = convert.(final_type, prepare(expansion))
+
+#     println(hermitecoeffs)
+
+#     polynomial = sum([ hermitecoeffs[i] * basis(ChebyshevHermite, i-1)
+#                             for i=1:findlast(!iszero, hermitecoeffs) ])
+#     function density(z)
+#         κ₁ = sqrt(nsum)*mean
+#         x = (z - κ₁) / sqrt(var)
+#         return exp(-x^2/2)/sqrt(var*2pi) * polynomial(x)
+#     end
+# end
