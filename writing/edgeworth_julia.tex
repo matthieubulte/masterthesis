@@ -1,1 +1,101 @@
-test
+
+One is often confronted with challenges when translating mathematical ideas into executable software. Edgeworth series in particular are simple in their mathematical definition, but hide the use of many mathematical concepts that, independently, are commonly cumbersome to translate into easy-to-use and bug-free software. A generic implementation of Edgeworth series requires the ability to compute derivatives, express and manipulate asymptotic expansions and combine those to create density approximations.
+
+Luckily, modern programming languages and libraries allow to quickly develop algorithms that are both efficient and close to their mathematical counterpart. In this thesis, we make use of the Julia programming language \cite{bezanson2017julia} and Julia bindings to the computer algebra system SymPy \cite{sympy}. The Julia programming language was chosen because it allows to write code that is generic enough to be used in various scenarios and extended with the ecosystem of libraries. For instance, one basic block of the approximations developed in this thesis is the cumulant generating function of a distribution. The cumulant generating function of a $\Gamma(\alpha, \beta)$ distribution can be defined as the function
+\begin{lstlisting}[language=Julia, mathescape, escapechar=\%]
+julia> gamma(p, $\lambda$) = t -> p*log($\lambda$) - p*log($\lambda$-t)
+\end{lstlisting}
+This function can then both be used with concrete values of $p, \lambda$ and $t$, for instance $\textrm{gamma}(1.0, 2.0)(1.0) = 0.6931471805599453$. However, one can also define symbolic variables for $p$ and $\lambda$ to construct a symbolic expression of the cumulant generating function
+\begin{lstlisting}[language=Julia, mathescape, escapechar=\%]
+julia> @syms p::positive $\lambda$::positive
+julia> gamma(p, $\lambda$)(t)
+p*log($\lambda$) - p*log($\lambda$-1.0)
+\end{lstlisting}
+This modularity can be used to construct helper functions to manipulate cumulant generating functions based on other libraries. For instance, if we are interested in computing the cumulants of a distribution, we can use the same definition of the cumulant function together and use the TaylorSeries \cite{TaylorSeries} library to efficiently compute the derivatives of the cumulant generating function. This let's us define the following function to compute the first $n$ cumulants of a distribution from its cumulant generating function
+\begin{lstlisting}[language=Julia, mathescape, escapechar=\%]
+function cumulants(K, n; T=Number)
+    t = Taylor1(T, n+1)
+    (K(t).coeffs ./ exp(t).coeffs)[2:end]
+end
+\end{lstlisting}
+Julia's extensibility makes it easy to combine several libraries to develop more advanced functionalities. For instace, we can the code presented above to compute the generic formula of the mean and variance of a $\Gamma(p, \lambda)$ distribution without having to program the interaction between Julia's SymPy bindings and the TaylorSeries library
+\begin{lstlisting}[language=Julia, mathescape, escapechar=\%]
+julia> @syms p::positive $\lambda$::positive
+julia> $\mu,\ \sigma^2$ = cumulants(gamma(p, $\lambda$), 2)
+2-element Vector{Sym}:
+   p/$\lambda$
+   p/$\lambda^2$
+\end{lstlisting}
+We used the capability of Julia to compose high-level libraries in order to develop a generic procedures for manipulating cumulant generating functions and develop density approximations for sums and maximum likelihood estimators. As an example, Listing \ref{lst-edgeworth} implements an arbitrary-order Edgeworth expansion by combining the mathematical derivation of the Edgeworth series in Section \note{TODO add ref} and some of the ideas described above.
+
+A particularly appealing example of the usage of the function in Listing \ref{lst-edgeworth} is to derive the generic formula of the Edgeworth series of a specific order given the required cumulants. We start by defining a function \lstinline{symcgf(cumulants)} which creates a cumulant generating function with cumulants provided as an argument. For instance,
+\begin{lstlisting}[language=Julia, mathescape, escapechar=\%]
+julia> @syms t::real $\kappa_3$::real $\kappa_4$::real
+julia> K = symcgf([0.0; 1.0; $\kappa_3$; $\kappa_4$])
+julia> cumulants(K, 5; T=Sym)
+5-element Vector{Sym}:
+ 0
+ 1
+ $\kappa_3$
+ $\kappa_4$
+ 0
+\end{lstlisting}
+We can then use the \lstinline{edgeworth} from Listing \ref{lst-edgeworth} to compute the explicit formula for the Edgeworth series of order 4\footnote{To avoid writing out the Hermite polynomials, we use a sligthly modified version of the code in Listing \ref{lst-edgeworth} replacing Hermite polynomials by symbolic functions $H_k$.}
+\begin{lstlisting}[language=Julia, mathescape, escapechar=\%]
+julia> edgeworth(K, n, 4; T=Sym)(x)
+                                                    -$x^2$  
+                  /                             \   ---
+                  |    $\kappa_3^2$$H_6$(x)      $\kappa_4H_4$(x)      $\kappa_3H_3$(x)     |   2  
+0.398942280401433 |1 + ------ + ------ + ------- | e    %\footnote{This output was lightly adapted to properly render in LaTeX. }%
+                  |     72n       24n     6$\sqrt{n}$      |      
+                  \                             /    
+
+\end{lstlisting}
+With $(2\pi)^{-1/2} \approx 0.398942280401433$, this formula corresponds to the known expression of $e_4$ that could be derived manually.
+\newpage
+
+\begin{lstlisting}[language=Julia, mathescape, escapechar=\%, caption={Symbolic implementation of the Edgeworth expansion}, label={lst-edgeworth}]
+function edgeworth(K, nsum, order; T=Float64)
+    H(k) = basis(ChebyshevHermite, k)
+    finaltype = promote_rule(T, typeof(nsum))
+    taylororder = 3*order+1
+
+    # Define two symbolic variables t and n. We use t as
+    # variable  of the cgf for computing Taylor series and
+    # n as the symbolic number of elements in the sum in
+    # order to be able to track terms of various orders of n.
+    @vars t n::(positive, integer)
+
+    # Start by constructing the cgf of $\sum (X_i - \mu)/\sqrt{\sigma^2 n}$,
+    # as discussed in Remark %\ref{rem-centering}%.
+    $\mu$, $\sigma^2$ = cumulants(K, 2; T=T)
+    stdK = affine(K, -$\mu$, 1/sqrt($\sigma^2$*n))
+    sumK = iidsum(stdK, n)
+
+    # Use the new cgf to construct the expansion of the ratio 
+    # of characteristic functions, as in Equation (%\ref{eq-char-expansion}%).
+    ratio = exp(sumK(t) - t^2/2)
+    expansion = ratio.series(t, n=taylororder).removeO()
+
+    # Then proceed by truncating the expansion to the desired 
+    # order and replace the symbolic n by its true value.
+    expansion = collect(expand(expansion), n)
+    expansion = truncate_order(expansion, n, (1-order)/2)
+    expansion = subs(expand(expansion), n, nsum)
+
+    # The `expansion` variable is now a symbolic polynomial 
+    # in the variable t. We retrieve the density by Fourier 
+    # inversion, by which we replace instances of t^k by the 
+    # k-th Hermite polynomial as in Equation (%\ref{eq-edgeworth-full}%).
+    $\alpha$star = collect(expansion, t).coeff.(t.^(0:taylororder))
+    $\alpha$star = convert.(finaltype, $\alpha$star)
+    polynomial = sum([$\alpha$star[i]*H(i-1) for i=1:length($\alpha$star)])
+
+    # Finally, the approximate density can be constructed
+    # as done in %\ref{eq-edgeworth-full}% and using Remark %\ref{rem-centering}%.
+    function density(z)
+        $\kappa_1$ = sqrt(nsum)*$\mu$; x = (z - $\kappa_1$) / sqrt($\sigma^2$)
+        return exp(-x^2/2)/sqrt($\sigma^2$*2$\pi$) * polynomial(x)
+    end
+end
+\end{lstlisting}

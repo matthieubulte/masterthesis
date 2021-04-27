@@ -32,12 +32,12 @@ For any $s \in \Rp$, we can now find a distribution $P_{\hat\gamma_s} \in \mathc
 \end{equation}
 We choose to call the solution of this equation $\hat\gamma_s$ to emphasize the fact that instead of choosing one unique $\gamma$ and then construct an approximation of the density of $P_\gamma$ over $\Rp$, we find a different $\hat\gamma_s$ at each $s \in \Rp$ such that the Edgeworth approximation of the density of $P_{\hat\gamma_s}$ is accurate in $s$. Note that if $\hat\gamma_s$ solves (\ref{eq-saddlepoint}), it is also the maximum likelihood estimator of $\gamma$ within the model $\mathcal{T}_P$. We can then construct the Edgeworth approximation $e_k(s; \kappa(\hat\gamma_s))$ to the density $f_{\hat\gamma_s}$ with
 \begin{equation*}
-    f_{\hat\gamma_s}(s) = e_k(s; \kappa(\hat\gamma_s)) + o(n^{1-k/2}).
+    f_{\hat\gamma_s}(s) = e_k(s; \kappa(\hat\gamma_s)) + o(n^{(1-k)/2}).
 \end{equation*}
 Replacing this in the expression of $f$ in terms of $f_{\hat\gamma_s}$ gives
 \begin{align}
-    f(s) &= \expf{nK(\hat\gamma_s / n) - \hat\gamma_s^\top s}\left[e_k(s; \kappa(\hat\gamma_s)) + o(n^{1-k/2})\right]\nonumber\\
-    &= g_k(s; K)\left[1 + o(n^{1-k/2})\right]. \label{eq-saddle-exp}
+    f(s) &= \expf{nK(\hat\gamma_s / n) - \hat\gamma_s^\top s}\left[e_k(s; \kappa(\hat\gamma_s)) + o(n^{(1-k)/2})\right]\nonumber\\
+    &= g_k(s; K)\left[1 + o(n^{(1-k)/2})\right]. \label{eq-saddle-exp}
 \end{align}
 A special case of particular interest is for $k = 3$. In this case, the Edgeworth approximation of $P_{\hat\gamma_s}$ is equal to its normal approximation and is given by
 \begin{equation*}
@@ -56,15 +56,15 @@ We call this approximation the \textit{Saddlepoint approximation}. We can see th
 where $b(\hat\gamma_s / n)$ is the coefficient of the terms of order $O(n^{-1})$ in the Edgeworth expansion of the tilted density. We justify this expansion error in the following theorem.
 
 \begin{theorem}
-    Let $P$ be a distribution with cumulant genrating function $K$ and $k \in \N_{\geq 2}$ such that all cumulants of $P$ of order up to $k$ exist. Suppose that $K$ is defined in an open neighborhood $U$ of 0 and that for every $s \in \Rp$, Equation (\ref{eq-saddlepoint}) has a unique solution $\hat\gamma_s \in U$. 
-
-    Let $n \in \N$ and $X_1, \ldots, X_n \simiid P$ and $S$ be the mean
+    Let $P$ be a distribution with cumulant genrating function $K$ and $k \in \N_{\geq 2}$ such that all cumulants of $P$ of order up to $k$ exist. Suppose that for every $s \in \Rp$, Equation (\ref{eq-saddlepoint}) has a unique solution $\hat\gamma_s \in U$. Let $n \in \N$ and $X_1, \ldots, X_n \simiid P$ and $S$ be the mean
     \begin{equation*}
         S = n^{-1} \sum_{i=1}^n X_i.
     \end{equation*}
-
-    Then the Saddlepoint approximation $g_k(\cdot; K)$ given in Equation (\ref{eq-saddle-exp}) approximates $f_S$, the density of $S$, with an relative error of order $o(n^{1-\ceil{k/2}})$.
+    Then, if the density $f_S$ of $S$ exists, the approximation $g_k(\cdot; K)$ given in Equation (\ref{eq-saddle-exp}) approximates $f_S$ pointwise with an relative error of order $o(n^{\ceil{(1-k)/2)}})$.
 \end{theorem}
+\begin{proof}
+    This result is a direct consequence of Theorem \ref{thm-edgeworth} applied pointwise to the tilted distribution $P_{\hat\gamma_s}$ for every $s \in \Rp$. As discussed above, the Remark \ref{rem-hermite-odd} implies that only powers of $n^{-1}$ have non-vanishing coefficients in the Edgeworth approximation of the tilted densities, which in turns implies that the Edgeworth approximation error in each point is of order $o(n^{\ceil{(1-k)/2)}})$.
+\end{proof}
 
 While the Saddlepoint approximation shows many advantages over the Edgeworth approximation, it is important to note that the Saddlepoint approximation uses information from the complete cumulant generating function of the approximated density. The Edgeworth approximation on the other hand only uses the first $k$ moments of the distributions, which are evaluations of derivatives of the cumulant generating function in 0. 
 

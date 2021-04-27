@@ -175,6 +175,10 @@ begin
     inkscapegen("pstar_exp_dens")
 end
 
+@syms n::integer x::real
+edgeworth(symcgf(5), n, 4; T=Sym)
+
+
 # Γ(2, 1)
 for nterms = [1; 10]
     α = 2.0; θ = 1.0;

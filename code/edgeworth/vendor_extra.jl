@@ -27,16 +27,16 @@ end
 
 ∇²(f) = x -> ReverseDiff.hessian(t -> f(t[1]), [x])[1]
 
-using SymPy
-
 macro syms(xs...)
     # If the user separates declaration with commas, the top-level expression is a tuple
-    if length(xs) == 1 && xs[1].head == :tuple
-        return :(@syms($(xs[1].args...)))
-    elseif length(xs) == 0
-        return nothing
+    if length(xs) == 1 && isa(xs[1], Expr) && xs[1].head == :tuple
+        _gensyms(xs[1].args...)
+    elseif length(xs) > 0
+        _gensyms(xs...)
     end
+end
 
+function _gensyms(xs...)
     asstokw(a) = Expr(:kw, esc(a), true)
     
     # Each declaration is parsed and generates a declaration using `symbols`
@@ -84,5 +84,3 @@ end
 function parseerror()
     error("Incorrect @syms syntax. Try `@syms x::(real,positive)=>\"x₀\" y() z::complex n::integer` for instance.")
 end
-
-@macroexpand @syms x::(real,positive)=>"x₀", y, z::complex, n::integer

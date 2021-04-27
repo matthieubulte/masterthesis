@@ -10,7 +10,7 @@
     \end{equation*}
     and hence $\xi^l \in L^1(\Rp)$. Since $\xi^l$ is the characteristic function of a sum of $l$ independent copies of $X$, Theorem \ref{thm-char-inversion} applies and the density of the convolution of $l$ copies of $X$ exists and is bounded.
 
-    Assume now that there exists a $l \in \N$ such that the density $f_l$ of a convolution of $l$ independent copies of $X$ exists and is bounded. Then, for any $r \in \R$
+    We now prove the \textit{if} direction of the theorem. Assume that there exists a $l \in \N$ such that the density $f_l$ of a convolution of $l$ independent copies of $X$ exists and is bounded. Then, for any $r \in \R$
     \begin{equation*}
         \int_{[-r, r]^p} \abs{\xi(t)}^{2l} \d t
         = \int_{[-r, r]^p} \abs{\xi(t)}^l\abs{\xi(t)}^l \d t
@@ -36,5 +36,5 @@
         &= \intRp{x}{\intRp{v}{f_j(x)f_j(x + v/r)\left[\prod_{k=1}^p \frac{2 \sin(v_k)}{v_k/r} \right] r^{-p}}}\\
         &= \intRp{x}{\intRp{v}{f_j(x)f_j(x + v/r)\left[\prod_{k=1}^p \frac{2 \sin(v_k)}{v_k} \right]}}.
     \end{align*}
-    Using that $\sup_{x \in \R} \abs{\sin x / x} < 1$, we have that $\prod_{k=1}^p \frac{2 \sin(v_k)}{v_k} < 2^p$, leaving nested integrals of density functions over the entire domain, which is equal to 1. This gives a finite upper bound on $\norm{\xi}_{2l}^{2l}$ independent of $r$ which concludes the proof for $q = 2l$.
+    Using that $\sup_{x \in \R} \abs{\sin x / x} < 1$, we have that $\prod_{k=1}^p \frac{2 \sin(v_k)}{v_k} < 2^p$, leaving nested integrals of density functions over their entire support, which is equal to 1. This gives a finite upper bound on $\norm{\xi}_{2l}^{2l}$ independent of $r$ which concludes the proof for $q = 2l$.
 \end{proof}
