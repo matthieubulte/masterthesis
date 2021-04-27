@@ -21,25 +21,25 @@ end
 function plot_approximations(
     nterms,
     cgf,
-    truepdf;
+    truedistrib;
     incl_saddlepoint=true,
     incl_edgeworth=true,
     xlim=nothing
     )
 
     q = LinRange(xlim[1], xlim[2], 1000)
-    p = plot(q, truepdf, label=L"\textrm{Truth}; n \textbf{=} %$nterms", color=:black)
+    p = plot(q, _pdf(truedistrib), label=L"\textrm{Truth}; n \textbf{=} %$nterms", color=:black)
     
     if incl_saddlepoint
         f = dscale(saddlepoint(cgf, nterms), 1/sqrt(nterms))
-        plot!(p, q, f.(q), label=L"\textrm{Saddlepoint}")
+        plot!(p, q, f.(q), label=L"\textrm{Saddlepoint}", color=:black)
     end
     
     if incl_edgeworth
         ls = [:dash, :dot, :dashdot]
         for i=2:4
             e = edgeworth_sum(cgf, nterms, i)
-            plot!(p, q, e.(q), label=L"\textrm{Edgeworth-%$i}", linestyle=ls[i-1])
+            plot!(p, q, e.(q), label=L"\textrm{Edgeworth-%$i}", linestyle=ls[i-1], color=:black)
         end
     end
 
@@ -66,6 +66,7 @@ function plot_approximations_err(
             truedistrib,
             dscale(saddlepoint(cgf, nterms), 1/sqrt(nterms));
             xlim=xlim,
+            relative=relative,
             label=L"\textrm{Saddlepoint}",
             color=:black
         )
@@ -78,6 +79,7 @@ function plot_approximations_err(
                 truedistrib,
                 edgeworth_sum(cgf, nterms, i);
                 xlim=xlim,
+                relative=relative,
                 label=L"\textrm{Edgeworth-%$i}",
                 color=:black, linestyle=ls[i-1]
             )
@@ -86,7 +88,6 @@ function plot_approximations_err(
 
     p
 end
-
 
 function plot_approximation_err!(p,
     truedistrib,
@@ -174,7 +175,6 @@ begin
     inkscapegen("pstar_exp_dens")
 end
 
-
 # Γ(2, 1)
 for nterms = [1; 10]
     α = 2.0; θ = 1.0;
@@ -182,8 +182,8 @@ for nterms = [1; 10]
 
     p = plot_approximations(nterms, 
         gamma(α, θ),
-        _pdf(Gamma(nterms*α, θ/sqrt(nterms)));
-        xlim=lims
+        Gamma(nterms*α, θ/sqrt(nterms));
+        xlim=lims, incl_saddlepoint=false
     )
     plot!(p, size=(400,500), legendfontsize=10, legend=:topright)
     Plots.svg(p, "plots/edgeworth_gamma21_$(nterms)_terms")
@@ -196,7 +196,7 @@ for nterms = [1; 10]
     p = plot_approximations(nterms, 
         gamma(α, θ),
         Gamma(nterms*α, θ/sqrt(nterms));
-        xlim=(0, 6)
+        xlim=(0, 6), incl_saddlepoint=false
     )
     plot!(p, size=(400,500), legendfontsize=10, legend=:topright)
     Plots.svg(p, "plots/edgeworth_gamma11_$(nterms)_terms")
@@ -210,7 +210,7 @@ for relative=[true; false]
         gamma(α, θ),
         Gamma(nterms*α, θ/sqrt(nterms)),
         relative=relative,
-        xlim=(0,6)
+        xlim=(0,6), incl_saddlepoint=false
     )
     plot!(p, size=(400,500), legendfontsize=10, legend=:topright)
     Plots.svg(p, "plots/edgeworth_err_$(rel)_gamma11_10_terms")
@@ -224,7 +224,7 @@ for relative=[true; false]
         gamma(α, θ),
         Gamma(nterms*α, θ/sqrt(nterms)),
         relative=relative,
-        xlim=(2, 10)
+        xlim=(2, 10), incl_saddlepoint=false
     )
     plot!(p, size=(400,500), legendfontsize=10, legend=:topright)
     Plots.svg(p, "plots/edgeworth_err_$(rel)_gamma21_10_terms")

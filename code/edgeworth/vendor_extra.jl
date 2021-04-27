@@ -27,64 +27,62 @@ end
 
 ∇²(f) = x -> ReverseDiff.hessian(t -> f(t[1]), [x])[1]
 
+using SymPy
 
-macro vars(x...)
-    q = Expr(:block)
-    syms = []
-    for expr in x
-        sym = nothing
-        varname = nothing
-        assumptions = []
-
-        res = parserename(expr)
-        if !isnothing(res)
-            expr, varname = res
-        end
-
-        if isa(expr, Symbol)
-            sym = expr
-        end
-            
-        res = parseassumptions(expr)
-        if !isnothing(res)
-            sym, assumptions = res
-        end
-
-        if isnothing(varname)
-            varname = String(sym)
-        end
-        
-        asstokw(a) = Expr(:kw, esc(a), true)
-        ex = :($(esc(sym)) = $(esc(symbols))($(varname), $(map(asstokw, assumptions)...)))
-
-        push!(syms, sym)
-        push!(q.args, ex)
-    end
-    push!(q.args, Expr(:tuple, map(esc,syms)...))
-    q
-end
-
-function parserename(s)
-    isa(s, Expr) || return nothing
-    (s.head == :call && s.args[1] == :(=>)) || return nothing
-    expr, strname = s.args[2:end]
-    return expr, String(strname)
-end
-
-function parseassumptions(s)
-    isa(s, Expr) || return nothing
-    s.head == :(::) || return nothing
-    length(s.args) == 2 || return nothing
-
-    sym, assumptions = s.args
-
-    if isa(assumptions, Symbol)
-        assumptions = (assumptions,)
-    elseif isa(assumptions, Expr) && assumptions.head == :tuple
-        assumptions = assumptions.args
-    else
+macro syms(xs...)
+    # If the user separates declaration with commas, the top-level expression is a tuple
+    if length(xs) == 1 && xs[1].head == :tuple
+        return :(@syms($(xs[1].args...)))
+    elseif length(xs) == 0
         return nothing
     end
 
-    sym, assumptions
+    asstokw(a) = Expr(:kw, esc(a), true)
+    
+    # Each declaration is parsed and generates a declaration using `symbols`
+    symdefs = map(xs) do expr
+        varname, sym, assumptions, isfun = parsedecl(expr)
+        ctor = isfun ? :SymFunction : :symbols
+        sym, :($(esc(sym)) = $(ctor)($(varname), $(map(asstokw, assumptions)...)))
+    end
+    syms, defs = collect(zip(symdefs...))
+
+    # The macro returns a tuple of Symbols that were declared
+    Expr(:block, defs..., :(tuple($(map(esc,syms)...))))
 end
+
+function parsedecl(expr)
+    # @vars x
+    if isa(expr, Symbol)
+        return String(expr), expr, [], false
+    # @vars x::assumptions, where assumption = assumptionkw | (assumptionkw...)
+    elseif isa(expr, Expr) && expr.head == :(::)
+        symexpr, assumptions = expr.args
+        _, sym, _, isfun = parsedecl(symexpr)
+        assumptions = isa(assumptions, Symbol) ? (assumptions,) : assumptions.args
+        return String(sym), sym, assumptions, isfun
+    # @vars x=>"name" 
+    elseif isa(expr, Expr) && expr.head == :call && expr.args[1] == :(=>)
+        length(expr.args) == 3 || parseerror()
+        isa(expr.args[3], String) || parseerror()
+
+        expr, strname = expr.args[2:end]
+        _, sym, assumptions, isfun = parsedecl(expr)
+        return strname, sym, assumptions, isfun
+    # @vars x()
+    elseif isa(expr, Expr) && expr.head == :call && expr.args[1] != :(=>)
+        length(expr.args) == 1 || parseerror()
+        isa(expr.args[1], Symbol) || parseerror()
+
+        sym = expr.args[1]
+        return String(sym), sym, [], true
+    else
+        parseerror()
+    end
+end
+
+function parseerror()
+    error("Incorrect @syms syntax. Try `@syms x::(real,positive)=>\"x₀\" y() z::complex n::integer` for instance.")
+end
+
+@macroexpand @syms x::(real,positive)=>"x₀", y, z::complex, n::integer
