@@ -1,9 +1,4 @@
-using Distributions
-using LinearAlgebra
-using PDMats
-using Plots
-using StatsPlots
-using ProgressMeter
+using Distributions, LinearAlgebra, PDMats, Plots, StatsPlots, ProgressMeter, LaTeXStrings, Plots.PlotMeasures
 
 include("propscaling.jl")
 
@@ -40,8 +35,8 @@ K = PDMat(K_asym + K_asym')
 Σ = inv(K)
 
 ns = [5, 10, 15];
-results = zeros(size(ns)[1], sims);
 sims = 10_000
+results = zeros(size(ns)[1], sims);
 
 ins = 1
 for n = ns
@@ -60,8 +55,8 @@ for n = ns
 end
 
 q = LinRange(0, 0.99, 100)
-p = plot(layout=(1,3), size=(750,350))
-ins = 1
+
+p = plot(layout=(1,3), size=(750,350), bottom_margin=10px, left_margin=10px); ins = 1; 
 for n = ns
     qvals = quantile(results[ins, :], q);
     q2nvals = qvals.^(2/n);
@@ -70,14 +65,14 @@ for n = ns
     qχ² = 1 .- cdf(Chisq(1), wvals);
     qβ = cdf(Beta((n - f - 1)/2, 1/2), q2nvals);
 
-    
-    plot!(subplot=ins,q,q,color="black",label=nothing,legend=:topleft)
-    plot!(subplot=ins,q, qχ², label="χ²(1)")
-    plot!(subplot=ins,q, qβ, label="Beta")
-    xlabel!(subplot=ins,"empirical prob.",fontsize=1)
-    title!(subplot=ins,"sample size = $(n)")
+    plot!(subplot=ins,q, q, color=:black, label=nothing, legend=:topleft)
+    plot!(subplot=ins,q, qχ², label=L"\chi^2", color=:black, linestyle=:dot)
+    plot!(subplot=ins,q, qβ, label=L"Beta", color=:black, linestyle=:dash)
+    title!(subplot=ins, L"n = %$(n)")
     
     ins += 1
 end
-ylabel!(subplot=1,"approx. prob.")
-savefig(p, "output3/diamond_vs_square")
+ylabel!(subplot=1, L"\textrm{Approximatd probability}")
+xlabel!(subplot=2, L"\textrm{Empirical probability}")
+
+savefig(p, "output3/diamond_vs_square__both")

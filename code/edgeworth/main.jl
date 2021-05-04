@@ -176,7 +176,7 @@ begin
 end
 
 @syms n::integer x::real
-edgeworth(symcgf(5), n, 4; T=Sym)
+edgeworth(symcgf(5), n, 4; T=Sym)(x)
 
 
 # Γ(2, 1)

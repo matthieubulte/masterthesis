@@ -309,9 +309,9 @@ where $P_k(\cdot; \kappa(X))$ is the polynomial part of the Edgeworth approximat
 \end{theorem}
 
 \begin{proof}
-    Wthout loss of generality, we assume that $X_i$ has a mean equal to 0 and a covariance matrix equal to the identity, see Remark \ref{rem-centering}. Let $\xi$ be the Fourier transform of $e_k(\cdot; \kappa)$, then by Corollay \ref{corr-fourier-inv}, we can bound the the absolute difference between $f_Y$ and $e_k(\cdot; \kappa)$ as
+    Without loss of generality, we assume that $X_i$ has a mean equal to 0 and a covariance matrix equal to the identity, see Remark \ref{rem-centering}. Let $\xi$ be the Fourier transform of $e_k(\cdot; \kappa)$, then by Corollay \ref{corr-fourier-inv}, we can bound the the absolute difference between $f_Y$ and $e_k(\cdot; \kappa)$ as
     \begin{equation*}
-        |f_Y(t) - e_k(t; \kappa)| \leq (2\pi)^{-p}\intRp{t}{|\zeta(tn^{-1/2})^n - \xi(t)|},
+        |f_Y(y) - e_k(y; \kappa)| \leq (2\pi)^{-p}\intRp{t}{|\zeta(tn^{-1/2})^n - \xi(t)|},
     \end{equation*}
     where $\zeta(tn^{-1/2})^n$ is the characteristic function of $Y$. Since both $\zeta$ and $\xi$ are $L^1(\Rp)$, the integral is well defined and provides a valid upper bound. We proceed by splitting the range of integration in two parts: one parts in which $t$ is small such that Theorem \ref{thm-edge-inv-tech} can be used, and the rest of the integral will be handled separately.
 
