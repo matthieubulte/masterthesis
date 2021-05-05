@@ -41,6 +41,7 @@
 \newcommand{\eset}[1]{{\left\{#1\right\}}}
 \newcommand{\cov}{{\textrm{Cov}}}
 \renewcommand{\t}[1]{{\textrm{#1}}}
+\renewcommand{\c}[1]{{\mathcal{#1}}}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Theorems setup
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -68,10 +69,15 @@
 \newtheorem{remark}[theorem]{Remark}
 \theoremstyle{def}
 \newtheorem{definition}[theorem]{Definition}
+\theoremstyle{def}
+\newtheorem{proposition}[theorem]{Proposition}
 
 \graphicspath{{figures/}}
 
 \global\newcommand{\note}[1]{{\color{red}(#1)}}
+
+\def\centerarc[#1](#2)(#3:#4:#5)% Syntax: [draw options] (center) (initial angle:final angle:radius)
+    { \draw[#1] ($(#2)+({#5*cos(#3)},{#5*sin(#3)})$) arc (#3:#4:#5); }
 
 
 
@@ -99,3 +105,5 @@
     commentstyle     = \color{ForestGreen},
     showstringspaces = false,
 }
+
+
