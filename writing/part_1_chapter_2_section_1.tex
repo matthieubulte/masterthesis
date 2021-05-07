@@ -87,7 +87,6 @@ This theorem lets us extend the notation introduced in Equation (\ref{eq-fourier
     \Finv[\zeta](x) = \left(2\pi\right)^{-p}\int_\Rp \expf{-i t^\top x} \zeta(t) \d t.
 \end{equation*}
 
-
 \begin{lemma} \label{lemma-fourier-derivative}
     Let $r \in \N$ and $f : \R \rightarrow \Rp$ such that all partial derivatives of $f$ of order up to $r$ exist and for any $\tilde{s} \in S(r-1)$
     \begin{equation} \label{eq-tails-to-zero}
@@ -307,7 +306,6 @@ where $P_k(\cdot; \kappa(X))$ is the polynomial part of the Edgeworth approximat
     
     Let $e_k(y; \kappa)$ be the Edgeworth series, constructed by only keeping terms order up to $O(n^{1-k/2})$ in Equation (\ref{eq-edgeworth-full}). Then, if the density $f_Y$ of $Y$ exists, $e_k(y; \kappa)$ approximates $f_Y$ with a uniform error of order $o(n^{(1 - k)/2})$.
 \end{theorem}
-
 \begin{proof}
     Without loss of generality, we assume that $X_i$ has a mean equal to 0 and a covariance matrix equal to the identity, see Remark \ref{rem-centering}. Let $\xi$ be the Fourier transform of $e_k(\cdot; \kappa)$, then by Corollay \ref{corr-fourier-inv}, we can bound the the absolute difference between $f_Y$ and $e_k(\cdot; \kappa)$ as
     \begin{equation*}

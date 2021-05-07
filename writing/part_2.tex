@@ -187,61 +187,129 @@ Now that we have presented some of the conditions under which one can almost sur
 \end{equation}
 This Equation naturally suggests an iterative algorithm successively adjusting parts of the covariance matrix to satisfy (\ref{eq-clique-constraint}) while keeping the running matrix positive definite. This procedure, called \textit{iterative proportional scaling}, was studied by Speed and Kiiveri \cite{speed1986gaussian} among with other algorithms for solving the maximum equation problem in a Gaussian graphical model. 
 
-We now present a development of the algorithm in a Gaussian graphical model with graph $\G$ given a sample covariance matrix $C$ computed from a sample of size $n > \t{mlt}(\G)$. Let $K \in \S^p_{\succ 0}$ be a positive definite matrix and $C \in \c{C}(\G)$ be a clique of $\G$. We define the \textit{$C$-marginal adjustment} operato $T_C$ given by
+We now present a development of the algorithm in a Gaussian graphical model with graph $\G$ given a sample covariance matrix $C$ computed from a sample of size $n > \t{mlt}(\G)$. Let $\Omega \in \S^p_{\succ 0}$ be a positive definite matrix and $C \in \c{C}(\G)$ be a clique of $\G$. We define the \textit{$C$-marginal adjustment} operato $T_C$ given by
 \begin{equation} \label{eq-tc-1}
-    T_C K = K + \begin{pmatrix}
+    T_C \Omega = \Omega + \begin{pmatrix}
         (S_C)^{-1} - (\Sigma_C)^{-1} & 0\\
         0 & 0 
         \end{pmatrix},
 \end{equation}
-where the variable $\Sigma$ will be used to denote the inverse of $K$ and, for simplicity of notation, we will use that the top-left block of matrices writen out explicitly corresponds to the current clique $C$. We now show that the operator $T_C$ has the following useful properties 
+where the variable $\Sigma$ will be used to denote the inverse of $\Omega$ and, for simplicity of notation, we will use that the top-left block of matrices writen out explicitly corresponds to the current clique $C$. We now show that the operator $T_C$ has the following useful properties.
 
 \begin{proposition}
     The operator $T_C$ satisfies
     \begin{itemize}
         \item[(i)] $T_C$ is well defined;
-        \item[(ii)] $T_C$ adjusts the $C$-marginal of $K$, that is, $(T_C K)^{-1}$ satisfies Equation (\ref{eq-clique-constraint}) for the clique $C$;
-        \item[(iii)] If $K \in \S^p_{\succ 0}$, $T_C K \in \S^p_{\succ 0}$;
-        \item[(iv)] If $K \in \S(\G)$, $T_C K \in \S(\G)$.
+        \item[(ii)] $T_C$ adjusts the $C$-marginal of $\Omega$, that is, $(T_C \Omega)^{-1}$ satisfies Equation (\ref{eq-clique-constraint}) for the clique $C$;
+        \item[(iii)] If $\Omega \in \S^p_{\succ 0}$, $T_C \Omega \in \S^p_{\succ 0}$;
+        \item[(iv)] If $\Omega \in \S(\G)$, $T_C \Omega \in \S(\G)$.
     \end{itemize}    
 \end{proposition}
-
 \begin{proof}
     (i) By assumption on the sample size $n$, all matrices and submatrices involved in $T_C$ are positive definite and can be inverted.
-
-    (ii) As seen earlier, the inverse of $\Sigma_C$ can be expressed in terms of $K$ by using the Schur completement
+    \newline
+    (ii) As seen earlier, the inverse of $\Sigma_C$ can be expressed in terms of $\Omega$ by using the Schur completement
     \begin{equation*}
-        (\Sigma_C)^{-1} = K_C - K_{C, C^c}(K_{C^c})^{-1}K_{C^c, C},
+        (\Sigma_C)^{-1} = \Omega_C - \Omega_{C, C^c}(\Omega_{C^c})^{-1}\Omega_{C^c, C},
     \end{equation*}
     where the completment $C^c$ is taken in $[p]$, that is, $C^c = [p] \setminus C$. Replacing this in the definition of $T_C$ gives
     \begin{equation} \label{eq-tc-2}
-        T_C K = \begin{pmatrix}
-            (S_C)^{-1} + K_{C, C^c}(K_{C^c})^{-1}K_{C^c, C} & K_{C, C^c}\\
-            K_{C^c, C} & K_{C^c, C^c}
+        T_C \Omega = \begin{pmatrix}
+            (S_C)^{-1} + \Omega_{C, C^c}(\Omega_{C^c})^{-1}\Omega_{C^c, C} & \Omega_{C, C^c}\\
+            \Omega_{C^c, C} & \Omega_{C^c, C^c}
             \end{pmatrix}.
     \end{equation}
-    We can now use the Schur complement to compute the $C$-marginal of $K$,
+    We can now use the Schur complement to compute the $C$-marginal of $\Omega$,
     \begin{align*}
-        \left[(T_C K)^{-1}\right]_C 
-        &= \left[ (S_C)^{-1} + K_{C, C^c}(K_{C^c})^{-1}K_{C^c, C} - K_{C, C^c}(K_{C^c})^{-1}K_{C^c, C} \right]^{-1}\\
+        \left[(T_C \Omega)^{-1}\right]_C 
+        &= \left[ (S_C)^{-1} + \Omega_{C, C^c}(\Omega_{C^c})^{-1}\Omega_{C^c, C} - \Omega_{C, C^c}(\Omega_{C^c})^{-1}\Omega_{C^c, C} \right]^{-1}\\
         &= \left[ (S_C)^{-1}\right]^{-1} = S_C.
     \end{align*}
-
-    (iii) By Lemma \ref{lem-sym-psd}, $T_C K$ is positive definite if and only if both $(T_C K)_C$ and $E = (T_C K)_C - (T_C K)_{C, C^c}((T_C K)_{C^c})^{-1}(T_C K)_{C^c,C}$ are positive definite. As seen in (ii), $(T_C K)_C = S_C$ and is by assumption positive definite. As for the Schur complement
+    (iii) By Lemma \ref{lem-sym-psd}, $T_C \Omega$ is positive definite if and only if both $(T_C \Omega)_C$ and $E = (T_C \Omega)_C - (T_C \Omega)_{C, C^c}((T_C \Omega)_{C^c})^{-1}(T_C \Omega)_{C^c,C}$ are positive definite. As seen in (ii), $(T_C \Omega)_C = S_C$ and is by assumption positive definite. As for the Schur complement
     \begin{align*}
-        E &= (T_C K)_C - (T_C K)_{C, C^c}((T_C K)_{C^c})^{-1}(T_C K)_{C^c,C}\\
-        &= (S_C)^{-1} + K_{C, C^c}(K_{C^c})^{-1}K_{C^c, C} - K_{C, C^c}(K_{C^c})^{-1}K_{C^c,C}\\
+        E &= (T_C \Omega)_C - (T_C \Omega)_{C, C^c}((T_C \Omega)_{C^c})^{-1}(T_C \Omega)_{C^c,C}\\
+        &= (S_C)^{-1} + \Omega_{C, C^c}(\Omega_{C^c})^{-1}\Omega_{C^c, C} - \Omega_{C, C^c}(\Omega_{C^c})^{-1}\Omega_{C^c,C}\\
         &= (S_C)^{-1},
     \end{align*}
-    is by the same assumption positive definite. Hence $T_C K$ is positive definite.
-
-    (iv) Let $E$ be the set of edges of $\G$ and $e = \eset{i, j} \notin E$ be an missing edge in $\G$. Then, since $C$ is a clique of $\G$, we have that $|C \cap \eset{i, j}| \leq 1$ and the entry of the matrix $T_C K$ corresponding to the edge $\eset{i, j}$ is in one of the following submatrices: $(T_C K)_{C, C^c}$, $(T_C K)_{C^c}$ or $(T_C K)_{C^c,C}$. Since these submatrices are left invariant by $T_C$, we have that $(T_C K)_{ij} = K_{ij} = 0$ and thus $T_C K \in \S(\G)$.
+    is by the same assumption positive definite. Hence $T_C \Omega$ is positive definite.
+    \newline
+    (iv) Let $E$ be the set of edges of $\G$ and $e = \eset{i, j} \notin E$ be an missing edge in $\G$. Then, since $C$ is a clique of $\G$, we have that $|C \cap \eset{i, j}| \leq 1$ and the entry of the matrix $T_C \Omega$ corresponding to the edge $\eset{i, j}$ is in one of the following submatrices: $(T_C \Omega)_{C, C^c}$, $(T_C \Omega)_{C^c}$ or $(T_C \Omega)_{C^c,C}$. Since these submatrices are left invariant by $T_C$, we have that $(T_C \Omega)_{ij} = \Omega_{ij} = 0$ and thus $T_C \Omega \in \S(\G)$.
 \end{proof}
 
- 
-The operator $T_C$ is called the \textit{$C$-marginal adjustment} operator since it adjusts the $C$ marginal to satisfy Equation (\ref{eq-clique-constraint}) for the clique $C$. This can be verified by using the Schur complement to compute the corresponding entry in $(T_C K)^{-1}$,
+Given these properties, we can naturally define an algorithm by cycling through the cliques $C \in \c{C}(\G)$ of $\G$, successively adjusting each $C$-marginal by applying the adjustement operator $T_C$, and repeating until convergence. This algorithm is the iterative proportional scaling algorithm, given in Algorithm \ref{alg:itpropscale}. The question remains of whether this algorithm converges and why. We start by showing that the $C$-marginal adjustement operator computes the solution to a contrained version of (\ref{eq-primal}).
 
-By Lemma \ref{lem-sym-psd}, we can also ver
+\begin{algorithm}[ht!]
+    \caption{Iterative proportional scaling}
+    \label{alg:itpropscale}
+    \begin{algorithmic}[1]
+    \Require{Set of cliques $\c{C}(\G)$, sample covariance matrix $S$, tolerance $\varepsilon$.} 
+    \Ensure{Maximum likelihood estimator $\hat\Omega$.}
+    
+        \State {Let $\Omega^0 = 1_p$}
+        \State {Let $\Omega^1 = \Omega^0$}
+        \For{\texttt{$C \in \c{C}(\G)$ }}
+            \State{Set $\Omega^1 := T_C \Omega^1$ }
+        \EndFor
+        \If{$\norm{\Omega^1 - \Omega^0} < \varepsilon$}
+            \State{Return $\hat\Omega := \Omega^1$}
+        \Else
+            \State{Set $\Omega^0 := \Omega^1$}
+            \State{Go to line 2.}
+        \EndIf
+    \end{algorithmic}
+\end{algorithm}
+
+\begin{lemma}
+    Let $\Omega^0 \in \S_{\succ 0}(\G)$, the $C$-marginal adjustement operator $T_C$ computes the solution to problem (\ref{eq-primal}) over the section 
+    \begin{equation*}
+        \Theta_C(\Omega^0) = \eset{ \Omega \in \S_{\succ 0}(\G) : \Omega_{C^c} = \Omega^0_{C^c} \t{ and } \Omega_{C, C^c} = \Omega^0_{C, C^c} }.
+    \end{equation*}
+    That is, $T_C \Omega^0$ is the solution to
+    \begin{align} \label{eq-sub-optim}
+        \begin{split}
+            &\underset{\Omega \in \S_{\succ 0}(\G)}{\textrm{maximize}}\ \  \log |\Omega| - \tr[S\Omega]\\
+            &\textrm{subject to}\ \ \Omega_{C^c} = \Omega^0_{C^c} \t{ and } \Omega_{C, C^c} = \Omega^0_{C, C^c}.
+        \end{split}
+    \end{align}
+\end{lemma}
+\begin{proof}
+    Using the expression of the determinant of a block matrix in terms of Schur complement, we have
+    \begin{equation*}
+        \abs{\Omega} 
+        = \abs{\Omega_C - \Omega_{C, C^c}(\Omega_{C^c})^{-1}\Omega_{C^c, C}} \abs{\Omega_{C^c}}
+    \end{equation*}
+    Furthermore, using the fact that $\Omega \in \Theta(\Omega^0)$
+    \begin{align*}
+        \log \abs{\Omega}
+        &= \log \left\{ \abs{\Omega_C - \Omega^0_{C, C^c}(\Omega^0_{C^c})^{-1}\Omega^0_{C^c, C}} \abs{\Omega^0_{C^c}} \right\}\\
+        &= \log \abs{\Omega_C - \Omega^0_{C, C^c}(\Omega^0_{C^c})^{-1}\Omega^0_{C^c, C}} + \log \abs{\Omega^0_{C^c}}\\
+        &= \log \abs{\Omega'} + \log \abs{\Omega^0_{C^c}},
+    \end{align*}
+    where $\Omega' = \Omega_C - \Omega^0_{C, C^c}(\Omega^0_{C^c})^{-1}\Omega^0_{C^c, C}$. Since $\Omega^0_{C^c}$ is constant in the optimization problem (\ref{eq-sub-optim}), it can be ignored and we have $\log \abs{\Omega} \doteq \log \abs{\Omega'}$, where $\doteq$ denotes equality up to a constant term. Furthermore, using again that $\Omega \in \Theta_C(\Omega^0)$, we have
+    \begin{align*}
+        \trB{\Omega S}
+        &= \trB{\Omega_C S_C} + \trB{\Omega_{C^c} S_{C^c}} + 2 \trB{\Omega_{C,C^c} S_{C,C^c}} 
+        \doteq \trB{\Omega_C S_C} \\
+        &= \trB{\Omega'S_C} + \trB{\Omega^0_{C, C^c}(\Omega^0_{C^c})^{-1}\Omega^0_{C^c, C}S_C}
+        \doteq  \trB{\Omega'S_C}.
+    \end{align*}
+    Hence, the optimization problem (\ref{eq-sub-optim}) is equivalent to 
+    \begin{equation*}
+        \underset{\Omega' \in \S_{\succ 0}^{|C|}}{\textrm{maximize}}\ \  \log |\Omega'| - \tr[S_C\Omega'].
+    \end{equation*}
+    Comparing this to earlier discussions, this problem is equivalent to finding the maximum likelihood estimator of the precision matrix $\Omega'$ in the Gaussian graphical model associated to the graph $\G$ restricted to the nodes in $C$. Since $C$ is a clique, the subgraph is complete and the maximum likelihood estimator is given by $\hat\Omega' = (S_C)^{-1}$. Hence, the solution to (\ref{eq-sub-optim}) is given by $\hat\Omega \in \Theta(\Omega^0)$ with
+    \begin{align*}
+        \hat\Omega_C
+        &= \Omega' + \Omega^0_{C, C^c}(\Omega^0_{C^c})^{-1}\Omega^0_{C^c, C}\\
+        &= (S_C)^{-1} + \Omega^0_{C, C^c}(\Omega^0_{C^c})^{-1}\Omega^0_{C^c, C},
+    \end{align*}
+    and hence the solution to (\ref{eq-sub-optim}) is $\hat\Omega = T_C \Omega^0$.
+\end{proof}
+
+Hence, Algorithm \ref{alg:itpropscale} corresponds to an \textit{iterative partial maximization} algorithm, or block coordinate descent algorithm. Since $T_C$ is a linear transformation, it is continuous and we have already shown that $T_C$ maps $\S_{\succ 0}(\G)$ onto itself. With these assumptions satisfied, Lauritzen \cite[Proposition A.3]{lauritzen1996} shows that the iterative partial maximization algorithm converges and hence, Algorithm \ref{alg:itpropscale} converges to the maximum likelihood estimator $\hat\Omega \in \S_{\succ 0}(\G)$.
+
+
+
 
 \newpage
 \begin{lemma} \label{lem-gaussian-cond}
