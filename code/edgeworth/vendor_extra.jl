@@ -1,4 +1,5 @@
-using TaylorSeries, SymPy, ReverseDiff
+using TaylorSeries, ReverseDiff
+using SymPy
 
 Base.:*(b::T, a::Taylor1{T}) where {T<:Number} = a * b
 
@@ -27,7 +28,14 @@ end
 
 ∇²(f) = x -> ReverseDiff.hessian(t -> f(t[1]), [x])[1]
 
-macro syms(xs...)
+function H(a, n)
+    h = zeros(n,n)
+    h[a[1], a[2]] = 1
+    h[a[2], a[1]] = 1
+    h
+end
+
+macro ssyms(xs...)
     # If the user separates declaration with commas, the top-level expression is a tuple
     if length(xs) == 1 && isa(xs[1], Expr) && xs[1].head == :tuple
         _gensyms(xs[1].args...)

@@ -29,6 +29,19 @@ function W(p)
     L
 end
 
+function Wc(p)
+    L = zeros(Float64, p, p)
+    for i = 1:p
+        @inbounds L[i,i] = rand(Chi(p - i + 1.0))
+        if i != 1
+            @inbounds L[i,i-1] = randn()
+        else
+            @inbounds L[p, 1] = randn()
+        end
+    end
+    L
+end
+
 function compl(V, c)
     return [i for i = V if !(i in c)]
 end
