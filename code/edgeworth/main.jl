@@ -7,8 +7,7 @@ include("edgeworth/cgflib.jl")
 include("edgeworth/genedgeworth.jl")
 include("edgeworth/gensaddlepoint.jl")
 include("edgeworth/genpstar.jl")
-
-inkscapegen(s) = println("inkscape code/plots/$(s).svg -o writing/figures/$(s).eps --export-ignore-filters --export-ps-level=3")
+include("plotgen.jl")
 
 function sample_sum(d, nterms, samplesize)
     result = zeros(samplesize)
