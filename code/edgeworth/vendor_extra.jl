@@ -3,8 +3,8 @@ using SymPy
 
 Base.:*(b::T, a::Taylor1{T}) where {T<:Number} = a * b
 
-Base.promote_rule(::Type{Sym}, ::Type{T}) where {T<:Number} = Sym
 Base.promote_rule(::Type{T}, ::Type{Sym}) where {T<:Number} = Sym
+Base.promote_rule(::Type{Sym}, ::Type{T}) where {T<:Number} = Sym
 Base.promote_rule(::Type{Bool}, ::Type{Sym}) = Sym
 Base.promote_rule(::Type{Sym}, ::Type{Bool}) = Sym
 Base.promote_rule(::Type{Sym}, ::Type{Sym}) where {T<:Number} = Sym
@@ -34,6 +34,39 @@ function H(a, n)
     h[a[2], a[1]] = 1
     h
 end
+
+function tocycle(A)
+    p = size(A)[1]
+    O = zeros(Sym, p, p)
+    for i = 2:p
+        j = i - 1
+        O[i,j] = A[i, j]
+        O[j, i] = O[i,j]
+        O[i,i] = A[i, i]
+    end
+    O[1,p] = A[1, p]
+    O[p, 1] = O[1,p]
+    O[1,1] = A[1,1]
+    O
+end
+
+function cycle(p)
+    O = zeros(Sym, p, p)
+    for i = 2:p
+        j = i - 1
+        O[i,j] = symbols("O_$(i)_$j")
+        O[j, i] = O[i,j]
+        O[i,i] = 1
+    end
+    O[1,p] = symbols("O_1_$p")
+    O[p, 1] = O[1,p]
+    O[1,1] = 1
+    O
+end
+
+@ssyms S[1:10, 1:10] O[1:10, 1:10]
+
+
 
 macro ssyms(xs...)
     # If the user separates declaration with commas, the top-level expression is a tuple

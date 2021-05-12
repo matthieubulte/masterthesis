@@ -1,3 +1,5 @@
+\subsection{Hypothesis testing}
+
 
 We now turn ourselves to applying the approximations developed in Section \note{todo} on the problem of testing two nested Gaussian graphical models. More precisely, let $\G = (\Gamma, E)$ and $\G_0 = (\Gamma, E_0)$ with $E_0 \subset E$, we are interested in developing a test for the problem
 \begin{equation} 
@@ -7,12 +9,12 @@ We now turn ourselves to applying the approximations developed in Section \note{
 
 
 
-\begin{lemma}
+\begin{lemma} \label{lem-pstar-covariance}
     \cite{eriksen1996tests} Let $\G$ be a graph, $\Omega \in \S_{\succ 0}(\G)$ and $S$ be a sample covariance matrix computes from a sample of size $n$ of the Gaussian graphical model associated to $\G$ with precision matrix $\Omega$. Then, the density $p(S; \Omega)$ of $S$ satisfies
     \begin{equation*}
-        p(S; \Omega) = c \frac{|\Omega|^{n/2}}{|\hat\Omega_\G|^{n/2}} |j_\G(\hat\Omega_\G) |^{-1/2} \expfc{-\frac{n}{2} \trB{\Omega S}} (1 + O(n^{-3/2})),
+        p(S; \Omega) = c \frac{|\Omega|^{n/2}}{|\hat\Omega_\G(S)|^{n/2}} |j_\G(\hat\Omega_\G(S)) |^{-1/2} \expfc{-\frac{n}{2} \trB{\Omega S}} (1 + O(n^{-3/2})),
     \end{equation*}
-    where $c$ is a normalization constant and $j_G$ is the observed information matrix given by
+    where $c$ is a normalization constant, $\hat\Omega_\G(S)$ is the maximum likelihood of $\Omega$ assuming the graph $\G$ and given the data $S$, and $j_G$ is the observed information matrix given by
     \begin{equation} \label{eq-obs-info}
         j_\G(\Omega)_{a b} = \trB{\Omega^{-1} H_a \Omega^{-1} H_b} \t{ for all } a, b  \in E.
     \end{equation}
@@ -21,27 +23,60 @@ We now turn ourselves to applying the approximations developed in Section \note{
 \begin{proof}
     Since $XX^\top$ is sufficient in the Gaussian graphical model, $S$ corresponds to the sample average of the sufficient statistic. Applying the Saddlepoint approximation to $S$ as done in Section \note{todo}, we have that the density of $S$ satisfies
     \begin{equation*}
-        p(S; \Omega) = c |j_\G(\hat\Omega_\G)|^{-1/2} \expfc{\ell(\Omega; S) - \ell(\hat\Omega_\G; S)} (1 + O(n^{-3/2})).
+        p(S; \Omega) = c |j_\G(\hat\Omega_\G(S))|^{-1/2} \expfc{\ell(\Omega; S) - \ell(\hat\Omega_\G(S); S)} (1 + O(n^{-3/2})).
     \end{equation*}
     Replacing the log-likelihood of the Gaussian graphical model in the above equation, we get
     \begin{align*}
         p(S; \Omega) 
-        &\propto |j_\G(\hat\Omega_\G)|^{-1/2} \expfc{\ell(\Omega; S) - \ell(\hat\Omega_\G; S)} (1 + O(n^{-3/2})) \\
-        &\propto |j_\G(\hat\Omega_\G)|^{-1/2} 
-        \frac{|\Omega|^{n/2}}{|\hat\Omega_\G|^{n/2}}
-        \expfc{-\frac{n}{2}\left(\trB{\Omega S} - \trB{\hat\Omega_\G S}\right)} (1 + O(n^{-3/2}))\\
-        &\propto |j_\G(\hat\Omega_\G)|^{-1/2} 
-        \frac{|\Omega|^{n/2}}{|\hat\Omega_\G|^{n/2}}
+        &\propto |j_\G(\hat\Omega_\G(S))|^{-1/2} \expfc{\ell(\Omega; S) - \ell(\hat\Omega_\G(S); S)} (1 + O(n^{-3/2})) \\
+        &\propto |j_\G(\hat\Omega_\G(S))|^{-1/2} 
+        \frac{|\Omega|^{n/2}}{|\hat\Omega_\G(S)|^{n/2}}
+        \expfc{-\frac{n}{2}\left(\trB{\Omega S} - \trB{\hat\Omega_\G(S) S}\right)} (1 + O(n^{-3/2}))\\
+        &\propto |j_\G(\hat\Omega_\G(S))|^{-1/2} 
+        \frac{|\Omega|^{n/2}}{|\hat\Omega_\G(S)|^{n/2}}
         \expfc{-\frac{n}{2}\trB{\Omega S}} (1 + O(n^{-3/2}))
     \end{align*}
-    where we use that $\hat\Omega_\G S = 1_p$ and hence $\trB{\hat\Omega_\G S} = p$ is constant. The formula for the observed infomation matrix can be easily verified by taking the appropriate derivatives of the log-likelihood.
+    where we use that $\hat\Omega_\G(S) S = 1_p$ and hence $\trB{\hat\Omega_\G(S) S} = p$ is constant. The formula for the observed infomation matrix can be easily verified by taking the appropriate derivatives of the log-likelihood.
 \end{proof}
 
-% \begin{align*}
-%     p(S_e | S_{\G_0}; \Omega_0) = \frac{p(S_e, S_{\G_0}; \Omega_0)}{p(S_{\G_0}; \Omega_0)}
-% \end{align*}
+Consider now a Gaussian graphical model with graph $\G = ([p], E)$ and the sub-model constructed by remove an edge $a \in E$ from $\G$. The sub-model is then the Gaussian graphical model associated to the graph $\G_0 = ([p], E_0)$ where $E_0 = E \setminus \eset{e_0}$. Without loss of generality, we assume $e_0 = \eset{1,2}$.
+Let $S$ be the sample covariance matrix and assume that the true parameter is $\Omega_0 \in \S_{\succ 0}(\G_0)$. We can then construct approximations to the densities $p(S^{\G_0}; \Omega_0)$ and $p(S^{\G}; \Omega_0)$ by applying Lemma \ref{lem-pstar-covariance} in the Gaussian graphical models associated to $\G$ and $\G_0$ to get
+\begin{equation*}
+    p(S^{\G_0}; \Omega_0) = c \frac{|\Omega_0|^{n/2}}{|\hat\Omega_{\G_0}(S^{\G_0})|^{n/2}} |j_{\G_0}(\hat\Omega_{\G_0}(S^{\G_0})) |^{-1/2} \expfc{-\frac{n}{2} \trB{\Omega_0 S^{\G_0}}} (1 + O(n^{-3/2}))
+\end{equation*}
+and
+\begin{equation*}
+    p(S^\G; \Omega_0) = c \frac{|\Omega_0|^{n/2}}{|\hat\Omega_\G(S^\G)|^{n/2}} |j_\G(\hat\Omega_\G(S^\G)) |^{-1/2} \expfc{-\frac{n}{2} \trB{\Omega_0 S^\G}} (1 + O(n^{-3/2})).
+\end{equation*}
+Combining these results together allows us to approximate the density of $S_e$ conditioned on $S^{\G_0}$
+\begin{align*}
+    p(S_{e_0}| S^{\G_0}; \Omega_0)
+    &= \frac{p(S_{e_0}, S^{\G_0}; \Omega_0)}{p(S^{\G_0}; \Omega_0)} = \frac{p(S^{\G}; \Omega_0)}{p(S^{\G_0}; \Omega_0)}\\
+    & \doteq \tilde c 
+    \frac
+        {|\Omega_0|^{n/2}|\hat\Omega_{\G_0}(S^{\G_0})|^{-n/2} |j_{\G_0}(\hat\Omega_{\G_0}(S^{\G_0})) |^{-1/2} \expfc{-\frac{n}{2} \trB{\Omega_0 S^{\G_0}}}}
+        {|\Omega_0|^{n/2}|\hat\Omega_\G(S^\G)|^{-n/2} |j_\G(\hat\Omega_\G(S^\G)) |^{-1/2} \expfc{-\frac{n}{2} \trB{\Omega_0 S^\G}}}\\
+    &= \tilde c 
+    \frac
+        {|\hat\Omega_\G(S^\G)|^{n/2} |j_\G(\hat\Omega_\G(S^\G)) |^{1/2}}    
+        {|\hat\Omega_{\G_0}(S^{\G_0})|^{n/2} |j_{\G_0}(\hat\Omega_{\G_0}(S^{\G_0})) |^{1/2}}\\
+    &= q^{n/2} \frac{|j_\G(\hat\Omega_\G(S^\G)) |^{1/2}}    {|j_{\G_0}(\hat\Omega_{\G_0}(S^{\G_0})) |^{1/2}}.
+\end{align*}
+where we used in the last step that $\Omega_0 S^\G = \Omega_0 S^{\G_0}$ which leads to the exponential terms canceling out. Since $w \xrightarrow{d} \chi^2_1$ is asymptotically ancillary, and $q = \expfc{-\frac{1}{2} w}$, $q$ is also asymptotically ancillary. Since $S^{\G_0}$ is a complete sufficient statistic assuming $\G_0$, $S^{\G_0}$ and $q$ are asymptotically independent by Basu's Theorem \cite{10.2307/25048259}. This means that asymptotically $p(S_{e_0}; \Omega_0) = p(S_{e_0} | S^{\G_0}; \Omega_0)$ for any $S^{\G_0}$ and we can chose $S^{\G_0}$ freely in the previous equation. Taking $S^{\G_0} = 1_p$ gives
+\begin{equation*}
+    S^\G = 1_p + S_{e_0} H_{e_0} = \begin{pmatrix}
+        1   & S_{e_0} & \\
+        S_{e_0} & 1 & \\
+            &   & 1_{p-2}
+    \end{pmatrix}.
+\end{equation*}
+Since $S^{\G_0}$ and $S^\G$ are positive definite, they are their own positive definite completion and we have $|\hat\Omega_\G(S^\G)| = |S^\G|^{-1} = (1 - S_{e_0}^2)^{-1}$ and $|\hat\Omega_{\G_0}(S^{\G_0})| = |S^{\G_0}|^{-1} = 1$, giving $q = 1 - S_{e_0}^2$. A change of variable from $S_e$ to $q$ has Jacobian $(1 - q)^{-1/2}$ and the density of $q$ can be given by
+\begin{equation*}
+    p(q) \doteq \hat c q^{n/2} |j_{\G}(\hat\Omega_{\G}(S^{\G})) |^{-1/2} (1 - q)^{-1/2},
+\end{equation*}
+for some normalizing constant $\hat c$.
 
-We now focus our attention to computing the determinant of the observed information matrix given in (\ref{eq-obs-info}). Let $a, b \in E$, we start by noting that for any $S \in \S(\G)$ and $i, j \in [p]$
+We now focus our attention to computing the determinant of the observed information matrix given in (\ref{eq-obs-info}) with $\Omega^{-1} = 1_p + S_e H_e$. Let $a, b \in E$, we start by noting that for any $S \in \S(\G)$ and $i, j \in [p]$
 \begin{equation*}
     (SH_a)_{ij} = \begin{cases}
         & S_{i \bar j}\ \ \t{ if } j \in a\\

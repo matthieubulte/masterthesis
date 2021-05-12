@@ -1,0 +1,79 @@
+\section*{To do}
+
+\begin{itemize}
+
+\item {\color{red} Introduction
+\begin{itemize}
+    \item{+ Short intro to GGMs, the motivation
+    \begin{itemize}
+        \item- What are GGMs
+        \item- Concrete example
+        \item- Covariance selection model
+    \end{itemize}}
+    \item{+ Moderate dimensional setting
+    \begin{itemize}
+        \item- What is moderate dimension
+        \item- Vhallenges in settings of moderate dimension
+        \item- Example with failure of chi sq approximation
+    \end{itemize}}
+    
+    \item{+ Teaser of higher-order statistics
+    \begin{itemize}
+        \item- Motivation and history of the topic
+        \item- Mention some of the asymptotical results that are promised
+    \end{itemize}}
+\end{itemize}
+}
+\item{Part 1. Higher-order statistics
+\begin{itemize}
+    \item{\color{red} + Chapter 1. Short intro and motivation
+    \begin{itemize}
+        \item- Talk quickly about first order method, which is familiar to reader
+        \item- Introduce a classical approximation example, not related to GGM
+        \item- Use Bartlett adjustment, or something similar to demonstrate better approximation
+    \end{itemize}}
+    \item{\color{green} + Chapter 2. Basis for higher-order approximations (based on Kolassa 2006)
+        \begin{itemize}
+            \item ok - Notation, good intro to the statistical setup
+            \item ok - Characteristic functions and inversion of characteristic function
+            \item ok - General approximation theorem from expansions of the characteristic function 
+            \item {ok - Edgeworth expansion
+            With examples, show flaws of absolute error coming from Edgeworth expansion
+            Julia symbolic implementation can be nice to show there}
+        \end{itemize}}
+        \item{\color{green} + Chapter 3. The Barnorff-Nielsen formula in exponential families
+            \begin{itemize}
+                \item {ok - Tilted approximation in exponential families (Barndorff-Nielsen and Cox 1989)
+            With example, show advantage of relative error}
+            \item {ok - p* formula
+            In this case it's really just mentioning it since the p* formula is the tilted approximation for exponential families by actually computing it}
+            \item {- Some simple examples of higher-order statistics that have accurate approximation results
+            Bartlett correction on simple examples, Barndorff-Nielsen and Cox 1994 has many good examples}
+        \end{itemize}}
+\end{itemize}
+}
+\item{Part 2. Gaussian Graphical Models
+    \begin{itemize}
+        \item{\color{red} + Chapter 4. Intro to graphical models
+    \begin{itemize}
+        \item- Directed vs undirected
+        \item- Markov property
+        \item- Decomposition of density
+    \end{itemize}}
+    \item{\color{green} + Chapter 5. Gaussian Graphical models
+    \begin{itemize}
+        \item ok - Introduce the model
+        \item ok - Relation between precision matrix and independence
+        \item ok - Conditions for existence of MLE (based on Handbook of Graphical Models, Chapter 9)
+        \item ok - Computing the MLE of the precision matrix for a given graph (iterative proportional scaling / Julia implementation)
+    \end{itemize}}
+    \item{\color{orange} + Chapter 6: Higher-order techniques for GGMs
+    \begin{itemize}
+        \item - Presentation of work in Erisken 1996
+        \item - Presentation of numerical experiments on different topologies from the last months
+    \end{itemize}}
+\end{itemize}
+}
+\item \color{red} Conclusion
+\end{itemize}
+\newpage
