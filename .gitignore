@@ -10,12 +10,11 @@
 *.cb
 *.cb2
 .*.lb
-*.pdf
 *.fdb_latexmk
 *.synctex.gz
 *.bbl
 *.blg
-
+*/figures/*.pdf
 literature/
 output*/
 *output/
