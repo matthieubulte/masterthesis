@@ -1,4 +1,4 @@
-
+\subsection{Julia implementation of higher-order approximations}
 One is often confronted with challenges when translating mathematical ideas into executable software. Edgeworth series in particular are simple in their mathematical definition, but hide the use of many mathematical concepts that, independently, are commonly cumbersome to translate into easy-to-use and bug-free software. A generic implementation of Edgeworth series requires the ability to compute derivatives, express and manipulate asymptotic expansions and combine those to create density approximations.
 
 Luckily, modern programming languages and libraries allow to quickly develop algorithms that are both efficient and close to their mathematical counterpart. In this thesis, we make use of the Julia programming language \cite{bezanson2017julia} and Julia bindings to the computer algebra system SymPy \cite{sympy}. The Julia programming language was chosen because it allows to write code that is generic enough to be used in various scenarios and extended with the ecosystem of libraries. For instance, one basic block of the approximations developed in this thesis is the cumulant generating function of a distribution. The cumulant generating function of a $\Gamma(\alpha, \beta)$ distribution can be defined as the function
@@ -12,7 +12,7 @@ julia> gamma(p, $\lambda$)(t)
 p*log($\lambda$) - p*log($\lambda$-1.0)
 \end{lstlisting}
 This modularity can be used to construct helper functions to manipulate cumulant generating functions based on other libraries. For instance, if we are interested in computing the cumulants of a distribution, we can use the same definition of the cumulant function together and use the TaylorSeries \cite{TaylorSeries} library to efficiently compute the derivatives of the cumulant generating function. This let's us define the following function to compute the first $n$ cumulants of a distribution from its cumulant generating function
-\begin{lstlisting}[language=Julia, mathescape, escapechar=\%]
+\begin{lstlisting}[language=Julia, mathescape, escapechar=\%, basicstyle=\small]
 function cumulants(K, n; T=Number)
     t = Taylor1(T, n+1)
     (K(t).coeffs ./ exp(t).coeffs)[2:end]
@@ -41,6 +41,7 @@ julia> cumulants(K, 5; T=Sym)
  0
 \end{lstlisting}
 We can then use the \lstinline{edgeworth} from Listing \ref{lst-edgeworth} to compute the explicit formula for the Edgeworth series of order 4\footnote{To avoid writing out the Hermite polynomials, we use a sligthly modified version of the code in Listing \ref{lst-edgeworth} replacing Hermite polynomials by symbolic functions $H_k$.}
+\newpage
 \begin{lstlisting}[language=Julia, mathescape, escapechar=\%]
 julia> edgeworth(K, n, 4; T=Sym)(x)
                                                     -$x^2$  
@@ -52,9 +53,8 @@ julia> edgeworth(K, n, 4; T=Sym)(x)
 
 \end{lstlisting}
 With $(2\pi)^{-1/2} \approx 0.398942280401433$, this formula corresponds expression derived in Equation (\ref{eq-edgeworth-1d-4}) of Example \ref{ex-edgeworth-1d}.
-\newpage
 
-\begin{lstlisting}[language=Julia, mathescape, escapechar=\%, caption={Symbolic implementation of the Edgeworth expansion}, label={lst-edgeworth}]
+\begin{lstlisting}[language=Julia, mathescape, escapechar=\%, caption={Symbolic implementation of the Edgeworth expansion}, label={lst-edgeworth}, basicstyle=\small]
 function edgeworth(K, nsum, order; T=Float64)
     H(k) = basis(ChebyshevHermite, k)
     finaltype = promote_rule(T, typeof(nsum))

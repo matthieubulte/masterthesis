@@ -1,5 +1,5 @@
 \begin{lemma} \label{lem-char-integrable-convolution}
-    The characteristic function $\xi$ of a random variable $X \in \Rp$ satisfies $\xi \in L^q(\Rp)$ for some $q > 1$ if and only if there exists a $l \in \N$ such that the density of a convolution of $l$ independent copies of $X$ exists and is bounded.
+    The characteristic function $\xi$ of a random variable $X$ in $\Rp$ satisfies $\xi \in L^q(\Rp)$ for some $q > 1$ if and only if there exists a $l \in \N$ such that the density of a convolution of $l$ independent copies of $X$ exists and is bounded.
 \end{lemma}
 \begin{proof}
     This proof is an adaptation of the one-dimensional proof given in \cite[Lemma 2.4.4]{kolassa2006series}.
@@ -10,21 +10,21 @@
     \end{equation*}
     and hence $\xi^l \in L^1(\Rp)$. Since $\xi^l$ is the characteristic function of a sum of $l$ independent copies of $X$, Theorem \ref{thm-char-inversion} applies and the density of the convolution of $l$ copies of $X$ exists and is bounded.
     \newline
-    We now prove the \textit{if} direction of the theorem. Assume that there exists a $l \in \N$ such that the density $f_l$ of a convolution of $l$ independent copies of $X$ exists and is bounded. Then, for any $r \in \R$
+    We now prove the \textit{if} direction of the theorem. Assume that there exists a $j \in \N$ such that the density $f_j$ of a convolution of $j$ independent copies of $X$ exists and is bounded. Then, for any $r \in \R$
     \begin{equation*}
-        \int_{[-r, r]^p} \abs{\xi(t)}^{2l} \d t
-        = \int_{[-r, r]^p} \abs{\xi(t)}^l\abs{\xi(t)}^l \d t
-        = \int_{[-r, r]^p} \abs{\xi(t)}^l\abs{\xi(-t)}^l \d t,
+        \int_{[-r, r]^p} \abs{\xi(t)}^{2j} \d t
+        = \int_{[-r, r]^p} \abs{\xi(t)}^j\abs{\xi(t)}^j \d t
+        = \int_{[-r, r]^p} \abs{\xi(t)}^j\abs{\xi(-t)}^j \d t,
     \end{equation*}
     where we use that $\abs{\xi(-t)} = \abs{\overline{\xi(t)}} = \abs{\xi(t)}$. Furthermore, by the definition of the characteristic function and using Fubini's theorem, we have that
     \begin{align*}
-        \int_{[-r, r]^p} \abs{\xi(t)}^{2l} \d t
+        \int_{[-r, r]^p} \abs{\xi(t)}^{2j} \d t
         &= \int_{[-r, r]^p} \left[\intRp{x}{f_j(x)\expf{it^\top x}}\right]\left[\intRp{y}{f_j(y)\expf{-it^\top y}}\right] \d t\\
         &= \intRp{x}{\intRp{y}{\int_{[-r, r]^p} f_j(x)f_j(y)\expf{it^\top (x - y)}\d t}}.
     \end{align*}
     Setting $z = y - x$, we get
     \begin{align*}
-        \int_{[-r, r]^p} \abs{\xi(t)}^{2l} \d t
+        \int_{[-r, r]^p} \abs{\xi(t)}^{2j} \d t
         &= \intRp{x}{\intRp{z}{\int_{[-r, r]^p} f_j(x)f_j(x + z)\expf{-it^\top z}\d t}}\\
         &= \intRp{x}{\intRp{z}{f_j(x)f_j(x + z)\left[\prod_{k=1}^p \int_{[-r, r]}\expf{-it^\top z_k}\right]\d t}}\\
         &= \intRp{x}{\intRp{z}{f_j(x)f_j(x + z)\left[\prod_{k=1}^p \frac{\expf{-irz_k} - \expf{irz_k}}{-iz_k} \right]}}\\
@@ -32,9 +32,9 @@
     \end{align*}
     where the identity $\sin x = (\expf{ix} - \expf{-ix}) / 2i$ was used. We proceed with the change of variable $v = r z$, giving
     \begin{align*}
-        \int_{[-r, r]^p} \abs{\xi(t)}^{2l} \d t
+        \int_{[-r, r]^p} \abs{\xi(t)}^{2j} \d t
         &= \intRp{x}{\intRp{v}{f_j(x)f_j(x + v/r)\left[\prod_{k=1}^p \frac{2 \sin(v_k)}{v_k/r} \right] r^{-p}}}\\
         &= \intRp{x}{\intRp{v}{f_j(x)f_j(x + v/r)\left[\prod_{k=1}^p \frac{2 \sin(v_k)}{v_k} \right]}}.
     \end{align*}
-    Using that $\sup_{x \in \R} \abs{\sin x / x} < 1$, we have that $\prod_{k=1}^p \frac{2 \sin(v_k)}{v_k} < 2^p$, leaving nested integrals of density functions over their entire support, which is equal to 1. This gives a finite upper bound on $\norm{\xi}_{2l}^{2l}$ independent of $r$ which concludes the proof for $q = 2l$.
+    Using that $\sup_{x \in \R} \abs{\sin x / x} < 1$, we have that $\prod_{k=1}^p \frac{2 \sin(v_k)}{v_k} < 2^p$, leaving nested integrals of density functions over their entire support, which is equal to 1. This gives a finite upper bound on $\norm{\xi}_{2j}^{2j}$ independent of $r$ which concludes the proof for $q = 2j$.
 \end{proof}

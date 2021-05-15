@@ -1,0 +1,104 @@
+\subsection{Saddlepoint approximation}
+
+We now introduce another approach based on the Edgeworth series to create accurate density approximations that avoids some of the issues of the Edgeworth series that we have demonstrated in the previous section.
+
+We now introduce the idea of \textit{exponential tilting}. Consider a random random variable $X \in \Rp$ with cumulant generative function $K$ and density $f$. We introduce the exponential family $\mathcal{T}_P = \{ P_\gamma \}_{\gamma \in \Rp}$ where each $P_\gamma \in \mathcal{T}_P$ is characterized by its density function $f_\gamma$ given by
+\begin{equation*}
+    f(x; \gamma) = f(x)\expf{\gamma^\top x - K(\gamma)}.
+\end{equation*}
+Note that by the definition of the cumulant generating function, $K(\gamma)$ is the right normalization factor for $f(\cdot; \gamma)$ and hence $f(\cdot; \gamma)$ integrates to 1 and is a valid density function. Furthermore, the original distribution $P$ is an element of $\mathcal{T}_P$ with $P = P_0$. Given two distributions in $\mathcal{T}_P$, their densities only differ by the factor $\expf{\gamma^\top x - K(\gamma)}$. Since the following holds for any $\gamma \in \Rp$
+\begin{equation} \label{eq-saddlepoint-original}
+    f(x) = f(x; \gamma)\expf{K(\gamma) - \gamma^\top x},
+\end{equation}
+we can construct an approximation of $f$ by choosing $\gamma$ such that $f(\cdot; \gamma)$ can be accurately approximated.
+
+Let us now consider a distribution $P$ with cumulant generating function $K$. We wish to use the previous argumentation to approximate the density $f_n$ of the mean $S$ of $n$ i.i.d.\,random variables distributed according to $P$. Using the cumulant generating function of $S$ in Equation (\ref{eq-saddlepoint-original}), we get
+\begin{equation*}
+    f_n(s) = f_n(s; \gamma)\expf{nK(\gamma / n) - \gamma^\top s},
+\end{equation*}
+where $f_n(\cdot; \gamma)$ is the density of the mean of $n$ i.i.d.\,random variables with density $f(\cdot; \gamma)$. Since the Edgeworth approximation was derived for a standardized sum of random variables, we apply the transformation
+\begin{align*}
+    \frac{1}{n}\sum_{i=1}^n X_i &\mapsto \frac{1}{\sqrt{n}}\sum_{i=1}^n \Sigma_\gamma^{-1/2}(X_i - \mu_\gamma)\\
+    s &\mapsto s^* := \sqrt{n}\Sigma_\gamma^{-1/2}(s - \mu_\gamma)
+\end{align*}
+where $\mu_\gamma, \Sigma_\gamma$ are the mean and covariance of $X_i \sim P_\gamma$. Furthermore, the determinant of the transformation is $n^{p/2}|\Sigma_\gamma|^{-1/2}$, which gives using the notation in Equation (\ref{eq-edge-polynomial})
+\begin{equation} \label{eq-saddlepoint-poly}
+    f_n(s; \gamma) = n^{p/2}|\Sigma_\gamma|^{-1/2} \phi(s^*)\left\{ 1 + P_k(s^*; \kappa(\gamma)) + o(n^{(1-k)/2})\right\}.
+\end{equation}
+Furthermore, the cumulant generating function of $P_\gamma$ can be expressed in terms of the cumulant generating function $K$ by
+\begin{equation*}
+    K(t; \gamma) = K(t + \gamma) - K(\gamma).
+\end{equation*}
+Since the covariance matrix $\Sigma_\gamma$ is equal to the Hessian of the cumulant generating function of $P_\gamma$ evaluated at 0, we have $\Sigma_\gamma = K''(\gamma)$. This lets us rewrite Equation (\ref{eq-saddlepoint-poly}) in terms of $K$ as
+\begin{equation*}
+    f_n(s; \gamma) = n^{p/2}|K''(\gamma)|^{-1/2} \phi(s^*)\left\{ 1 + P_k(s^*; \kappa(\gamma)) + o(n^{(1-k)/2})\right\}.
+\end{equation*}
+
+We are now interested in choosing $\gamma$ such that the Edgeworth approximation of $f_n(\cdot; \gamma)$ is accurate. As seen in Remark \ref{rem-edge-mean}, the second order Edgeworth approximation of even order gains half an order of accuracy when evaluated at the mean of the distribution. In other words, the Edgeworth approximation will be more accurate if $s^* = 0$ in the previous equation. Since $\gamma$ can be chosen freely and differently for each value $s$ at which the density $f_n$ is evaluated, we can choose $\gamma$ such that $s^* = 0$, or equivalently, such that $s = \mu_\gamma$. Similarly to the covariance matrix, we can write the mean of $P_\gamma$ as $\mu_\gamma = K'(\gamma)$, hence, for any $s \in \Rp$, we can now find a distribution $P_{\hat\gamma_s} \in \mathcal{T}_P$ with mean $s$ by solving
+\begin{equation} \label{eq-saddlepoint}
+    K'(\hat\gamma_s) = s.
+\end{equation}
+We choose to call the solution of this equation $\hat\gamma_s$ to emphasize the fact that instead of choosing one unique $\gamma$ and then construct an approximation of the density of $P_\gamma$ over $\Rp$, we find a different $\hat\gamma_s$ at each $s \in \Rp$ such that the Edgeworth approximation of the density of $P_{\hat\gamma_s}$ is accurate in $s$. Note that if $\hat\gamma_s$ solves (\ref{eq-saddlepoint}), it is also the maximum likelihood estimator of $\gamma$ within the model $\mathcal{T}_P$. Replacing $\hat\gamma_{s}$ in Equation (\ref{eq-saddlepoint-poly}), we get
+\begin{equation*}
+    f_n(s; \hat\gamma_s) = n^{p/2}(2\pi)^{-p/2}|\Sigma_{\hat\gamma_s}|^{-1/2}\left\{ 1 + P_k(0; \kappa(\hat\gamma_s)) + o(n^{\floor{(1-k)/2}})\right\}.
+\end{equation*}
+Replacing this in the expression of $f$ in terms of $f(\cdot; \hat\gamma_s)$ gives
+\begin{align}
+    f_n(s) &= \left(\frac{n}{2\pi}\right)^{p/2} \frac{\expf{nK(\hat\gamma_s / n) - \hat\gamma_s^\top s}}{|K''(\hat\gamma_s)|^{1/2}}  \left[1 + P_k(0; \kappa(\hat\gamma_s)) + o(n^{\floor{(1-k)/2}})\right]\nonumber\\
+    &= g(s; K)\left[1 + P_k(0; \kappa(\hat\gamma_s)) + o(n^{\floor{(1-k)/2}})\right] \label{eq-saddle-exp}
+\end{align}
+We call $g(\cdot; K)$ the \textit{Saddlepoint approximation} to the density of $S$. We now justify the approximation accuracy claim from Equation (\ref{eq-saddle-exp}) in the following theorem.
+
+\begin{theorem}
+    Let $P$ be a distribution with cumulant genrating function $K$ and $k \in \N_{\geq 2}$ such that all cumulants of $P$ of order up to $k$ exist. Suppose that for every $s \in \Rp$, Equation (\ref{eq-saddlepoint}) has a unique solution $\hat\gamma_s \in U$. Let $n \in \N$ and $X_1, \ldots, X_n \simiid P$ and $S$ be the mean
+    \begin{equation*}
+        S = n^{-1} \sum_{i=1}^n X_i.
+    \end{equation*}
+    Then, if the density $f_n$ of $S$ exists, the expansion given in Equation (\ref{eq-saddle-exp}) holds.
+\end{theorem}
+\begin{proof}
+    This result is a direct consequence of Theorem \ref{thm-edgeworth} applied pointwise to the tilted distribution $P_{\hat\gamma_s}$ for every $s \in \Rp$. As discussed above, the Remark \ref{rem-edge-mean} implies that only powers of $n^{-1}$ have non-vanishing coefficients in the Edgeworth approximation of the tilted densities, which in turns implies that the Edgeworth approximation error in each point is of order $o(n^{\floor{(1-k)/2)}})$.
+\end{proof}
+
+While the Saddlepoint approximation shows many advantages over the Edgeworth approximation, it is important to note that the Saddlepoint approximation uses information from the complete cumulant generating function of the approximated density. The Edgeworth approximation on the other hand only uses the first $k$ cumulants of the distributions, which are evaluations of derivatives of the cumulant generating function in 0. 
+
+A special case of particular interest is for $k = 2$. In this case, the Edgeworth approximation of $f_n(\cdot; \hat\gamma_s)$ is equal to its normal approximation and its polynomial part $P_k(\cdot; \kappa(\gamma))$ is equal to 0 and we get 
+\begin{align} \label{eq-saddle-3}
+    f_n(s) &= g(s; K)\left[1 + o(n^{-1})\right]\nonumber\\
+    &= \left(\frac{n}{2\pi}\right)^{p/2} \frac{\expf{nK(\hat\gamma_s / n) - \hat\gamma_s^\top s}}{|K''(\hat\gamma_s)|^{1/2}} \left[1 + o(n^{-1})\right]
+\end{align}
+The Saddlepoint approximation of second order is commonly used in applications since it presents many advantages. It is has a simple expression which makes it easier to express it and manipulate it, is often highly accurate or even exact up to normalization, and, unlike the other approximations presented so far, it is always positive.
+
+\begin{example} \label{ex-gamma-saddle}
+    Continuing Example \ref{ex-gamma-edge}, we can analyze the behaviour of the Saddlpoint approximation to the mean $Y = n^{-1}\sum_{i=1}^n X_i \in \R_+$ where $X_1, \ldots, X_n \simiid \Gamma(p, \lambda)$. The cumulant generating function of the $\Gamma(n, p)$ distribution is $K(t) = p\logf{\lambda} - p\logf{\lambda - t}$ and its first derivative is $K'(t) = p / (\lambda - t)$. For any $s \in \R_+$, the Saddlepoint $\hat\gamma_s$ is given by the solution to the Saddlepoint Equation (\ref{eq-saddlepoint}), which here becomes
+    \begin{equation*}
+        \frac{p}{\lambda - \hat\gamma_s/n} = s \Rightarrow \hat\gamma_s = n\left(\lambda - \frac{p}{s}\right).
+    \end{equation*}
+    In Figure \ref{fig-saddlepoint-err}, we demonstrate how the Saddlepoint approximation of order 3 compares to the Edgeworth approximation when approximating a standardized sum of $n$ random variables independently distributed according to $\Gamma(2, 1)$. Since the standardized sum can be obtained by multiplying the mean by a factor of $\sqrt{n}$, the Saddlepoint approximation is easily adapted by change of variable. Both panels show accurate approximation properties both in terms of relative and absolute error.
+    \newline
+    In this example, it is also interesting to examine the concrete form of the Saddlepoint approximation $g_3$. Replacing the relevant quantities in Equation (\ref{eq-saddle-3}), we obtain that the Saddlepoint approximation is
+    \begin{align*}
+        g_3(s; K) &= \sqrt{\frac{n}{2\pi K''(\lambda - \frac{p}{s})}} \expf{nK\left(\lambda - \frac{p}{s}\right) - n\left(\lambda - \frac{p}{s}\right)s}\\
+        &= \sqrt{\frac{n}{2\pi s^2/p}} \expf{n\left(p\logf{\lambda} - p\logf{p/s}\right) - ns\lambda + np}\\
+        &= (n\lambda)^{np}s^{np-1}\expf{-sn\lambda} \times \frac{(np)^{1/2-np}\expf{np}}{\sqrt{2\pi}}.
+    \end{align*}
+    Consider now the Stirling's formula for the gamma function
+    \begin{equation*}
+        \Gamma(z) \approx \sqrt{2\pi}z^{z-1/2}\expf{-z}.
+    \end{equation*}
+    We recognize that the second term in the expression of $g_3(s; K)$ corresponds to the inverse of the Stirling's approximation to $\Gamma(np)$. The Saddlepoint approximation to the density of the mean of $\Gamma(p, \lambda)$ variables thus corresponds to the density of the true distribution $\Gamma(np, n\lambda)$ of the mean, where the gamma function has been replaced by the Stirling's approximation. This has the interesting consequence that the relative error of the Saddlepoint approximation does not depend on $s$, the point at which the density is evaluated, but rather only depends on $n$. This behaviour is also exposed in Figure \ref{fig-saddlepoint-err} where the relative error of the Saddlepoint approximation is a straight horizontal line. Daniels \cite{daniels1954saddlepoint} characterizes the class of distributions for which the uniform relative approximation error holds.
+
+    \begin{figure}[!htbp]
+        \textbf{Approximation error of $\Gamma(2,1)$ standardized sums with $n=10$}
+        \centering
+        \subfloat{
+            \includegraphics[width=7.5cm]{saddlepoint_and_edgeworth_err_abs_gamma21_10_terms.eps} 
+        }
+        \subfloat{
+            \includegraphics[width=7.5cm]{saddlepoint_and_edgeworth_err_rel_gamma21_10_terms.eps} 
+        }
+        \caption{Study of the approximation error of the Saddlepoint approximation on a standardized sum of $n=10$ of $\Gamma(2, 1)$ random variables. Both panel exposes properties studied of the Saddlepoint approximation: the accurate rellative error, the gain in order of approximation and the uniform relative error of the approximation for sums of Gamma random variables.}
+        \label{fig-saddlepoint-err}
+    \end{figure}
+    
+\end{example}
