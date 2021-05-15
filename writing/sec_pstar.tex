@@ -16,7 +16,7 @@ For simplicity, we will assume that $\mathcal{H}'$ is one-to-one to ensure that 
 \begin{equation*}
     K'_\theta(\hat\theta_{\bar t} - \theta) = \bar t.
 \end{equation*}
-Considering the Saddlepoint Equation given in (\ref{eq-saddlepoint}), we notice that the  parameter $\hat\gamma_{\bar t}$ of the tilted family nearly corresponds to the maximum likelihood estimator $\hat\theta$ with
+Considering the Saddlepoint equation given in (\ref{eq-saddlepoint}), we notice that the  parameter $\hat\gamma_{\bar t}$ of the tilted family nearly corresponds to the maximum likelihood estimator $\hat\theta$ with
 \begin{equation*}
     \hat\gamma_{\bar t}/n = \hat\theta_{\bar t} - \theta.
 \end{equation*}
@@ -76,7 +76,7 @@ Hence, the $p^*$ approximation is \textit{invariant under reparametrization}.
     hence, $\hat\lambda$ is approximately $N(\lambda, \lambda^2/n)$ with an approximation error of the density of $o(n^{-1/2})$. In Figure \ref{fig-pstar-approx}, we compare these two approximations to the density of the MLE $\hat\lambda$ for $\lambda = 2$. As we can see in the left panel, the $p^*$ approximation properly fits the true density of $\hat\lambda$ and captures the bias of the $\hat\lambda$ estimator as opposed to the Normal approximation which is centered around the true value of $\lambda$. Furthermore, we can observe in the right panel how the relative error of the $p^*$ approximation is identical to the approximation error of the Saddlepoint approximation to the mean of $\Gamma(2, 1)$ seen in Example \ref{ex-gamma-saddle}. This is also a direct consequence of the invariance of the $p^*$ approximation since $\hat\Lambda$, the random variable associated to the MLE, is the inverse of the sample mean $\bar X$, which is a diffeomorphic transformation for positive reals.
     
     \begin{figure}[!htbp]
-        \textbf{Error of $p^*$ approximation of MLE in $\textrm{Exp}(\lambda)$ model with $n=10$}
+        \textbf{Error of $p^*$ approximation of MLE in $\t{Exp}(\lambda)$ model with $n=10$}
         \centering
         \subfloat{
             \includegraphics[width=8cm]{pstar_exp_dens.eps} 

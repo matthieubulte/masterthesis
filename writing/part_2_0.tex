@@ -1,8 +1,27 @@
 \subsection{Preliminaries}
 
+We start by a brief introduction to elementary concepts in graph theory that will be useful in the rest of this chapter. Let $\G = (\Gamma, E)$ be a graph with nodes $\Gamma$ and edges $E \subset \Gamma \times \Gamma$. We denote by $\t{bd}(i)$ the set of \textit{neighbours} of $i \in [p]$. For convenience, we will assume that the nodes are numbered and use  $\G = ([p], E)$ and $E \subset [p] \times [p]$ for $p = |\Gamma|$. The graphs under study in this thesis will be unconnected and won't contain any loop. This lets us write edges using the set notation $e = \eset{i, j}$ for $e \in E$. However, it will sometimes be useful to treat the set of edges as a set of indices on a matrix. In this case, we will need to introduce the \textit{augmented edge set} to include indices refering to the diagonal entries of the matrix. The augmented edge set $E^*$ of $E$ is constructed by adding all possible loop in $\G$, $E^* = E \cup \eset{ \eset{i} : i \in \Gamma }$.
+
+A graph $\G$ is said to be \textit{complete} if all pairs of distinct nodes are connected by an edge. A set of nodes $C \subset [p]$ is called a \textit{clique} if the subgraph $\G_C = (C, E_C)$ with $E_C = \eset{ \eset{i, j} \in E : \eset{i, j} \subset C }$ is complete. We call $\c{C}(\G)$ the set of cliques in $\G$.
+
+An important class of graphs are \textit{chordal graphs}. A chordal graph $\G$ is a graph in which each cycle of length at least 4 has a \textit{chord}, which is an edge which is not part of the cycle connecting two nodes in the cycle.
+
+As mentioned before, edges will be used to index matrices. If $\G = ([p], E)$, and $M \in \R^{p \times p}$, we introduce the following notation:
 \begin{itemize}
-    \item clique, set of cliques
-    \item chordal graph
-    \item matrix indexing $A_C$ and $A_{C, C}$
-    \item $A = M_{C, D}$ submatrix, then $[A]^\Gamma$ is $|\Gamma| \times |\Gamma|$ equal to $A$ on $\eset{C, D}$ and 0 otherwise.
+    \item If $e = \eset{i, j} \in E$, then $M_e = M_{ij}$;
+    \item If $A, B \subset [p]$, then $M_{A, B}$ is the $|A| \times |B|$ matrix construced by keeping rows labeled by the entries in $A$ and columns labeled by entries in $B$;
+    \item If $C \subset [p]$, then $M_C = M_{C, C}$;
+    \item {
+        If $A, B \subset [p]$, then $[M_{A, B}]^{[p]}$ is the $p \times p$ matrix with entries satisfying 
+        \begin{equation*}
+            [M_{A, B}]^{\Gamma}_{ij} = \begin{cases}
+                M_{ij} \ \t{ if } \eset{i, j} \in A \times B, \\
+                0 \ \ \ \ \ \t{otherwise}.
+            \end{cases}
+        \end{equation*}
+    }
 \end{itemize}
+Since most matrices manipulated will be referencing quantities related to nodes in a graph, indexing of matrices and derived matrices will be done with respect to the nodes of the graph instead of row or column number of a matrix. For instance, if $A, B \subset [p]$ and $M \in \R^{p \times p}$, using the notation we just introduced, we have
+\begin{equation*}
+    (M_{A, B})_{ab} = M_{ab} \ \ \t{for all } a \in A, b \in B.
+\end{equation*}

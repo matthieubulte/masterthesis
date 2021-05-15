@@ -1,4 +1,4 @@
-\subsection{MLE in GGM}
+\subsection{MLE in Gaussian graphical models}
 
 A graphical model is a probabilistic models associating relations between random variables to a graph. The random variables of the model are represented by nodes in the graph and conditional independence relations are represented by missing edges between the corresponding nodes of the graph.
 
@@ -8,11 +8,6 @@ Consider a random vector $X$ distributed according to the \textit{multivariate G
 \end{equation}
 We clearly see that the multivariate Gaussian distribution is an exponential family with canonical parameter $\Omega$ and sufficient statistic $\frac{1}{2}xx^\top$. 
 
-We now introduce some notation that will be convenient when working with covariance and precision matrices of a random variable $X \sim N_p(0, \Omega^{-1})$. First, since most matrices manipulated will be referencing quantities related to entries of $X$, indexing of matrices and derived matrices will be done with respect to the entry of $X$ instead of row or column number of a matrix. For instance if $A, B \subset [p]$, then $\Sigma_{A, B}$ is the $|A|$ by $|B|$ matrix with
-\begin{equation*}
-    (\Sigma_{A, B})_{ab} = \cov[X_a, X_b] \ \ \textrm{for all } a \in A, b \in B.
-\end{equation*}
-\
 We choose to parametrize the multivariate Normal distribution in terms of the precision matrix because of its special role in the context of graphical models. Indeed, the conditional independence relations of the entries a random vector $X \sim N_p(0, \Omega)$ are characterized by the sparsity patterns of the precision matrix $\Omega$.
 \
 \begin{lemma}
@@ -24,7 +19,7 @@ We choose to parametrize the multivariate Normal distribution in terms of the pr
 \begin{proof}
     By Lemma \ref{lem-gaussian-cond}, we have that the bivariate vector $X_{\eset{i,j}}$ is Gaussian with covariance matrix $\Sigma_{\eset{i,j}|[p]\setminus\eset{i,j}}$ equal to the Schur complement of $\Sigma_{[p] \setminus \eset{i,j}}$. The claim of this lemma is thus equivalent to 
     \begin{equation*}
-        \Omega_{ij} = 0 \iff \Sigma_{\eset{i,j}|[p]\setminus\eset{i,j}}\ \textrm{is diagonal}.
+        \Omega_{ij} = 0 \iff \Sigma_{\eset{i,j}|[p]\setminus\eset{i,j}}\ \t{is diagonal}.
     \end{equation*}
     Using the Schur complement inverse property, we have 
     \begin{equation*}
@@ -42,7 +37,7 @@ We choose to parametrize the multivariate Normal distribution in terms of the pr
     Hence, $\Sigma_{\eset{i,j}|[p]\setminus\eset{i,j}}$ is diagonal if and only if $\Omega_{ij} = 0$.
 \end{proof}
 
-Consider a graph $\G = (\Gamma, E)$ with nodes $\Gamma = \{1, \ldots, p\}$. We say that $X$ satisfies the \textit{Gaussian graphical model} with graph $\G$ if $X \sim N_p(0, \Omega)$ and
+Consider a graph $\G = ([p], E)$. We say that $X$ satisfies the \textit{Gaussian graphical model} with graph $\G$ if $X \sim N_p(0, \Omega)$ and
 \begin{equation} \label{eq-ggm}
     \Omega_{i j} = 0 \iff \eset{i,j} \notin E.
 \end{equation}
@@ -62,11 +57,11 @@ In the \textit{saturated model} where no constraints are put on the entries of $
 \begin{equation*}
     \hat\Omega = S^{-1}.
 \end{equation*}
-However, if we are interested in estimating the maximum likelihood estimator $\hat\Omega$ of a Gaussian graphical model with graph $\G = ([p], E)$, the solution $\hat\Omega$ must lie in the subset $\S(\G)$ of $\S^p_{\succ 0}$ in which the conditional independence relations encoded in $\G$ are satisfied. This subset is directly given by Equation (\ref{eq-ggm}), $\S(\G) = \{ \Omega \in \S^p_{\succ 0} : \Omega_{ij} = 0 \textrm{ if } i \neq j \textrm{ and } \eset{i,j} \notin E \}$. We are then left with the following optimization problem
+However, if we are interested in estimating the maximum likelihood estimator $\hat\Omega$ of a Gaussian graphical model with graph $\G = ([p], E)$, the solution $\hat\Omega$ must lie in the subset $\S(\G)$ of $\S^p_{\succ 0}$ in which the conditional independence relations encoded in $\G$ are satisfied. This subset is directly given by Equation (\ref{eq-ggm}), $\S(\G) = \{ \Omega \in \S^p_{\succ 0} : \Omega_{ij} = 0 \t{ if } i \neq j \t{ and } \eset{i,j} \notin E \}$. We are then left with the following optimization problem
 \begin{align} \label{eq-primal}
     \begin{split}
-        &\underset{\Omega \in \S^p_{\succ 0}}{\textrm{maximize}}\ \  \log |\Omega| - \tr[S\Omega]\\
-        &\textrm{subject to}\ \ \Omega \in \S(\G).
+        &\underset{\Omega \in \S^p_{\succ 0}}{\t{maximize}}\ \  \log |\Omega| - \tr[S\Omega]\\
+        &\t{subject to}\ \ \Omega \in \S(\G).
     \end{split}
 \end{align}
 Since the Gaussian graphical model condition is a linear constraint, the set $\S(\G)$ is the is a convex cone. Showing that the objective function in (\ref{eq-primal}) is concave would imply that maximum likelihood estimation in Gaussian graphical models is a convex optimization problem which would allow us to bring new insights to the problem by studying its dual formulation. We start by proving that the objective function is indeed concave.
@@ -94,8 +89,8 @@ We can now study the dual problem to (\ref{eq-primal}). The Lagragian of the max
 The Lagrange dual $H$ of (\ref{eq-primal}) is given by $H(\nu) = \mathcal{L}(\Omega^\nu, \nu)$ where $\Omega^\nu$ is the maximizer of $\mathcal{L}(\Omega, \nu)$. Derivating the expression of $\mathcal{L}(\Omega, \nu)$, we get that the inverse $\Sigma^\nu$ of $\Omega^\nu$ satisfies
 \begin{equation*}
     \Sigma^\nu_{ij} = \begin{cases}
-        S_{ij}\ \textrm{ if } i = j \textrm{ or } \eset{i, j} \in E\\
-        \nu_{ij}\ \textrm{otherwise}.
+        S_{ij}\ \t{ if } i = j \t{ or } \eset{i, j} \in E\\
+        \nu_{ij}\ \t{otherwise}.
     \end{cases}
 \end{equation*}
 Note that $\Sigma^\nu$ is the matrix formed by replcing entries in $S$ corresponding to missing edges with entries of the dual variables $\nu_{ij}$. Replacing this in the expression for the Lagrange dual function $H$, we obain
@@ -108,8 +103,8 @@ Note that $\Sigma^\nu$ is the matrix formed by replcing entries in $S$ correspon
 And hence the dual to (\ref{eq-primal}) is
 \begin{align} \label{eq-dual}
     \begin{split}
-        &\underset{\Sigma \in \S^p_{\succ 0}}{\textrm{minimize}}\ \  -\log |\Sigma| - p\\
-        &\textrm{subject to}\ \ \Sigma_{ij} = S_{ij}\ \textrm{ for all } i = j \textrm{ or } \eset{i, j} \in E
+        &\underset{\Sigma \in \S^p_{\succ 0}}{\t{minimize}}\ \  -\log |\Sigma| - p\\
+        &\t{subject to}\ \ \Sigma_{ij} = S_{ij}\ \t{ for all } i = j \t{ or } \eset{i, j} \in E
     \end{split}
 \end{align}
 To show that we can equivalently study problem (\ref{eq-primal}) and (\ref{eq-dual}), we must show that strong duality holds for this convex optimization problem. By \textit{Slater's constraint quantification} \cite[Section 5.3.2]{boyd2004convex}, it is enough to show that there exists an $\Omega^* \in \S^p_{\succ 0}$ that is strictly feasable for the primal problem. Since the identity matrix is positive definite and is an element of $\S(\G)$ for any $\G$, strong duality holds for any graph $\G$ and we can freely study both formulations of the optimization problem. Furthermore, problems (\ref{eq-primal}) and (\ref{eq-dual}) have a solution if and only if $\log |\Sigma| + p$ is unbounded from above in the set of feasable matrices. We have yet to study under which condition this is the case.
@@ -117,8 +112,8 @@ To show that we can equivalently study problem (\ref{eq-primal}) and (\ref{eq-du
 To that end, let us first introduce some new notation. If $\G$ is a graph over $p$ nodes and $\Sigma \in \R^{p\times p}$, the $\G$-partial matrix $\Sigma^\G$ of $\Sigma$ is the partial matrix found by removing entries in $\Sigma$ corresponding to missing edges in $\G$, see Figure \ref{fig-no-completion} for an example.With this notation, we can reformulate the dual problem (\ref{eq-dual}) as
 \begin{align} \label{eq-completion}
     \begin{split}    
-        &\underset{\Sigma \in \S^p_{\succ 0}}{\textrm{minimize}}\ \  -\log |\Sigma| - p\\
-        &\textrm{subject to}\ \ \Sigma^\G = S^\G.
+        &\underset{\Sigma \in \S^p_{\succ 0}}{\t{minimize}}\ \  -\log |\Sigma| - p\\
+        &\t{subject to}\ \ \Sigma^\G = S^\G.
     \end{split}
 \end{align}
 If this formulation, the dual optimization problem corresponds to a \textit{positive definite matrix completion} problem in which the matrix $\Sigma$ is partially specified from entries of the sample covariance matrix corresponding to edges present in $\G$. Furthermore, Uhler \cite[Section 9.4]{maathuis2018handbook} presents a geometric argument tying together the matrix completion approach to the problem to its original convex optimization formulation.
@@ -177,7 +172,7 @@ Now that we have presented some of the conditions under which one can almost sur
 \begin{equation} \label{eq-clique-constraint}
     \hat\Sigma_C = S_C \ \ \ \ \t{for all } C \in \c{C}(\G).
 \end{equation}
-This Equation naturally suggests an iterative algorithm successively adjusting parts of the covariance matrix to satisfy (\ref{eq-clique-constraint}) while keeping the running matrix positive definite. This procedure, called \textit{iterative proportional scaling}, was studied by Speed and Kiiveri \cite{speed1986gaussian} among with other algorithms for solving the maximum equation problem in a Gaussian graphical model. 
+This equation naturally suggests an iterative algorithm successively adjusting parts of the covariance matrix to satisfy (\ref{eq-clique-constraint}) while keeping the running matrix positive definite. This procedure, called \textit{iterative proportional scaling}, was studied by Speed and Kiiveri \cite{speed1986gaussian} among with other algorithms for solving the maximum equation problem in a Gaussian graphical model. 
 
 We now present a development of the algorithm in a Gaussian graphical model with graph $\G$ given a sample covariance matrix $C$ computed from a sample of size $n > \t{mlt}(\G)$. Let $\Omega \in \S^p_{\succ 0}$ be a positive definite matrix and $C \in \c{C}(\G)$ be a clique of $\G$. We define the \textit{$C$-marginal adjustment} operato $T_C$ given by
 \begin{equation} \label{eq-tc-1}
@@ -259,8 +254,8 @@ Given these properties, we can naturally define an algorithm by cycling through 
     That is, $T_C \Omega^0$ is the solution to
     \begin{align} \label{eq-sub-optim}
         \begin{split}
-            &\underset{\Omega \in \S_{\succ 0}(\G)}{\textrm{maximize}}\ \  \log |\Omega| - \tr[S\Omega]\\
-            &\textrm{subject to}\ \ \Omega_{C^c} = \Omega^0_{C^c} \t{ and } \Omega_{C, C^c} = \Omega^0_{C, C^c}.
+            &\underset{\Omega \in \S_{\succ 0}(\G)}{\t{maximize}}\ \  \log |\Omega| - \tr[S\Omega]\\
+            &\t{subject to}\ \ \Omega_{C^c} = \Omega^0_{C^c} \t{ and } \Omega_{C, C^c} = \Omega^0_{C, C^c}.
         \end{split}
     \end{align}
 \end{lemma}
@@ -287,7 +282,7 @@ Given these properties, we can naturally define an algorithm by cycling through 
     \end{align*}
     Hence, the optimization problem (\ref{eq-sub-optim}) is equivalent to 
     \begin{equation*}
-        \underset{\Omega' \in \S_{\succ 0}^{|C|}}{\textrm{maximize}}\ \  \log |\Omega'| - \tr[S_C\Omega'].
+        \underset{\Omega' \in \S_{\succ 0}^{|C|}}{\t{maximize}}\ \  \log |\Omega'| - \tr[S_C\Omega'].
     \end{equation*}
     Comparing this to earlier discussions, this problem is equivalent to finding the maximum likelihood estimator of the precision matrix $\Omega'$ in the Gaussian graphical model associated to the graph $\G$ restricted to the nodes in $C$. Since $C$ is a clique, the subgraph is complete and the maximum likelihood estimator is given by $\hat\Omega' = (S_C)^{-1}$. Hence, the solution to (\ref{eq-sub-optim}) is given by $\hat\Omega \in \Theta(\Omega^0)$ with
     \begin{align*}
@@ -302,9 +297,9 @@ Hence, Algorithm \ref{alg:itpropscale} corresponds to an \textit{iterative parti
 
 
 \begin{lemma} \label{lem-gaussian-cond}
-    Let $X \sim N_p(\mu, \Sigma)$ and $A, B \subset [p]$ be disjoin. Then, the conditional distribution of $X_A$ given $X_B = x_B$ is $N_{|A|}(\mu_{A|B}, \Sigma_{A|B})$ where
+    Let $X \sim N_p(\mu, \Sigma)$ and $A, B \subset [p]$ be disjoint. Then, the conditional distribution of $X_A$ given $X_B = x_B$ is $N_{|A|}(\mu_{A|B}, \Sigma_{A|B})$ where
     \begin{align*}
-        \mu_{A|B} = \mu_A + \Sigma_{A,B}\Sigma^{-1}_{B,B}(x_B - \mu_B) && \textrm{and} && \Sigma_{A|B} = \Sigma_{A,A} - \Sigma_{A,B}\Sigma^{-1}_{B,B}\Sigma_{B,A}.
+        \mu_{A|B} = \mu_A + \Sigma_{A,B}\Sigma^{-1}_{B,B}(x_B - \mu_B) && \t{and} && \Sigma_{A|B} = \Sigma_{A,A} - \Sigma_{A,B}\Sigma^{-1}_{B,B}\Sigma_{B,A}.
     \end{align*} 
     One recognizes that the conditional covariance matrix $\Sigma_{A|B}$ is the Schur complement of $\Sigma_B$ in $\Sigma$.
 \end{lemma}

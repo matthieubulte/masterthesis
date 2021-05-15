@@ -5,7 +5,7 @@ Luckily, modern programming languages and libraries allow to quickly develop alg
 \begin{lstlisting}[language=Julia, mathescape, escapechar=\%]
 julia> gamma(p, $\lambda$) = t -> p*log($\lambda$) - p*log($\lambda$-t)
 \end{lstlisting}
-This function can then both be used with concrete values of $p, \lambda$ and $t$, for instance $\textrm{gamma}(1.0, 2.0)(1.0) = 0.6931471805599453$. However, one can also define symbolic variables for $p$ and $\lambda$ to construct a symbolic expression of the cumulant generating function
+This function can then both be used with concrete values of $p, \lambda$ and $t$, for instance $\t{gamma}(1.0, 2.0)(1.0) = 0.6931471805599453$. However, one can also define symbolic variables for $p$ and $\lambda$ to construct a symbolic expression of the cumulant generating function
 \begin{lstlisting}[language=Julia, mathescape, escapechar=\%]
 julia> @syms p::positive $\lambda$::positive
 julia> gamma(p, $\lambda$)(t)
