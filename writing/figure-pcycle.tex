@@ -1,18 +1,15 @@
-\begin{figure}[!htbp] 
+\begin{figure}[!tbp] 
     \center
     \begin{tikzpicture}[
         point/.style={circle,draw,minimum size=#1},
         point/.default=0pt
     ]
-        % \coordinate[label = above:1] (1) at (90:3);
-        % \node at (1)[circle,fill,inner sep=2pt]{};
-
-        \node[point=3.2em] (1) at (90:2.5) {1};
-        \node[point=3.2em] (2) at (150:2.5) {2};
-        \node[point=3.2em] (3) at (210:2.5) {3};
+        \node[point=3.2em] (1) at (90:2.5) {$x_1$};
+        \node[point=3.2em] (2) at (150:2.5) {$x_2$};
+        \node[point=3.2em] (3) at (210:2.5) {$x_3$};
         \node[point=3.2em, draw=none] (dots) at (270:2.5) {...};
-        \node[point=3.2em] (pm1) at (330:2.5) {$p-1$};
-        \node[point=3.2em] (p) at (30:2.5) {$p$};
+        \node[point=3.2em] (pm1) at (330:2.5) {$x_{p-1}$};
+        \node[point=3.2em] (p) at (30:2.5) {$x_p$};
 
 
         \centerarc[](0,0)(105:135:2.5)

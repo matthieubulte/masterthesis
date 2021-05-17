@@ -1,0 +1,43 @@
+\begin{figure}[tbp!]
+    \begin{minipage}[c]{.45\linewidth}
+        \centering
+        $\ \ \ \ \ \ \ \ \ \ \ \ \ H_0$
+        \newline
+        \newline
+        \begin{tikzpicture}[node distance={15mm}, thick, main/.style = {draw, circle}] 
+            \node[main] (1) {$x_1$}; 
+            \node[main] (2) [below left of=1] {$x_2$};
+            \node[main] (3) [below right of=2] {$x_3$}; 
+            \node[main] (4) [above right of=3] {$x_4$};
+            \draw (1) -- (2);
+            \draw (2) -- (3);
+            \draw (4) -- (3);
+            \draw (1) -- (4);
+        \end{tikzpicture}
+    \end{minipage}
+    \begin{minipage}[c]{.1\linewidth}
+        \centering
+        $ $
+        \newline\newline
+        vs.
+    \end{minipage}
+    \begin{minipage}[c]{.45\linewidth}
+        \centering
+        $\ \ \ \ \ \ \ \ \ \ \ \ \ H_1$
+        \newline
+        \newline
+        \begin{tikzpicture}[node distance={15mm}, thick, main/.style = {draw, circle}] 
+            \node[main] (1) {$x_1$}; 
+            \node[main] (2) [below left of=1] {$x_2$};
+            \node[main] (3) [below right of=2] {$x_3$}; 
+            \node[main] (4) [above right of=3] {$x_4$};
+            \draw (1) -- (2);
+            \draw (2) -- (3);
+            \draw (4) -- (3);
+            \draw (1) -- (4);
+            \draw (1) edge[red] (3);
+        \end{tikzpicture}
+    \end{minipage}
+    \caption{Simple hypothesis test proposed by Eriksen \cite{eriksen1996tests} for which the $\chi^2_1$ approximation to the likelihood ratio statistic fails.}
+    \label{fig-test-cycle-vs-diamond}
+\end{figure}

@@ -41,7 +41,6 @@ julia> cumulants(K, 5; T=Sym)
  0
 \end{lstlisting}
 We can then use the \lstinline{edgeworth} from Listing \ref{lst-edgeworth} to compute the explicit formula for the Edgeworth series of order 4\footnote{To avoid writing out the Hermite polynomials, we use a sligthly modified version of the code in Listing \ref{lst-edgeworth} replacing Hermite polynomials by symbolic functions $H_k$.}
-\newpage
 \begin{lstlisting}[language=Julia, mathescape, escapechar=\%]
 julia> edgeworth(K, n, 4; T=Sym)(x)
                                                     -$x^2$  
@@ -52,8 +51,9 @@ julia> edgeworth(K, n, 4; T=Sym)(x)
                   \                             /    
 
 \end{lstlisting}
-With $(2\pi)^{-1/2} \approx 0.398942280401433$, this formula corresponds expression derived in Equation (\ref{eq-edgeworth-1d-4}) of Example \ref{ex-edgeworth-1d}.
+With $(2\pi)^{-1/2} \approx 0.398942280401433$, this formula corresponds expression derived in (\ref{eq-edgeworth-1d-4}) of Example \ref{ex-edgeworth-1d}.
 
+\newpage
 \begin{lstlisting}[language=Julia, mathescape, escapechar=\%, caption={Symbolic implementation of the Edgeworth expansion}, label={lst-edgeworth}, basicstyle=\small]
 function edgeworth(K, nsum, order; T=Float64)
     H(k) = basis(ChebyshevHermite, k)
@@ -73,7 +73,7 @@ function edgeworth(K, nsum, order; T=Float64)
     sumK = iidsum(stdK, n)
 
     # Use the new cgf to construct the expansion of the ratio 
-    # of characteristic functions, as in Equation (%\ref{eq-char-expansion}%).
+    # of characteristic functions, as in (%\ref{eq-char-expansion}%).
     ratio = exp(sumK(t) - t^2/2)
     expansion = ratio.series(t, n=taylororder).removeO()
 
@@ -86,7 +86,7 @@ function edgeworth(K, nsum, order; T=Float64)
     # The `expansion` variable is now a symbolic polynomial 
     # in the variable t. We retrieve the density by Fourier 
     # inversion, by which we replace instances of t^k by the 
-    # k-th Hermite polynomial as in Equation (%\ref{eq-edgeworth-full}%).
+    # k-th Hermite polynomial as in (%\ref{eq-edgeworth-full}%).
     $\alpha$star = collect(expansion, t).coeff.(t.^(0:taylororder))
     $\alpha$star = convert.(finaltype, $\alpha$star)
     polynomial = sum([$\alpha$star[i]*H(i-1) for i=1:length($\alpha$star)])

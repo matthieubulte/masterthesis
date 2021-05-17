@@ -1,0 +1,27 @@
+\subsection{Sampling random precision matrix}
+
+In this Appendix, we discuss the method employed to generate random precision matrix $\Omega \in \S_{\succ 0}(\G)$ given some graph $\G = ([p], E)$. We first start with the assumption that $\G$ is complete. In this case, generating $\Omega \in \S_{\succ 0}(\G)$ is equivalent to sampling a random element of $\S^p_{\succ 0}$. 
+
+Suppose $X_1, \ldots, X_n \simiid N(0, 1_p)$ with $n > p$ and let $X = (X_1, \ldots, X_n) \in \R^{p\times n}$, then with probability one the $p \times p$ matrix $\Omega = XX^\top$ is invertible and is positive definite. This construction defines a distribution over the space of $p \times p$ positive definite matrices called the \textit{Wishart distribution} writen $\c{W}(1_p, n)$. Sampling from the Wishart distribution can either be done by following the construction described before, but it can be more efficiently done via the \textit{Bartlett decomposition} \cite{10.2307/2346290} of $\Omega$. Let $L$ be a lower triangular matrix with independent random entries given by
+\begin{equation*}
+    L_{ij} \sim \begin{cases}
+        N(0, 1) \ \ \t{ if } i > j,\\
+        \chi^2_{p - i + 1} \ \ \ \t{ if } i = j,
+    \end{cases}
+\end{equation*}
+then the matrix $\Omega = L L^\top$ follows a Wishart distribution $\c{W}(1_p, n)$. This sampling scheme requires sampling less scalar random variables and provides by construction the Cholesky decomposition of $\Omega$, which makes numerical manipulations of $\Omega$ more efficient and stable.
+
+Let us now consider the case where $\G = ([p], E)$ is constructed by taking the complete graph over the nodes $[p]$ and removing the edge $e = \eset{a, b}$. In this case, sampling a random $\Omega \in \S(\G)$ is equivalent to sampling a matrix in the subspace $\S^p_{\succ 0} \cap \eset{ \Omega_e = 0}$. One approach that could be taken is sampling $\Omega \sim \c{W}(1_p, n)$ for $n > p$ and setting $\Omega_e = 0$. However, the resulting matrix might not be positive definite which makes this sampling scheme unsuited.
+
+If $L$ is sampled as described above and $\Omega = L L^\top$. Then if $L$ has rows $L_i$, we have that $\Omega_e = \Omega_{ab} = L_a L_b^\top$ and hence
+\begin{equation*}
+    \Omega_e = 0 \Leftrightarrow L_a \bot L_b.
+\end{equation*}
+This means that we can \textit{remove the edge} $e$ from $\Omega$ by orthogonalizing the corresponding columns in $L$ before constructing $\Omega$. To do this, we define the matrix $L^e$ via a transformation the rows $L_i$ of $L$
+\begin{equation*}
+    L^e_i = \begin{cases}
+        L_a - \frac{L_a L_b^\top}{L_b L_b^\top} L_b \ \ \t{ if } i = a,\\
+        L_i \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \t{ otherwise}.
+    \end{cases}
+\end{equation*}
+Since this step involves subtracting one row from another in the matrix $L$, we have that $|L^e| = |L|$. Hence, the matrix $\Omega^e = L^e (L^e)^\top$ is positive definite and satisfies $\Omega^e_e = 0$. This edge removal corresponds to a single step in the Gramm-Schmidt orthogonalization process. Hence, if more than one edge has to be removed, a complete Gramm-Schmidt algorithm can be run on the rows of $L$ as described Algorithm 2 of C\'ordoba et al.\,\cite{cordoba2020generating}.

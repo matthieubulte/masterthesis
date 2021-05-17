@@ -78,19 +78,19 @@ Consider now applying this transformation to the standardized sum $Y = n^{-1/2}\
     \kappa_s(Y) = n^{1-k/2} \kappa_s(X_1) = o(n^{1-k/2}).
 \end{equation*}
 \
-We can form the \textit{Edgeworth series} of order $k$, called $e_k(y; \kappa(X))$, by discarding terms of order higher than $o(n^{1-k/2})$ in Equation (\ref{eq-edgeworth-full}), giving
+We can form the \textit{Edgeworth series} of order $k$, called $e_k(y; \kappa(X))$, by discarding terms of order higher than $o(n^{1-k/2})$ in (\ref{eq-edgeworth-full}), giving
 \begin{equation} \label{eq-edgeworth}
     f_Y(y) = e_k(y; \kappa(X)) + o(n^{(1-k)/2}).
 \end{equation}
 
-Note that this statement can be slightly refined, which will be useful later. After truncating Equation (\ref{eq-edgeworth-full}), the density $f$ can be decomposed in
+Note that this statement can be slightly refined, which will be useful later. After truncating (\ref{eq-edgeworth-full}), the density $f$ can be decomposed in
 \begin{equation} \label{eq-edge-polynomial}
     f(y) = \phi(y)\left\{1 + P_k(y; \kappa(X)) + o(n^{(1-k)/2})\right\},
 \end{equation}
 where $P_k(\cdot; \kappa(X))$ is the polynomial part of the Edgeworth approximation.
 
 \begin{example} \label{ex-edgeworth-1d}
-    Consider a random variable $X \in \R$ with cumulants $\kappa(X) = (\kappa_1, \kappa_2, \ldots)$ such that $\E{X} = 0$ and $\V[X] = 1$. In one dimension, derivatives can only be taken with respect to a single variable and Equation (\ref{eq-edgeworth-full}) becomes
+    Consider a random variable $X \in \R$ with cumulants $\kappa(X) = (\kappa_1, \kappa_2, \ldots)$ such that $\E{X} = 0$ and $\V[X] = 1$. In one dimension, derivatives can only be taken with respect to a single variable and (\ref{eq-edgeworth-full}) becomes
     \begin{equation*}
         \phi(x) \left\{
             1 + \sum_{j=3}^\infty  \frac{1}{j!}\alpha^*_j h_j(x)
@@ -106,7 +106,7 @@ where $P_k(\cdot; \kappa(X))$ is the polynomial part of the Edgeworth approximat
     \end{equation}
 \end{example}
 
-While the argument provided above for the definition of the Edgeworth series is not suffenciently rigorous to prove Equation (\ref{eq-edgeworth}), we now show that the Edgeworth series $e_k(y; \kappa(X))$ indeed approximates the density of a standardized sum with an error of $o(n^{(1-k)/2})$.
+While the argument provided above for the definition of the Edgeworth series is not suffenciently rigorous to prove (\ref{eq-edgeworth}), we now show that the Edgeworth series $e_k(y; \kappa(X))$ indeed approximates the density of a standardized sum with an error of $o(n^{(1-k)/2})$.
 
 \begin{remark} \label{rem-centering}
     The initial assumption of having a mean of 0 and covariance matrix equal to the identity does not imply a loss of generality of the approach. Indeed, if $X$ has a mean $\mu$ and covariance matrix $\Sigma$, the Edgeworth series $e_k(\cdot; \kappa(Z))$ can be constructed for the random variable $Z = \Sigma^{-1/2}(X - \mu)$ and used to construct an approximation $e_k(\cdot; \kappa(X))$ of the density of $n^{-1/2} \sum_{i=1}^n X_i$ via
@@ -120,7 +120,7 @@ While the argument provided above for the definition of the Edgeworth series is 
 
 \begin{remark} \label{rem-edge-mean}
     Note that one can easily show that for any index tuple $s \in S_p(k)$ with $k$ odd, 0 is a root of the generalized Hermite polynomial $h_s$. 
-    Furthermore, by the development of Equation (\ref{eq-edgeworth-full}), the coefficient of each Hermite polynomial $h_s, s \in S_p(k)$ contains terms of order $O(n^{1-k'/2})$ where $k$ and $k'$ have the same parity and $k' \leq k$.
+    Furthermore, by the development of (\ref{eq-edgeworth-full}), the coefficient of each Hermite polynomial $h_s, s \in S_p(k)$ contains terms of order $O(n^{1-k'/2})$ where $k$ and $k'$ have the same parity and $k' \leq k$.
 
     Together with Remarks \ref{rem-centering}, this shows that the polynomial part of the Edgeworth series evaluated at the mean of the approximated distribution is a polynomial in $n^{-1}$ instead of a polynomial in $n^{-1/2}$ since terms of odd powers are zero. Another consequence of this is that the error of the Edgeworth approximation of order $k$ is $o(n^{\floor{(1-k)/2}})$. 
     

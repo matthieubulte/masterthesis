@@ -54,27 +54,37 @@ ins = 1; for n = ns
     ins += 1
 end
 
-q = LinRange(0, 0.99, 100)
-
+function plots(q, name, ylims)
+    ls = ["1", "7/2", "6"]
+    p = plot(layout=(1,3), size=(750,350), bottom_margin=10px, left_margin=10px);
 p = plot(layout=(1,3), size=(750,350), bottom_margin=10px, left_margin=10px); 
-ins = 1; for n = ns
-    qvals = quantile(results[ins, :], q);
-    q2nvals = exp.(-qvals./n);
-    wvals = qvals;
+    p = plot(layout=(1,3), size=(750,350), bottom_margin=10px, left_margin=10px);
+    ins = 1; for n = ns
+        qvals = quantile(results[ins, :], q);
+        q2nvals = exp.(-qvals./n);
+        wvals = qvals;
 
-    qχ² = cdf(Chisq(1), wvals);
-    qβ = 1 .- cdf(Beta((n - f - 1)/2, 1/2), q2nvals);
+        qχ² = cdf(Chisq(1), wvals);
+        b = n - f - 1
+        qβ = 1 .- cdf(Beta(b/2, 1/2), q2nvals);
 
-    plot!(subplot=ins,q, q, color=:black, label=nothing, legend=:topleft)
-    plot!(subplot=ins,q, qχ², label=L"\chi^2_1", color=:black, linestyle=:dot)
-    plot!(subplot=ins,q, qβ, label=L"Beta", color=:black, linestyle=:dash)
-    title!(subplot=ins, L"n = %$(n)")
-    
-    ins += 1
+        plot!(subplot=ins,q, q, color=:black, label=nothing, legend=:topleft)
+        plot!(subplot=ins,q, qχ², label=L"\chi^2_1", color=:black, linestyle=:dot)
+        plot!(subplot=ins,q, qβ, label=L"B(%$(ls[ins]), 1/2)", color=:black, linestyle=:dash)
+        title!(subplot=ins, L"n = %$(n)")
+        ylims!(ylims)
+
+        ins += 1
+    end
+    ylabel!(subplot=1, L"\textrm{Approximatd probability}")
+    xlabel!(subplot=2, L"\textrm{Empirical probability}")
+
+    Plots.svg(p, "plots/$name")
+    inkscapegen("$name", "$name")
+
+    p
 end
-ylabel!(subplot=1, L"\textrm{Approximatd probability}")
-xlabel!(subplot=2, L"\textrm{Empirical probability}")
 
-Plots.svg(p, "output3/diamond_vs_square__both")
+plots(LinRange(0, 0.99, 100), "diamond_vs_square_0_1", (0, 1))
+plots(LinRange(0, 0.1, 100), "diamond_vs_square_0_01", (0, 0.16))
 
-inkscapegen("diamond_vs_square", "diamond_vs_square__both")

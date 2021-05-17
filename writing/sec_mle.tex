@@ -57,7 +57,7 @@ In the \textit{saturated model} where no constraints are put on the entries of $
 \begin{equation*}
     \hat\Omega = S^{-1}.
 \end{equation*}
-However, if we are interested in estimating the maximum likelihood estimator $\hat\Omega$ of a Gaussian graphical model with graph $\G = ([p], E)$, the solution $\hat\Omega$ must lie in the subset $\S(\G)$ of $\S^p_{\succ 0}$ in which the conditional independence relations encoded in $\G$ are satisfied. This subset is directly given by Equation (\ref{eq-ggm}), $\S(\G) = \{ \Omega \in \S^p_{\succ 0} : \Omega_{ij} = 0 \t{ if } i \neq j \t{ and } \eset{i,j} \notin E \}$. We are then left with the following optimization problem
+However, if we are interested in estimating the maximum likelihood estimator $\hat\Omega$ of a Gaussian graphical model with graph $\G = ([p], E)$, the solution $\hat\Omega$ must lie in the subset $\S(\G)$ of $\S^p_{\succ 0}$ in which the conditional independence relations encoded in $\G$ are satisfied. This subset is directly given by (\ref{eq-ggm}), $\S(\G) = \{ \Omega \in \S^p_{\succ 0} : \Omega_{ij} = 0 \t{ if } i \neq j \t{ and } \eset{i,j} \notin E \}$. We are then left with the following optimization problem
 \begin{align} \label{eq-primal}
     \begin{split}
         &\underset{\Omega \in \S^p_{\succ 0}}{\t{maximize}}\ \  \log |\Omega| - \tr[S\Omega]\\
@@ -152,7 +152,7 @@ Let $\G = (\Gamma, E)$ be a graph and $S$ a sample covariance matrix. A graph $\
 \begin{equation*}
     \t{mlt}(\G) \leq q^+(\G) = \min \eset{ q(\G^+) : \G^+ \t{ is a chordal cover of } \G },
 \end{equation*}
-anda all together for any graph $\G$,
+and all together for any graph $\G$,
 \begin{equation} \label{eq-mlt-bounds}
     q(\G) \leq \t{mlt}(\G) \leq q^+(\G).
 \end{equation}
@@ -187,7 +187,7 @@ where the variable $\Sigma$ will be used to denote the inverse of $\Omega$ and, 
     The operator $T_C$ satisfies
     \begin{itemize}
         \item[(i)] $T_C$ is well defined;
-        \item[(ii)] $T_C$ adjusts the $C$-marginal of $\Omega$, that is, $(T_C \Omega)^{-1}$ satisfies Equation (\ref{eq-clique-constraint}) for the clique $C$;
+        \item[(ii)] $T_C$ adjusts the $C$-marginal of $\Omega$, that is, $(T_C \Omega)^{-1}$ satisfies (\ref{eq-clique-constraint}) for the clique $C$;
         \item[(iii)] If $\Omega \in \S^p_{\succ 0}$, $T_C \Omega \in \S^p_{\succ 0}$;
         \item[(iv)] If $\Omega \in \S(\G)$, $T_C \Omega \in \S(\G)$.
     \end{itemize}    
