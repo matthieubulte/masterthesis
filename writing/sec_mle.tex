@@ -1,27 +1,27 @@
 \subsection{MLE in Gaussian graphical models}
 
-A graphical model is a probabilistic models associating relations between random variables to a graph. The random variables of the model are represented by nodes in the graph and conditional independence relations are represented by missing edges between the corresponding nodes of the graph.
+A graphical model is a probabilistic model associating relations between random variables to a graph. The random variables of the model are represented by nodes in the graph and conditional independence relations are represented by missing edges between the corresponding nodes of the graph.
 
-Consider a random vector $X$ distributed according to the \textit{multivariate Gaussian} distribution $N_p(0, \Omega^{-1})$ where $\Omega \in \S^p_{\succ 0}$ is the inverse of the \textit{covariance matrix} $\Sigma$ and is called the \textit{precision matrix}. The density of $X$ is then
+Consider a random vector $X$ distributed according to the \textit{multivariate Gaussian} distribution $N_p(0, \Omega^{-1})$, where $\Omega \in \S^p_{\succ 0}$, called the \textit{precision matrix}, is the inverse of the covaraince matrix $\Sigma$. Thus, the density of $X$ is
 \begin{equation} \label{eq-density-gaussian}
     f(x; \Omega) = (2\pi)^{-p/2} |\Omega|^{1/2} \expfc{-\frac{1}{2} \trB{xx^\top \Omega} }.
 \end{equation}
-We clearly see that the multivariate Gaussian distribution is an exponential family with canonical parameter $\Omega$ and sufficient statistic $\frac{1}{2}xx^\top$. 
+Clearly, the multivariate Gaussian distribution is an exponential family with canonical parameter $\Omega$ and sufficient statistic $\frac{1}{2}xx^\top$. 
 
-We choose to parametrize the multivariate Normal distribution in terms of the precision matrix because of its special role in the context of graphical models. Indeed, the conditional independence relations of the entries a random vector $X \sim N_p(0, \Omega)$ are characterized by the sparsity patterns of the precision matrix $\Omega$.
+We parametrize the multivariate Normal distribution in terms of the precision matrix because of its special role in the context of graphical models. Indeed, the conditional independence relations of the entries a random vector $X \sim N_p(0, \Omega)$ are characterized by the sparsity patterns of the precision matrix $\Omega$. This is shown in the following lemma from \cite[Proposition 5.2]{lauritzen1996}.
 \
 \begin{lemma}
-    Let $X \sim N_p(\mu, \Sigma)$ and let $i, j \in [p]$, then
-    \begin{equation*}
+    Let $X \sim N_p(\mu, \Sigma)$ and let $i, j \in [p]$ with $i \neq j$. Then
+    \begin{equation} \label{eq-lemma-markov}
         \Omega_{ij} = 0 \iff X_i \independent X_j | X_{[p] \setminus \eset{i,j}}.
-    \end{equation*}
+    \end{equation}
 \end{lemma}
 \begin{proof}
-    By Lemma \ref{lem-gaussian-cond}, we have that the bivariate vector $X_{\eset{i,j}}$ is Gaussian with covariance matrix $\Sigma_{\eset{i,j}|[p]\setminus\eset{i,j}}$ equal to the Schur complement of $\Sigma_{[p] \setminus \eset{i,j}}$. The claim of this lemma is thus equivalent to 
+    By Lemma \ref{lem-gaussian-cond}, we have that the bivariate vector $X_{\eset{i,j}}$ is Gaussian with covariance matrix $\Sigma_{\eset{i,j}|[p]\setminus\eset{i,j}}$ equal to the Schur complement of $\Sigma_{[p] \setminus \eset{i,j}}$. The statement in (\ref{eq-lemma-markov}) is thus equivalent to 
     \begin{equation*}
         \Omega_{ij} = 0 \iff \Sigma_{\eset{i,j}|[p]\setminus\eset{i,j}}\ \t{is diagonal}.
     \end{equation*}
-    Using the Schur complement inverse property, we have 
+    Using the Schur complement inverse property, we have that
     \begin{equation*}
         \Sigma_{\eset{i,j}|[p]\setminus\eset{i,j}} 
         = \left[\Omega_{\eset{i,j}}\right]^{-1} 
@@ -34,22 +34,22 @@ We choose to parametrize the multivariate Normal distribution in terms of the pr
             -\Omega_{ji} & \Omega_{ii} 
             \end{pmatrix}^{-1}.
     \end{equation*}
-    Hence, $\Sigma_{\eset{i,j}|[p]\setminus\eset{i,j}}$ is diagonal if and only if $\Omega_{ij} = 0$.
+    Hence, $\Sigma_{\eset{i,j}|[p]\setminus\eset{i,j}}$ is diagonal if and only if $\Omega_{ij} = 0$, completing the proof of the lemma.
 \end{proof}
 
 Consider a graph $\G = ([p], E)$. We say that $X$ satisfies the \textit{Gaussian graphical model} with graph $\G$ if $X \sim N_p(0, \Omega)$ and
 \begin{equation} \label{eq-ggm}
-    \Omega_{i j} = 0 \iff \eset{i,j} \notin E.
+    \Omega_{i j} = 0 \t{ for all } \eset{i,j} \notin E^*.
 \end{equation}
-This property corresponds to the pairwise Markov property in graphical model theory. All together, we find that the independence relations of the entries of $X$, the connectivity of the nodes in $\G$ and the sparsity pattern of $\Omega$ are all the same concept viewed from a different angle which each on its own will help in studying them.
+Property (\ref{eq-ggm}) corresponds to the pairwise Markov property in graphical model theory \cite{lauritzen1996}. Note that the independence relations of the entries of $X$, the connectivity of the nodes in $\G$ and the sparsity pattern of $\Omega$ are all the same concept viewed from a different angle, which each on its own will help in studying them.
 
 We now study properties of the maximum likelihood estimator in a Gaussian graphical model, largely following the presentation of Uhler \cite[Section 9]{maathuis2018handbook}.
 
-Consider now a sample $X = (X^{1}, \ldots, X^{n})$ from a Gaussian distribution. The log-likelihood function for a precision matrix $\Omega \in \S^p_{\succ 0}$ obtained from (\ref{eq-density-gaussian}) is
+Consider a sample $X = (X_1, \ldots, X_n)$ from a Gaussian distribution. The log-likelihood function for a precision matrix $\Omega \in \S^p_{\succ 0}$ obtained from (\ref{eq-density-gaussian}) is
 \begin{equation*}
     \ell(\Omega; X) = \frac{n}{2} \log |\Omega| - \frac{1}{2}\tr[XX^\top\Omega].
 \end{equation*}
-Rewriting it in terms of the sufficient statistic $S = n^{-1}XX^\top$, we have
+Rewriting the log-likelihood in terms of the sufficient statistic $S = n^{-1}XX^\top$, we get that
 \begin{equation} \label{eq-likelihood}
     \ell(\Omega; S) = \frac{n}{2}\log |\Omega| - \frac{n}{2}\tr[S\Omega].
 \end{equation}
@@ -57,14 +57,14 @@ In the \textit{saturated model} where no constraints are put on the entries of $
 \begin{equation*}
     \hat\Omega = S^{-1}.
 \end{equation*}
-However, if we are interested in estimating the maximum likelihood estimator $\hat\Omega$ of a Gaussian graphical model with graph $\G = ([p], E)$, the solution $\hat\Omega$ must lie in the subset $\S(\G)$ of $\S^p_{\succ 0}$ in which the conditional independence relations encoded in $\G$ are satisfied. This subset is directly given by (\ref{eq-ggm}), $\S(\G) = \{ \Omega \in \S^p_{\succ 0} : \Omega_{ij} = 0 \t{ if } i \neq j \t{ and } \eset{i,j} \notin E \}$. We are then left with the following optimization problem
+Remark that, if we are interested in estimating the maximum likelihood estimator $\hat\Omega$ of a Gaussian graphical model with graph $\G = ([p], E)$, the solution $\hat\Omega$ must lie in the subset $\S_{\succ 0}(\G)$ of $\S^p_{\succ 0}$ in which the conditional independence relations encoded in $\G$ are satisfied. We are then left with the following optimization problem
 \begin{align} \label{eq-primal}
     \begin{split}
         &\underset{\Omega \in \S^p_{\succ 0}}{\t{maximize}}\ \  \log |\Omega| - \tr[S\Omega]\\
         &\t{subject to}\ \ \Omega \in \S(\G).
     \end{split}
 \end{align}
-Since the Gaussian graphical model condition is a linear constraint, the set $\S(\G)$ is the is a convex cone. Showing that the objective function in (\ref{eq-primal}) is concave would imply that maximum likelihood estimation in Gaussian graphical models is a convex optimization problem which would allow us to bring new insights to the problem by studying its dual formulation. We start by proving that the objective function is indeed concave.
+Since the Gaussian graphical model condition is a linear constraint, the set $\S(\G)$ is the is a convex cone. Showing that the objective function in (\ref{eq-primal}) is concave would imply that maximum likelihood estimation in Gaussian graphical models is a convex optimization problem which would allow us to bring new insights to the problem by studying its dual formulation. We start by proving that the objective function is indeed concave is done in \cite[Proposition 9.2.1]{maathuis2018handbook}.
 \begin{lemma}
     The function $f : \S^p_{\succ 0} \rightarrow \R, X \mapsto \log |X| - \trB{SX}$ is concave.
 \end{lemma}

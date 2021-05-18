@@ -1,18 +1,18 @@
-\subsection{Preliminaries}
+\subsection{Preliminaries} \label{sec-prelim}
 
-We start by a brief introduction to elementary concepts in graph theory that will be useful in the rest of this chapter. Let $\G = (\Gamma, E)$ be a graph with nodes $\Gamma$ and edges $E \subset \Gamma \times \Gamma$. For convenience, we will assume that the nodes are numbered and use  $\G = ([p], E)$ and $E \subset [p] \times [p]$ for $p = |\Gamma|$.  We denote by $\t{bd}(i)$ the set of \textit{neighbours} of $i \in [p]$, that is $\t{bd}(i) = \eset{ j \in [p] : \eset{i, j} \in E \t{ and } j \neq i}$. The graphs under study in this thesis will be unconnected and won't contain any loop. This lets us write edges using the set notation $e = \eset{i, j}$ for $e \in E$. However, it will sometimes be useful to treat the set of edges as a set of indices on a matrix. In this case, we will need to introduce the \textit{augmented edge set} to include indices refering to the diagonal entries of the matrix. The augmented edge set $E^*$ of $E$ is constructed by adding all possible loop in $\G$, $E^* = E \cup \eset{ \eset{i} : i \in \Gamma }$.
+We begin with a brief introduction to elementary concepts in graph theory. Let $\G = (\Gamma, E)$ be a graph with nodes $\Gamma$ and edges $E$. In the sequel, we only consider unconnected and loopless graphs. For notational simplicity, we assume that the nodes $\Gamma$ are numbered. For $p = |\Gamma|$, we write $\G = ([p], E)$ and have $E \subset \eset{ \eset{i, j} : i, j \in [p], i \neq j }$.  We denote by $\t{bd}(i)$ the set of \textit{neighbours} of $i \in [p]$, that is $\t{bd}(i) = \eset{ j \in [p] : \eset{i, j} \in E \t{ and } j \neq i}$.  Note that it will be useful to treat the set of edges as a set of indices on a matrix. For this case, we introduce the \textit{augmented edge set}, in order to include indices refering to the diagonal entries of a matrix. The augmented edge set $E^*$ of $E$ is the set $E^* = E \cup \eset{ \eset{i} : i \in \Gamma }$, constructed by adding all possible loops in $\G$.
 
-A graph $\G$ is said to be \textit{complete} if all pairs of distinct nodes are connected by an edge. A set of nodes $C \subset [p]$ is called a \textit{clique} if the subgraph $\G_C = (C, E_C)$ with $E_C = \eset{ \eset{i, j} \in E : \eset{i, j} \subset C }$ is complete. We call $\c{C}(\G)$ the set of cliques in $\G$.
+A graph $\G$ is said to be \textit{complete} if all pairs of distinct nodes are connected by an edge. A \textit{clique} of $\G$ is a set of nodes $C \subset [p]$ such that the subgraph $\G_C = (C, E_C)$ with $E_C = \eset{ \eset{i, j} \in E : \eset{i, j} \subset C }$ is complete. We denote by $\c{C}(\G)$ the set of cliques in $\G$.
 
-An important class of graphs are \textit{chordal graphs}. A chordal graph $\G$ is a graph in which each cycle of length at least 4 has a \textit{chord}, which is an edge which is not part of the cycle connecting two nodes in the cycle.
+An important class of graphs are \textit{chordal graphs}. A chordal graph $\G$ is a graph in which each cycle of length at least 4 has a \textit{chord}, which is an edge that is not part of the cycle connecting two nodes in the cycle.
 
-As mentioned before, edges will be used to index matrices. If $\G = ([p], E)$, and $M \in \R^{p \times p}$, we introduce the following notation:
+Let $\G = ([p], E)$ and $M \in \R^{p \times p}$. We introduce the following notation.
 \begin{itemize}
-    \item If $e = \eset{i, j} \in E$, then $M_e = M_{ij}$;
-    \item If $A, B \subset [p]$, then $M_{A, B}$ is the $|A| \times |B|$ matrix construced by keeping rows labeled by the entries in $A$ and columns labeled by entries in $B$;
-    \item If $C \subset [p]$, then $M_C = M_{C, C}$;
+    \item If $e = \eset{i, j} \in E$, then $M_e = M_{ij}$.
+    \item If $A, B \subset [p]$, then $M_{A, B}$ is the $|A| \times |B|$ matrix constructed by keeping rows labeled by the entries in $A$ and columns labeled by the entries in $B$.
+    \item If $A \subset [p]$, then $M_A = M_{A, A}$.
     \item {
-        If $A, B \subset [p]$, then $[M_{A, B}]^{[p]}$ is the $p \times p$ matrix with entries satisfying 
+        If $A, B \subset [p]$, then $[M_{A, B}]^{[p]}$ is the $p \times p$ matrix with entries given by
         \begin{equation*}
             [M_{A, B}]^{\Gamma}_{ij} = \begin{cases}
                 M_{ij} \ \t{ if } \eset{i, j} \in A \times B, \\
@@ -21,7 +21,9 @@ As mentioned before, edges will be used to index matrices. If $\G = ([p], E)$, a
         \end{equation*}
     }
 \end{itemize}
-Since most matrices manipulated will be referencing quantities related to nodes in a graph, indexing of matrices and derived matrices will be done with respect to the nodes of the graph instead of row or column number of a matrix. For instance, if $A, B \subset [p]$ and $M \in \R^{p \times p}$, using the notation we just introduced, we have
+Since most matrices manipulated in the sequel reference quantities related to nodes in a graph, we index matrices with respect to the nodes of the graph instead of row or column number of the matrix. For instance, if $A, B \subset [p]$ and $M \in \R^{p \times p}$, then following the notation introduced above, we have that
 \begin{equation*}
     (M_{A, B})_{ab} = M_{ab} \ \ \t{for all } a \in A, b \in B.
 \end{equation*}
+
+We denote by $\S^p$ the set of $p \times p$ symmetric matrices and $\S^p_{\succ 0}$ the set of $p \times p$ positive definite symmetric matrices. Let $\G = ([p], E)$, we define the set of matrices $\S(\G) = \eset{ M \in \S^p : M_e = 0 \t{ if } e \notin E^* }$ and $\S_{\succ 0}(\G) = \eset{ M \in \S(\G) : M \t{ is positive definite } }$ or equivalently $\S_{\succ 0}(\G) = \S(\G) \cap \S^p_{\succ 0}$.

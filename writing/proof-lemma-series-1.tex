@@ -4,7 +4,7 @@
     \begin{equation*}
         \abs{\exp{u} - \sum_{k=0}^l \frac{v^k}{k!}} \leq \abs{\exp{u} - \exp{v}} + \abs{\sum_{k=l+1}^\infty \frac{v^k}{k!}}.
     \end{equation*}
-    Starting with the second term on the right hand side, we have
+    We begin bu upper bounding the second term on the right hand side as follows,
     \begin{align*}
         \abs{\sum_{k=l+1}^\infty \frac{v^k}{k!}} 
         & \leq \sum_{k=l+1}^\infty \abs{\frac{v^k}{k!}} 
@@ -17,9 +17,9 @@
     \begin{equation*}
         \exp u - \exp v = \abs{u - v} \exp z.
     \end{equation*}
-    Taking absolute values and by convexity of the exponential function, we find the following bound
+    Taking absolute values and using the convexity of the exponential function, we find the following bound
     \begin{equation*}
         \abs{\exp u - \exp v} = \abs{u - v} \exp |z| \leq \abs{u - v} \max \left\{ \exp{|u|}, \exp{|v|} \right\}.
     \end{equation*}
-    Combining the two bounds found previously completes the proof of the lemma.
+    Combining the above two bounds completes the proof of the lemma.
 \end{proof}

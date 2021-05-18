@@ -1,10 +1,10 @@
-\subsection{The characteristic function and related quantities}
+\subsection{The characteristic function and related quantities} \label{sec-charfun}
 
 The \textit{characteristic function} is a central tool in studying probability distributions. In this section, we review general results about the characteristic function of a multivariate continuous distribution. Let $X$ be a random vector in $\Rp$. The characteristic function of $X$ is the function $\zeta : \Rp \rightarrow \C$ given by
 \begin{equation*}
     \zeta(t) = \expec{}{\expf{it^\top X}}.
 \end{equation*}
-The characteristic function is an essential tool in studying distributions. Indeed, the following theorem shows that under regularity conditions on the characteristic function, the density of a random vector exists and can be expressed in terms of the characteristic function.
+The characteristic function is an essential tool in studying distributions. Indeed, the following multidimensional extebnsion of \cite[Theorem 2.4.2]{kolassa2006series} shows that under regularity conditions on the characteristic function, the density of a random vector exists and can be expressed in terms of the characteristic function.
 
 \begin{theorem} \label{thm-char-inversion}
     Let $X \sim P$ be a random vector in $\Rp$ with characteristic function $\zeta \in L^1(\Rp)$. Then, the density of $X$ exists and is given by
@@ -39,7 +39,7 @@ If $X$ has a density function, the characteristic function of $X$ corresponds to
     \F[f](t) = \int_\Rp \expf{it^\top x}f(x)\d x \ \ \ \ \ \ \t{for all } t \in \Rp.
 \end{equation}
 
-In this context, we can generalize Theorem \ref{thm-char-inversion} to provide the necessary conditions under which the Fourier transform can be inverted.
+In this context, we can generalize Theorem \ref{thm-char-inversion} to provide the necessary conditions under which the Fourier transform can be inverted. This corresponds to the extension of \cite[Corollary 2.4.3]{kolassa2006series} to $\Rp$.
 
 \begin{corollary} \label{corr-fourier-inv}
     Suppose that $f \in L^1(\Rp)$ and $\zeta \in L^1(\Rp)$ are related by
@@ -80,7 +80,7 @@ This corollary lets us extend the notation introduced in (\ref{eq-fourier-densit
     \Finv[\zeta](x) = \left(2\pi\right)^{-p}\int_\Rp \expf{-i t^\top x} \zeta(t) \d t.
 \end{equation*}
 
-In order to better understand the characteristic function, we need to be able to know in which functional space it lies. The following lemma relates $L^p$ integrability of the characteristic function to the existence of the density of a convolution of random variables.
+In order to better understand the characteristic function, we need to be able to know in which functional space it lies. The following lemma relates $L^p$ integrability of the characteristic function to the existence of the density of a convolution of random variables. This is an extension of \cite[Lemma 2.4.4]{kolassa2006series} to $\Rp$.
 
 \input{thm-char-integrable-convolution}
 
@@ -135,25 +135,25 @@ Next, we introduce the \textit{cumulant generating function}, a quantity related
     K(t) = \log \expec{}{\expf{t^\top X}}.
 \end{equation*}
 
-The derivatives of the cumulant generating function are called the \textit{cumulants}. Let $s \in S_p(k)$ be an index vector of length $k$, then if the involved derivatives exist, we define the $s$-cumulant of $X$ as
+The derivatives of the cumulant generating function are called the \textit{cumulants}. Let $s \in S_p(k)$ be an index vector of length $k \in \N$, then if the involved derivatives exist, we define the $s$-cumulant of $X$ as
 \begin{equation*}
-    \kappa_s = D^s K(0).
+    \kappa_s(X) = D^s K(0).
 \end{equation*}
-In the rest of the thesis, the cumulants might depend on various quantities (sample size, variable of interest, parameters of a distribution, $\ldots$) in which case we will use variations of this notation to make clear which cumulants are being discussed.
+In the sequel, cumulants might depend on various quantities such as the sample size, the random variable of interest or parameters of a distribution, in which case we will use variations of the notation $\kappa_s$ to make clear which cumulants are being discussed.
 
-Since the Normal distribution will often be used in the rest of the thesis, the next example gives the cumulant  generating function and cumulants of a multivarite Normal distribution.
+Since the Normal distribution will often be used in the follwoing, the next example gives the cumulant generating function and cumulants of a multivarite Normal distribution.
 \begin{example} \label{ex-cumulants-mvn}
-    Let $X \sim N(\mu, \Sigma)$ with $\mu \in \Rp$ and $\Sigma \in \Sp$, then the cumulant generating function $K(t; \mu, \Sigma)$ of $X$ is the quadratic function given by
+    Let $X \sim N(\mu, \Sigma)$ with $\mu \in \Rp$ and $\Sigma \in \Sp$. The cumulant generating function $K(t; \mu, \Sigma)$ of $X$ is the quadratic function given by
     \begin{equation*}
         K(t; \mu, \Sigma) = t^\top\mu + t^\top\Sigma t.
     \end{equation*}
-    It is then clear that all cumulants of $X$ exist, where first order cumulants are the components $\mu$, second order cumulants are the components of $\Sigma$, and cumulants of higher order are 0.
+    From this, it is clear that all cumulants of $X$ exist. Furthermore, the first order cumulants are the components $\mu$, second order cumulants are the components of $\Sigma$, and the cumulants of higher order are 0.
 \end{example}
 
 We now state without a proof some simple properties of cumulants that will be useful in future proofs.
 \begin{lemma} \label{lem-cumulants-props}
-    Let $X_1, \ldots, X_n \simiid P$, then the following holds for any $s \in S(k)$
-    \begin{itemize}
+    Let $X_1, \ldots, X_n \simiid P$. Then the following holds for any $s \in S(k)$
+    \begin{enumerate}[i.]
         \item {
         $\kappa_s(X_1 + \ldots + X_n) = n\kappa_s(X_1)$
         }
@@ -163,28 +163,28 @@ We now state without a proof some simple properties of cumulants that will be us
         \item {
             For all $c \in \Rp$, $\kappa_s(X_1 + c) =
             \begin{cases}
-                \kappa_s(X_1) + c_i &\text{if}\ s=(i)\\
-                \kappa_s(X_1)& \text{otherwise}
-            \end{cases}$,
+                \kappa_s(X_1) + c_i &\text{if}\ s=(i),\\
+                \kappa_s(X_1)& \text{otherwise},
+            \end{cases}$
         }
-    \end{itemize}
-    where $\kappa_s(Z)$ is the $s$-cumulant of the random variable $Z$.
+    \end{enumerate}
+    where we write $\kappa_s(Z)$ for the $s$-cumulant of the random variable $Z$.
 \end{lemma}
 
-One can see that the cumulant generating function is closely related to the characteristic function since
+Note that the cumulant generating function is closely related to the characteristic function since
 \begin{equation*}
     K(t) 
     = \log \expec{}{\expf{t^\top X}} 
     = \log \expec{}{\expf{i (-i)t^\top X}}
     = \log \zeta(-it).
 \end{equation*}
-This equality also allows us to define the cumulants $\kappa_s$ for $s \in S_p(k)$ in terms of the characteristic function
+This equality allows us to define the cumulants $\kappa_s$ for $s \in S_p(k)$ in terms of the characteristic function
 \begin{equation*}
-    \kappa_s = D^s K(0) 
+    \kappa_s(X) = D^s K(0) 
     = \frac{\d^k}{\d x_{s_1} \ldots \d x_{s_k}} \log \zeta(-it) \bigg|_{t=0}
     = (-i)^{k} D^s \log \zeta(0),
 \end{equation*}
 and hence
 \begin{equation*}
-    D^s \log \zeta(0) = i^k \kappa_s.
+    D^s \log \zeta(0) = i^k \kappa_s(X).
 \end{equation*}

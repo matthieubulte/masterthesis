@@ -26,7 +26,7 @@ julia> $\mu,\ \sigma^2$ = cumulants(gamma(p, $\lambda$), 2)
    p/$\lambda$
    p/$\lambda^2$
 \end{lstlisting}
-We used the capability of Julia to compose high-level libraries in order to develop a generic procedures for manipulating cumulant generating functions and develop density approximations for sums and maximum likelihood estimators. As an example, Listing \ref{lst-edgeworth} implements an arbitrary-order Edgeworth expansion by combining the mathematical derivation of the Edgeworth series in Section \note{TODO add ref} and some of the ideas described above.
+We used the capability of Julia to compose high-level libraries in order to develop a generic procedures for manipulating cumulant generating functions and develop density approximations for sums and maximum likelihood estimators. As an example, Listing \ref{lst-edgeworth} implements an arbitrary-order Edgeworth expansion by combining the mathematical derivation of the Edgeworth series in Section \ref{sec-edgeworth} and some of the ideas described above.
 
 A particularly appealing example of the usage of the function in Listing \ref{lst-edgeworth} is to derive the generic formula of the Edgeworth series of a specific order given the required cumulants. We start by defining a function \lstinline{symcgf(cumulants)} which creates a cumulant generating function with cumulants provided as an argument. For instance,
 \begin{lstlisting}[language=Julia, mathescape, escapechar=\%]
@@ -53,7 +53,6 @@ julia> edgeworth(K, n, 4; T=Sym)(x)
 \end{lstlisting}
 With $(2\pi)^{-1/2} \approx 0.398942280401433$, this formula corresponds expression derived in (\ref{eq-edgeworth-1d-4}) of Example \ref{ex-edgeworth-1d}.
 
-\newpage
 \begin{lstlisting}[language=Julia, mathescape, escapechar=\%, caption={Symbolic implementation of the Edgeworth expansion}, label={lst-edgeworth}, basicstyle=\small]
 function edgeworth(K, nsum, order; T=Float64)
     H(k) = basis(ChebyshevHermite, k)

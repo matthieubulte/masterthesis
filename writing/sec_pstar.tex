@@ -1,45 +1,45 @@
-\subsection{The $p^*$ approximation in exponential families}
+\subsection{The $p^*$ approximation in exponential families} \label{sec-pstar}
 
-Consider now applying the Saddlepoint approximation to an exponential family $\mathcal{P} = \left\{P_\theta\right\}_{\theta}$ with natural parameter $\theta \in \Rp$. The density $f_\theta$ of $P_\theta \in \mathcal{P}$ is given by
+Next, we apply the Saddlepoint approximation to an exponential family $\mathcal{P} = \left\{P_\theta\right\}_{\theta}$ with natural parameter $\theta \in \Rp$. We write $f(\cdot; \theta)$ for the density of $P_\theta \in \mathcal{P}$. Then, $f(\cdot; \theta)$ is given by
 \begin{equation*}
-    f_\theta(x) = \expf{\theta^\top T(x) - \mathcal{H}(\theta) - \mathcal{G}(x)}.
+    f(x; \theta) = \expf{\theta^\top T(x) - \mathcal{H}(\theta) - \mathcal{G}(x)}.
 \end{equation*}
-Given a random sample $x = (x_1, \ldots, x_n)$ of $P_\theta$, the loglikelihood function is given by
+Given a random sample $x = (x_1, \ldots, x_n)$ of $P_\theta$, the \textit{log-likelihood function} denoted $\ell(\cdot; x)$ is given by
 \begin{equation*}
     \ell(\theta; x) = \theta^\top \sum_{i=1}^n T(x_i) - n \mathcal{H}(\theta) = n\left[\bar t - \mathcal{H}(\theta)\right],
 \end{equation*}
-where $\bar t$ is the sample average of the sufficient statistic, $\bar t = n^{-1}\sum_{i=1}^n T(x_i)$. Hence, the maximum likelihood estimator of $\theta$ is the value $\hat\theta_{\bar t} \in \Rp$ satisfying the score equation
+where $\bar t = n^{-1}\sum_{i=1}^n T(x_i)$ is the sample average of the sufficient statistic. Hence, the maximum likelihood estimator of $\theta$ is the value $\hat\theta_{\bar t} \in \Rp$ satisfying the score equation
 \begin{equation} \label{eq-score-expfam}
     \mathcal{H}'(\hat\theta_{\bar t}) = \bar t.
 \end{equation}
-For simplicity, we will assume that $\mathcal{H}'$ is one-to-one to ensure that (\ref{eq-score-expfam}) has a unique solution $\hat\theta_{\bar t}$. In the exponential family $\mathcal{P}$, it can be shown that the cumulant generating function of any member $P_\theta \in \mathcal{P}$ is given by $K_\theta(t) = \mathcal{H}(\theta + t) - \mathcal{H}(\theta)$ and thus $K'_\theta(t) = \mathcal{H}'(\theta + t)$. Using the cumulant generating function in the score equation gives
+For simplicity, we will assume that $\mathcal{H}'$ is one-to-one to ensure that (\ref{eq-score-expfam}) has a unique solution $\hat\theta_{\bar t}$. In the exponential family $\mathcal{P}$, it can be shown that the cumulant generating function of any member $P_\theta \in \mathcal{P}$ is given by $K_\theta(t) = \mathcal{H}(\theta + t) - \mathcal{H}(\theta)$. Thus $K'_\theta(t) = \mathcal{H}'(\theta + t)$. Using the cumulant generating function in the score equation (\ref{eq-score-expfam}) gives
 \begin{equation*}
     K'_\theta(\hat\theta_{\bar t} - \theta) = \bar t.
 \end{equation*}
-Considering the Saddlepoint equation given in (\ref{eq-saddlepoint}), we notice that the  parameter $\hat\gamma_{\bar t}$ of the tilted family nearly corresponds to the maximum likelihood estimator $\hat\theta$ with
+Consider the Saddlepoint equation given in (\ref{eq-saddlepoint}), and notice that the parameter $\hat\gamma_{\bar t}$ of the tilted family nearly corresponds to the maximum likelihood estimator $\hat\theta$ with
 \begin{equation*}
     \hat\gamma_{\bar t}/n = \hat\theta_{\bar t} - \theta.
 \end{equation*}
-Using this in the first order Saddlepoint approximation (\ref{eq-saddle-3}), we obtain that the Saddlepoint approximation for the average $\bar T = n^{-1}\sum_{i=1}^n T(X_i)$, \note{maybe justify that $T(X)$ is also in exp fam with same cgf and param, which is why the rest works} where $X_1, \ldots, X_n \simiid P_\theta$, is
+Using this in the first order Saddlepoint approximation (\ref{eq-saddle-3}), we obtain that the Saddlepoint approximation for the average $\bar T = n^{-1}\sum_{i=1}^n T(X_i)$, where $X_1, \ldots, X_n \simiid P_\theta$, is
 \begin{align*}
-    g_3(\bar t; K_\theta) 
+    g(\bar t; K_\theta) 
     &= \left(\frac{n}{2\pi}\right)^{p/2}|K_\theta''(\hat\theta_{\bar t} - \theta)|^{-1/2} \expf{nK_\theta(\hat\theta_{\bar t} - \theta) - (\hat\theta_{\bar t} - \theta)^\top \bar t}\\
     &= \left(\frac{n}{2\pi}\right)^{p/2}|\mathcal{H}''(\hat\theta_{\bar t})|^{-1/2} \expf{n(\mathcal{H}(\hat\theta_{\bar t}) - \mathcal{H}(\theta)) - (\hat\theta_{\bar t} - \theta)^\top \bar t}\\
     &= \left(\frac{n}{2\pi}\right)^{p/2}|j(\hat\theta_{\bar t})|^{-1/2} \expf{\ell(\theta; \bar t) - \ell(\hat\theta_{\bar t}; \bar t)},
 \end{align*}
-where we have used that $\mathcal{H}''(\hat\theta)$ is equal to the observed Fisher information $j(\hat\theta)$. Daniels \cite{daniels1958} notes that this approximation can further be used to approximate the distribution of the maximum likelihood estimator. Let $\hat\Theta$ be the random variable solving the score equation $\mathcal{H}'(\hat\Theta) = \bar T$, then, by change of variable, we can use the approximation above to construct an approximation $p^*$ to the distribution of $\hat\Theta$,
+where the last equality follows from the fact that $\mathcal{H}''(\hat\theta)$ is equal to the observed Fisher information $j(\hat\theta)$. Daniels \cite{daniels1958} notes that this approximation can further be used to approximate the distribution of the maximum likelihood estimator. Let $\hat\Theta$ be the random variable solving the score equation $\mathcal{H}'(\hat\Theta) = \bar T$. By change of variable, we can use the approximation above to construct an approximation $p^*$ to the distribution of $\hat\Theta$ and obtain that 
 \begin{equation*}
     p^*(\hat\theta; \theta, \bar t) = \left(\frac{n}{2\pi}\right)^{p/2}|j(\hat\theta)|^{-1/2} \expf{\ell(\theta; \bar t) - \ell(\hat\theta; \bar t)} \abs{\frac{\d \hat\theta}{\d \bar t}}^{-1}.
 \end{equation*}
-To compute the determinant of the Jacobian of the transformation $\hat\theta(\bar t)$, we can differentiate the score equation with respect to $\hat\theta$ to find $\mathcal{H}''(\hat\theta) = (\d \bar t / \d \hat\theta)$ and hence $(\d \hat\theta / \d \bar t) = \mathcal{H}''(\hat\theta)^{-1} = j(\hat\theta)^{-1}$, giving
+To compute the determinant of the Jacobian of the transformation $\hat\theta(\bar t)$, we  differentiate the score equation with respect to $\hat\theta$ to find $\mathcal{H}''(\hat\theta) = (\d \bar t / \d \hat\theta)$ and hence $(\d \hat\theta / \d \bar t) = \mathcal{H}''(\hat\theta)^{-1} = j(\hat\theta)^{-1}$. Therefore,
 \begin{equation} \label{eq-pstar}
     p^*(\hat\theta; \theta, \bar t) = \left(\frac{n}{2\pi}\right)^{p/2}|j(\hat\theta)|^{1/2} \expf{\ell(\theta; \bar t) - \ell(\hat\theta; \bar t)}.
 \end{equation}
-While the dependence on $\bar t$ naturally comes from the proposed derivation of the $p^*$ approximation, it is often more convenient to parametrize the loglikelihood and $p^*$ approximations in terms of the maximum likelihood estimator $\hat\theta(\bar t)$. We then write
+While the dependence on $\bar t$ naturally comes from the proposed derivation of the $p^*$ approximation, it is often more convenient to parametrize the loglikelihood $\ell(\cdot; x)$ and $p^*$ approximations in terms of the maximum likelihood estimator $\hat\theta(\bar t)$. We then write
 \begin{equation*}
     p^*(\hat\theta; \theta, \hat\theta) = \left(\frac{n}{2\pi}\right)^{p/2}|j(\hat\theta)|^{1/2} \expf{\ell(\theta; \hat\theta) - \ell(\hat\theta; \hat\theta)}.
 \end{equation*}
-This also highlights the fact that the $p^*$ approximation inherited its locality from the Saddlepoint approximation, since the density $p^*(\hat\theta; \theta, \hat\theta)$ is different at each point $\hat\theta$ at which it is evaluated. The $p^*$ approximation can also be used in many different situation where the distribution of refence is not necessarily an exponential family. It has been derived and studied in a much broader generality by a series of articles and books by Barndorff-Nielsen \cite{BarndorffNielsen1980,BarndorffNielsen1983}.  
+This highlights the fact that the $p^*$ approximation inherited its locality from the Saddlepoint approximation, since the density $p^*(\hat\theta; \theta, \hat\theta)$ is different at each point $\hat\theta$ at which it is evaluated. The $p^*$ approximation can also be used in many different situations where the distribution of refence is not necessarily an exponential family. Several articles and books by Barndorff-Nielsen\cite{BarndorffNielsen1980,BarndorffNielsen1983} and other authors study and derive the $p^*$ approximation in broader generality.
 
 Suppose now that the exponential family $\mathcal{P}$ has an alternative parametrization $\{ P_\phi \}$ such that there exists a diffeomorphism $\phi = \phi(\theta)$ satisfying $\hat\phi = \phi(\hat\theta)$, where $\hat\phi$ and $\hat\theta$ are the maximum likelihood estimators in their respective parametrizations. Then, 
 \begin{align*}
@@ -48,33 +48,10 @@ Suppose now that the exponential family $\mathcal{P}$ has an alternative paramet
 &= \left(\frac{n}{2\pi}\right)^{-p/2}\left(|j_\theta(\theta(\hat\phi))|\abs{\frac{\d \hat\theta}{\d \hat\phi}}^{-2}\right)^{1/2} \expf{\ell(\theta(\phi); \theta(\hat \phi)) - \ell(\theta(\hat\phi); \theta(\hat \phi))}\\
 &= p^*(\theta(\hat\phi); \theta(\phi), \theta(\hat \phi))\abs{\frac{\d \hat\theta}{\d \hat\phi}}^{-1}.
 \end{align*}
-Hence, the $p^*$ approximation is \textit{invariant under reparametrization}. 
+Hence, the $p^*$ approximation is invariant under reparametrization. 
 
 \begin{example}
-    Consider now estimating the density of the maximum likelihood estimator of the parameter $\lambda \in \R_+$ of an exponential distribution. The density of the distribution $\text{Exp}(\lambda)$ is
-    \begin{equation*}
-        f_\lambda(x) = \lambda \expf{-\lambda x}.
-    \end{equation*}
-    To make direct use of the $p^*$ approximation in (\ref{eq-pstar}), we must work in the natural parametrization of the exponential distribution. For $\lambda \in R_+$, the corresponding natural parameter is $\theta = -\lambda \in \R_-$ and the density of $\text{Exp}(\theta)$ is then $f_\theta(x) = \expf{ \theta x + \logf{-\theta}}$. Given a i.i.d.\,sample $x_1, \ldots, x_n$ of $\text{Exp}(\theta)$, we have the likelihood
-    \begin{equation*}
-        \ell(\theta; \bar x) = n\left[\theta \bar x + \logf{-\theta}\right],
-    \end{equation*}
-    where we used that the sufficient statistic is $T(x) = x$ and hence $\bar t = \bar x$ is the sample mean. The maximum likelihood estimator of $\theta$ is then $\hat\theta = -1/\bar x$ and the observed information is equal to $j(\theta) = 1/\theta^2$. The $p^*$ approximation to the density of $\hat\theta$ is then
-    \begin{align*}
-        p^*(\hat\theta; \theta, \hat\theta) 
-        &= \sqrt{n} \frac{|\theta|^n}{|\hat\theta|^{n-1}}\expf{-n(\theta - \hat\theta)/\hat\theta} / \sqrt{2\pi}\\
-        &= \sqrt{n} \frac{|\theta|^n}{|\hat\theta|^{n-1}}\expf{n\left[1 - \frac{\theta}{\hat\theta}\right]} / \sqrt{2\pi}
-    \end{align*}
-    Using the invariance of the $p^*$ approximation, we can obtain a $p^*$ approximation to the density of the maximum likelihood parameter $\hat\lambda$ in the original parametrization,
-    \begin{equation*}
-        p^*(\hat\lambda; \lambda, \hat\lambda) = p^*(\theta(\hat\lambda); \theta(\lambda), \theta(\hat\lambda)) \abs{\d \hat\theta / \d \hat\lambda}^{-1} = \sqrt{n} \frac{|\lambda|^n}{|\hat\lambda|^{n-1}}\expf{n\left[\frac{\lambda}{\hat\lambda} - 1\right]} / \sqrt{2\pi}.
-    \end{equation*}
-    Since $\text{Exp}(\lambda) = \Gamma(1, \lambda)$, the distribution of $\bar X$ is $\Gamma(n, n\lambda)$ and hence $\hat\lambda = \bar x$ is $\text{Inv-}\Gamma(n, n\lambda)$. We can compare the $p^*$ approximation to the commonly used Normal approximation to the distribution of the maximum likelihood estimator. In the exponential model, the Fisher information is $I(\lambda) = \lambda^{-2}$ and the following central limit theorem holds for the maximum likelihood estimator
-    \begin{equation*}
-        \sqrt{n}(\hat\lambda - \lambda) \xrightarrow[]{\d} N(0, I(\lambda)^{-1})\ \ \ \  \text{as } n \rightarrow \infty,
-    \end{equation*}
-    hence, $\hat\lambda$ is approximately $N(\lambda, \lambda^2/n)$ with an approximation error of the density of $o(n^{-1/2})$. In Figure \ref{fig-pstar-approx}, we compare these two approximations to the density of the MLE $\hat\lambda$ for $\lambda = 2$. As we can see in the left panel, the $p^*$ approximation properly fits the true density of $\hat\lambda$ and captures the bias of the $\hat\lambda$ estimator as opposed to the Normal approximation which is centered around the true value of $\lambda$. Furthermore, we can observe in the right panel how the relative error of the $p^*$ approximation is identical to the approximation error of the Saddlepoint approximation to the mean of $\Gamma(2, 1)$ seen in Example \ref{ex-gamma-saddle}. This is also a direct consequence of the invariance of the $p^*$ approximation since $\hat\Lambda$, the random variable associated to the MLE, is the inverse of the sample mean $\bar X$, which is a diffeomorphic transformation for positive reals.
-    
+
     \begin{figure}[!htbp]
         \textbf{Error of $p^*$ approximation of MLE in $\t{Exp}(\lambda)$ model with $n=10$}
         \centering
@@ -87,6 +64,38 @@ Hence, the $p^*$ approximation is \textit{invariant under reparametrization}.
         \caption{Study of the approximation error of the Saddlepoint approximation on a standardized sum of $n=10$ of $\Gamma(2, 1)$ random variables. Both panel exposes properties studied of the Saddlepoint approximation: the accurate rellative error, the gain in order of approximation and the uniform relative error of the approximation for sums of Gamma random variables.}
         \label{fig-pstar-approx}
     \end{figure}    
+
+    We estimate the density of the maximum likelihood estimator of the parameter $\lambda \in \R_+$ of an exponential distribution $\t{Exp}(\lambda)$. The density of the distribution $\t{Exp}(\lambda)$ is
+    \begin{equation*}
+        f_\lambda(x) = \lambda \expf{-\lambda x}.
+    \end{equation*}
+    To make direct use of the $p^*$ approximation in (\ref{eq-pstar}), we must work in the natural parametrization of the exponential distribution. For $\lambda \in R_+$, the corresponding natural parameter is $\theta = -\lambda \in \R_-$ and the density of $\t{Exp}(\theta)$ is then $f_\theta(x) = \expf{ \theta x + \logf{-\theta}}$. Given an i.i.d.\,sample $x_1, \ldots, x_n$ of $\t{Exp}(\theta)$, we the log-likelihood function is given by 
+    \begin{equation*}
+        \ell(\theta; \bar x) = n\left[\theta \bar x + \logf{-\theta}\right],
+    \end{equation*}
+    where we used that the sufficient statistic is $T(x) = x$ and hence $\bar t = \bar x$ is the sample mean. The maximum likelihood estimator of $\theta$ is then $\hat\theta = -1/\bar x$ and the observed information is equal to $j(\theta) = 1/\theta^2$. Since $\t{Exp}(\lambda) = \Gamma(1, \lambda)$, the distribution of $\bar X$ is $\Gamma(n, n\lambda)$ and hence $\hat\lambda = \bar x$ is $\t{Inv-}\Gamma(n, n\lambda)$. 
+    \\
+    It follows that the $p^*$ approximation to the density of $\hat\theta$ is
+    \begin{align*}
+        p^*(\hat\theta; \theta, \hat\theta) 
+        &= \sqrt{n} \frac{|\theta|^n}{|\hat\theta|^{n-1}}\expf{-n(\theta - \hat\theta)/\hat\theta} / \sqrt{2\pi}\\
+        &= \sqrt{n} \frac{|\theta|^n}{|\hat\theta|^{n-1}}\expf{n\left[1 - \frac{\theta}{\hat\theta}\right]} / \sqrt{2\pi}.
+    \end{align*}
+    Using the invariance of the $p^*$ approximation, we obtain a $p^*$ approximation of the density of the maximum likelihood parameter $\hat\lambda$ in the original parametrization,
+    \begin{align}
+        p^*(\hat\lambda; \lambda, \hat\lambda) 
+        &= p^*(\theta(\hat\lambda); \theta(\lambda), \theta(\hat\lambda)) \abs{\d \hat\theta / \d \hat\lambda}^{-1} \nonumber\\
+        &= \sqrt{n} \frac{|\lambda|^n}{|\hat\lambda|^{n-1}}\expf{n\left[\frac{\lambda}{\hat\lambda} - 1\right]} / \sqrt{2\pi}. \label{eq-pstar-lambda}
+    \end{align}
+    
+    The Normal approximation is a commonly used approximation to the distribution of the maximum likelihood estimator. In the exponential model, the Fisher information is $I(\lambda) = \lambda^{-2}$ and the following central limit theorem holds for the maximum likelihood estimator \cite[Example 3.12]{lehmann2006theory}
+    \begin{equation} \label{eq-normal-lambda}
+        \sqrt{n}(\hat\lambda - \lambda) \xrightarrow[]{\d} N(0, I(\lambda)^{-1})\ \ \ \  \t{as } n \rightarrow \infty.
+    \end{equation}
+    Hence, $\hat\lambda$ is approximately $N(\lambda, \lambda^2/n)$ with an approximation error of the density of $O(n^{-1/2})$. 
+    
+    In Figure \ref{fig-pstar-approx}, we display how (\ref{eq-pstar-lambda}) and (\ref{eq-normal-lambda}) approximate the density of $\hat\lambda$ under the true model $\t{Exp}(2)$. As we can see in the left panel, the $p^*$ approximation properly fits the true density of $\hat\lambda$ and captures the bias of the $\hat\lambda$ estimator as opposed to the Normal approximation which is centered around the true value of $\lambda$. Furthermore, we observe in the right panel how the relative error of the $p^*$ approximation is identical to the approximation error of the Saddlepoint approximation to the mean of $\Gamma(2, 1)$ seen in Example \ref{ex-gamma-saddle}. This is also a direct consequence of the invariance of the $p^*$ approximation since $\hat\Lambda$, the random variable associated to the MLE, is the inverse of the sample mean $\bar X$, which is a diffeomorphic transformation for positive reals.
+    
 
     \input{edgeworth_julia}
 

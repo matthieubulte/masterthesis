@@ -1,7 +1,7 @@
-\subsection{Hypothesis testing}
+\subsection{Hypothesis testing} \label{sec-hyp-test}
 
 
-We now turn ourselves to applying the approximations developed in Section \note{todo} on the problem of testing two nested Gaussian graphical models. More precisely, let $\G = (\Gamma, E)$ and $\G_0 = (\Gamma, E_0)$ with $E_0 \subset E$, we are interested in developing a test for the problem
+We now turn ourselves to applying the approximations developed in Section \ref{sec-pstar} on the problem of testing two nested Gaussian graphical models. More precisely, let $\G = (\Gamma, E)$ and $\G_0 = (\Gamma, E_0)$ with $E_0 \subset E$, we are interested in developing a test for the problem
 \begin{equation} \label{eq-null-general-graph}
     H_0 : \Omega \in \S_{\succ 0}(\G_0)\ \ \t{ vs. }\ \ H_1 : \Omega \in \S_{\succ 0}(\G) \setminus \S_{\succ 0}(\G_0).
 \end{equation}
@@ -23,7 +23,7 @@ As we have seen in the previous section, the maximum likelihood estimator exists
 \input{fig-cycle-vs-chordal}
 \input{fig-diamond-vs-square-small}
 
-While the $B((n - 3)/2, 1/2)$ approximation seems accurate, it is not yet clear where it comes from and why it works. In the rest of this section based on Eriksen \cite{eriksen1996tests}, we present the construction of this statistic as well as proof of convergence. In the following lemma, we apply the $p^*$ approximation to construct an accurate estimation to the density of the sufficient statistic $S$.
+While the $B((n - 3)/2, 1/2)$ approximation seems accurate, it is not yet clear where it comes from and why it works. In the rest of this section based on Eriksen \cite{eriksen1996tests}, we present the construction of this statistic as well as proof of convergence. In the following lemma from \cite[Theorem 3.1]{eriksen1996tests}, we apply the $p^*$ approximation to construct an accurate estimation to the density of the sufficient statistic $S$.
 
 \begin{lemma} \label{lem-pstar-covariance}
     Let $\G$ be a graph, $\Omega \in \S_{\succ 0}(\G)$ and $S$ be a sample covariance matrix computes from a sample of size $n$ of the Gaussian graphical model associated to $\G$ with precision matrix $\Omega$. Then, the density $p(S; \Omega)$ of $S$ satisfies
@@ -37,7 +37,7 @@ While the $B((n - 3)/2, 1/2)$ approximation seems accurate, it is not yet clear 
 \end{lemma}
 
 \begin{proof}
-    Since $XX^\top$ is sufficient in the Gaussian graphical model, $S$ corresponds to the sample average of the sufficient statistic. Applying the $p^*$ approximation to $S$ as done in Section \note{todo}, we have that the density of $S$ satisfies
+    Since $XX^\top$ is sufficient in the Gaussian graphical model, $S$ corresponds to the sample average of the sufficient statistic. Applying the $p^*$ approximation to $S$ as done in Section \ref{sec-pstar}, we have that the density of $S$ satisfies
     \begin{equation*}
         p(S; \Omega) = c |j_\G(\hat\Omega_\G(S))|^{-1/2} \expfc{\ell(\Omega; S) - \ell(\hat\Omega_\G(S); S)} (1 + O(n^{-3/2})).
     \end{equation*}
@@ -66,7 +66,7 @@ Before applying the result of Lemma \ref{lem-pstar-covariance} to the general pr
         (\log |\hat\Omega_\G(S_n)| - \tr[S_n\hat\Omega_\G(S_n)])} \\
     &= \frac{|\hat\Omega_{\G_0}(S_n)|}{|\hat\Omega_{\G}(S_n)|},
 \end{align*}
-where we have used that $\tr[S_n\hat\Omega_{\G_0}(S_n)] = p$ is constant given any assumed graph. In the following theorem, we show that the $Q(S_n)$ statistic asymptotically follows a beta distribution with known parameters.
+where we have used that $\tr[S_n\hat\Omega_{\G_0}(S_n)] = p$ is constant given any assumed graph. In the following theorem from \cite[Theorem 3.2]{eriksen1996tests}, we show that the $Q(S_n)$ statistic asymptotically follows a beta distribution with known parameters.
 
 \begin{theorem} \label{thm-one-edge-less}
     Let $\G = ([p], E)$ be a graph with subgraph $\G_0 = ([p], E_0)$ with $E \setminus E_0 = \eset{e_0}$. Let $S$ be a sample covariance matrix computed from a sample of size $n$ of the Gaussian graphical model associated to $\G_0$ with precision matrix $\Omega_0 \in \S_{\succ 0}(\G_0)$. Then, the distribution of $Q(S_n)$ conditioned on observing $S_n$ is asymptotically

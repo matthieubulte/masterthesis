@@ -1,19 +1,19 @@
-\subsection{A heuristic introduction to the Edgeworth expansion}
+\subsection{A heuristic introduction to the Edgeworth expansion} \label{sec-edgeworth}
 
-We now present a heuristic development of the idea behind the Edgeworth expansion. Consider two distributions $P$ and $Q$ over $\Rp$ with densities $f$ and $q$, characteristic functions $\zeta$ and $\xi$, and cumulants $\kappa_s$ and $\gamma_s$ for $s \in S_p(k)$, $k \in \N$. Assume that both $P$ and $Q$ have a mean equal to $0$ and a covariance matrix equal to $\mathbb{1}_p$. We wish to utilize the cumulants of both distribution to construct an approximation of $P$.
+We now present a heuristic development of the idea behind the Edgeworth expansion. Consider two distributions $P$ and $Q$ over $\Rp$ with respective densities $f$ and $q$, characteristic functions $\zeta$ and $\xi$, and cumulants $\kappa_s$ and $\gamma_s$ for $s \in S_p(k)$, $k \in \N$. Assume that both $P$ and $Q$ have mean equal to $0$ and a covariance matrix equal to $\mathbb{1}_p$. We wish to utilize the cumulants of both distributions to construct an approximation of $P$.
 
-By formal expansion of the difference between the cumulant generating functions of $P$ and $Q$ around 0, we obtain for any $t \in \Rp$
+By formal expansion of the difference between the cumulant generating functions of $P$ and $Q$ around 0, we obtain that for any $t \in \Rp$,
 \begin{align*}
     \log \frac{\zeta(t)}{\xi(t)}
     = \log \zeta(t) - \log \xi(t) 
     &= \sum_{r=0}^\infty \sum_{s \in S_p(r)} (\kappa_s - \gamma_s)\frac{i^r t^s}{r!}\\
     &= \sum_{r=3}^\infty \sum_{s \in S_p(r)} (\kappa_s - \gamma_s)\frac{i^r t^s}{r!},
 \end{align*}
-where the last equality holds from the assumption of shared mean and covariance of $P$ and $Q$. Exponentiating on both sides of the equation and isolating $\zeta(t)$, we find that
+where the last equality follows from the assumption of shared mean and covariance of $P$ and $Q$. Exponentiating on both sides of the equation and isolating $\zeta(t)$, we find that
 \begin{equation*}
     \zeta(t) = \xi(t)\expfc{\sum_{r=3}^\infty \sum_{s \in S_p(r)} (\kappa_s - \gamma_s)\frac{i^r t^s}{r!}}.
 \end{equation*}
-Let $\alpha_s = \kappa_s - \gamma_s$, we can then continue by taking a formal expansion of the exponential function to find
+Let $\alpha_s = \kappa_s - \gamma_s$. By taking a formal expansion of the exponential function, we have that
 \begin{align*}
     \zeta(t)
     &= \xi(t)\expfc{\sum_{r=3}^\infty \sum_{s \in S_p(r)} \alpha_s\frac{i^r t^s}{r!}}\\
@@ -30,24 +30,24 @@ Let $\alpha_s = \kappa_s - \gamma_s$, we can then continue by taking a formal ex
         r_1! \ldots r_j!
     }.
 \end{align*}
-We can simplify the notation by replacing the summation over multiple $r_k, s_k$ by a sum over a single pair $r, s$ and grouping together the coefficients of the power $t^s$. To do this, we introduce the pseudo-cumulants $\alpha^*_s$ such that
+We can simplify the notation by replacing the summation over $r_k$ and $s_k$ by a sum over a single pair $(r, s)$ and grouping together the coefficients of the power $t^s$. To do so, we introduce the \textit{pseudo-cumulants} $\alpha^*_s$ satisfying
 \begin{equation} \label{eq-char-expansion}
     \zeta(t) = 
     \sum_{j=0}^\infty 
     \sum_{s \in S_p(j)}
     \alpha^*_s \frac{\xi(t) i^{j} t^{s}}{j!}.
 \end{equation}
-One sees that for $s \in S_p(j)$, the pseudo-cumulant $\alpha^*_s$ is a sum over products of the form $\alpha_{s_1}\ldots\alpha_{s_l}$ where $s_1 \in S_p(j_1), \ldots, s_l \in S_p(j_l)$ such that $j_1 + \ldots + j_l = j$ and the indices in $s$ and $s_1, \ldots, s_l$ match. For instance, for $j = 1, 2, 3$, the pseudo-cumulants $\alpha^*$ are of the form
+One sees that for $s \in S_p(j)$, the pseudo-cumulant $\alpha^*_s$ is a sum over products of the form $ \prod_{i=1}^l \alpha_{s_i}$ where $s_1 \in S_p(j_1), \ldots, s_l \in S_p(j_l)$ such that $j_1 + \ldots + j_l = j$ and the indices in $s$ and $s_1, \ldots, s_l$ match. For instance, for $j = 1, 2, 3$, the pseudo-cumulants are of the following form,
 \begin{align*}
-    \alpha^*_{(k)} &= \alpha_{(k)} \\
-    \alpha^*_{(k, l)} &= \alpha_{(k, l)} + \alpha_{(k)}\alpha_{(l)}\\
-    \alpha^*_{(k, l, m)} &= \alpha_{(k, l, m)} + \alpha_{(k, l)}\alpha_{(m)} + \alpha_{(k)}\alpha_{(l)}\alpha_{(m)},
+    &j = 1:& \alpha^*_{(k)} &= \alpha_{(k)} \\
+    &j = 2:&\alpha^*_{(k, l)} &= \alpha_{(k, l)} + \alpha_{(k)}\alpha_{(l)}\\
+    &j = 3:&\alpha^*_{(k, l, m)} &= \alpha_{(k, l, m)} + \alpha_{(k, l)}\alpha_{(m)} + \alpha_{(k)}\alpha_{(l)}\alpha_{(m)},
 \end{align*}
-where the exact coefficient in front of the $\alpha$ terms are not relevant and ignored for conciseness. Coming back, by Lemma \ref{lemma-fourier-derivative}, we recognize the Fourier transform of derivatives of the density $q$ of $Q$
+where $k,l,m \in [p]$ and the exact coefficient in front of the $\alpha$ terms are not relevant and ignored for conciseness. Now, by Lemma \ref{lemma-fourier-derivative}, we recognize the Fourier transform of derivatives of the density $q$ of $Q$
 \begin{equation*}
-    \xi(t) (-i)^{j} t^s  = \F \left[ D^s q \right],
+    \xi(t) (-i)^{j} t^s  = \F \left[ D^s q \right].
 \end{equation*}
-which allows us to retrieve the density of $P$ by Fourier inversion
+This allows us to retrieve the density of $P$ by Fourier inversion,
 \begin{align}\label{eq-edge-abstract}
     f(x) = \F^{-1}\left[\xi\right] &= 
     \sum_{j=0}^\infty 
@@ -56,9 +56,9 @@ which allows us to retrieve the density of $P$ by Fourier inversion
     &= 
     q(x) \left\{ 1 + \sum_{j=1}^\infty 
     \sum_{s \in S_p(j)}
-    \alpha^*_s \frac{(-1)^j D^s q(x)}{j! q(x)}\right\}
+    \alpha^*_s \frac{(-1)^j D^s q(x)}{j! q(x)}\right\}.
 \end{align}
-A convenient choice for $Q$ is the multivariate Normal distribution $\mathcal{N}_p(0, \mathbb{1}_p)$. Then, we have that the cumulants of $P$ and $Q$ of order $k=1,2$ of the two distributions match, implying $\alpha_s = 0$ for any $s \in S_p(k), k=1,2$. Since the pseudo-cumulants $\alpha^*$ are composed of sums and products of the coefficients $\alpha$, this also implies that the pseudo-cumulants of order $k=1,2$ are 0 as well. Using this in (\ref{eq-edge-abstract}), we obtain
+A convenient choice for $Q$ is the multivariate Normal distribution $\mathcal{N}_p(0, \mathbb{1}_p)$. In this case, the cumulants of $P$ and $Q$ of order $k=1,2$ of the two distributions match, implying $\alpha_s = 0$ for any $s \in S_p(k)$ and $k=1,2$. Since the pseudo-cumulants $\alpha^*$ are composed of sums and products of the coefficients $\alpha$, this also implies that the pseudo-cumulants of order $k=1,2$ are 0 as well. Using this in (\ref{eq-edge-abstract}), we obtain that
 \begin{align}
     f(x) 
     &= \phi(x) \left\{ 1 + \sum_{j=3}^\infty 
@@ -73,62 +73,60 @@ where $h_s(\cdot)$ are a multivariate generalization of the Hermite polynomials 
     h_s(x) = (-1)^j \frac{D^s \phi(x)}{\phi(x)}.
 \end{equation*}
 \
-Consider now applying this transformation to the standardized sum $Y = n^{-1/2}\sum_{i=1}^n X_i$ where $X_i \simiid P$. Then for any $s \in S_p(k)$, using properties of cumulants given in Lemma \ref{lem-cumulants-props}, the $s$-cumulants of $Y$ are given by 
+Next, we apply this transformation to the standardized sum $Y = n^{-1/2}\sum_{i=1}^n X_i$ where $X_1, \ldots, X_n$ are i.i.d.\,copies of $X \sim P$. For any $s \in S_p(k)$, using properties (i) and (ii) of cumulants given in Lemma \ref{lem-cumulants-props}, the $s$-cumulants of $Y$ are given by 
 \begin{equation*}
-    \kappa_s(Y) = n^{1-k/2} \kappa_s(X_1) = o(n^{1-k/2}).
+    \kappa_s(Y) = n^{1-k/2} \kappa_s(X) = O(n^{1-k/2}).
 \end{equation*}
 \
-We can form the \textit{Edgeworth series} of order $k$, called $e_k(y; \kappa(X))$, by discarding terms of order higher than $o(n^{1-k/2})$ in (\ref{eq-edgeworth-full}), giving
+We can form the \textit{Edgeworth series} of order $k$, denoted $e_{k, n}(y; \kappa(X))$, by discarding terms of order higher than $O(n^{1-k/2})$ in (\ref{eq-edgeworth-full}). The notation $e_{k, n}(y; \kappa(X))$ highlights the fact that the approximation to the density of $Y$ only depends on three parameters: the order $k$, the number of terms summed $n$ and the cumulants $\kappa(X)$ of the summands. This gives
 \begin{equation} \label{eq-edgeworth}
-    f_Y(y) = e_k(y; \kappa(X)) + o(n^{(1-k)/2}).
+    f_Y(y) = e_{k, n}(y; \kappa(X)) + O(n^{(1-k)/2}),
 \end{equation}
-
-Note that this statement can be slightly refined, which will be useful later. After truncating (\ref{eq-edgeworth-full}), the density $f$ can be decomposed in
+where the order of the remainder is $O(n^{1-(k+1)/2}) = O(n^{(1-k)/2})$. Note that this equation can be slightly refined, which will be of use in the sequel. After truncating (\ref{eq-edgeworth-full}), the density $f$ can be decomposed as follows
 \begin{equation} \label{eq-edge-polynomial}
-    f(y) = \phi(y)\left\{1 + P_k(y; \kappa(X)) + o(n^{(1-k)/2})\right\},
+    f(y) = \phi(y)\left\{1 + P_{k, n}(y; \kappa(X)) + O(n^{(1-k)/2})\right\},
 \end{equation}
-where $P_k(\cdot; \kappa(X))$ is the polynomial part of the Edgeworth approximation.
+where $P_{k, n}(\cdot; \kappa(X))$ is the polynomial part of the Edgeworth approximation.
 
 \begin{example} \label{ex-edgeworth-1d}
-    Consider a random variable $X \in \R$ with cumulants $\kappa(X) = (\kappa_1, \kappa_2, \ldots)$ such that $\E{X} = 0$ and $\V[X] = 1$. In one dimension, derivatives can only be taken with respect to a single variable and (\ref{eq-edgeworth-full}) becomes
+    Consider a random variable $X \in \R$ with cumulants $\kappa(X) = (\kappa_{(1)}, \kappa_{(2)}, \ldots)$ such that $\E{X} = 0$ and $\V[X] = 1$. In one dimension, derivatives can only be taken with respect to a single variable, thus (\ref{eq-edgeworth-full}) becomes
     \begin{equation*}
-        \phi(x) \left\{
+        f(x) = \phi(x) \left\{
             1 + \sum_{j=3}^\infty  \frac{1}{j!}\alpha^*_j h_j(x)
         \right\}.
     \end{equation*}
-    Let again $Y$ be a standardized sum of $n$ independent copies of $X$. To construct the Edgeworth approximation of order $k = 4$ to the density of $Y$, we truncate the above equation to only keep terms of size at least $o(n^{-1})$, that is we keep terms of size $o(n^{-1/2})$ and $o(n^{-1})$. As mentioned ealier, each cumulant $\kappa_k(Y)$ is of order $o(n^{1-k/2})$, hence, the following products of cumulants can result in a term of the desired orders
+    Let $Y$ be a standardized sum of $n$ independent copies of $X$. To construct the Edgeworth approximation of order $k = 4$ of the density of $Y$, we truncate the above equation to only keep terms of size at least $O(n^{-1})$. That is, we keep terms of size $O(n^{-1/2})$ and $O(n^{-1})$. As mentioned ealier, each cumulant $\kappa_{(k)}(Y)$ is of order $O(n^{1-k/2})$, hence, the following products of cumulants can result in a term of the desired orders
     \begin{align*}
-        \kappa_3(Y) = \frac{\kappa_3}{\sqrt{n}} && \kappa_3(Y)\kappa_3(Y) = \frac{\kappa_3^2}{n} && \kappa_4(Y) = \frac{\kappa_4}{n}.
+        \kappa_{(3)}(Y) = \frac{\kappa_{(3)}}{\sqrt{n}} && \kappa_{(3)}(Y)\kappa_{(3)}(Y) = \frac{\kappa_{(3)}^2}{n} && \kappa_{(4)}(Y) = \frac{\kappa_{(4)}}{n}.
     \end{align*}
     Finding the right coefficients of each of these terms from the definition of the corresponding $\alpha^*$, we obtain the following expression of the Edgeworth series
     \begin{equation} \label{eq-edgeworth-1d-4}
-        e_4(y; \kappa(X)) = \frac{1}{\sqrt{1\pi}}\expf{-\frac{y^2}{2}}\left\{1 + \frac{\kappa_3 H_3(y)}{6\sqrt{n}} + \frac{3\kappa_4 H_4(y) + \kappa_3^2 H_6(y)}{72 n}\right\}.
+        e_{4, n}(y; \kappa(X)) = \frac{1}{\sqrt{1\pi}}\expf{-\frac{y^2}{2}}\left\{1 + \frac{\kappa_3 H_3(y)}{6\sqrt{n}} + \frac{3\kappa_4 H_4(y) + \kappa_3^2 H_6(y)}{72 n}\right\}.
     \end{equation}
 \end{example}
 
-While the argument provided above for the definition of the Edgeworth series is not suffenciently rigorous to prove (\ref{eq-edgeworth}), we now show that the Edgeworth series $e_k(y; \kappa(X))$ indeed approximates the density of a standardized sum with an error of $o(n^{(1-k)/2})$.
+While the argument provided above for the definition of the Edgeworth series is not sufficiently rigorous to prove (\ref{eq-edgeworth}), we now show that the Edgeworth series $e_{k, n}(y; \kappa(X))$ indeed approximates the density of a standardized sum with an error of $O(n^{(1-k)/2})$.
 
 \begin{remark} \label{rem-centering}
-    The initial assumption of having a mean of 0 and covariance matrix equal to the identity does not imply a loss of generality of the approach. Indeed, if $X$ has a mean $\mu$ and covariance matrix $\Sigma$, the Edgeworth series $e_k(\cdot; \kappa(Z))$ can be constructed for the random variable $Z = \Sigma^{-1/2}(X - \mu)$ and used to construct an approximation $e_k(\cdot; \kappa(X))$ of the density of $n^{-1/2} \sum_{i=1}^n X_i$ via
+    The initial assumption of having mean 0 and a covariance matrix equal to the identity does not imply a loss of generality of the approach. Indeed, if $X$ has a mean $\mu$ and covariance matrix $\Sigma$, the Edgeworth series $e_{k, n}(\cdot; \kappa(Z))$ can be constructed for the random variable $Z = \Sigma^{-1/2}(X - \mu)$ and can be used to construct an approximation $e_{k, n}(\cdot; \kappa(X))$ of the density of $n^{-1/2} \sum_{i=1}^n X_i$ by applying the corresponding change of variable formula, giving
     \begin{equation*}
-        e_k(s; \kappa(X)) = \abs{\Sigma}^{-1/2} e_k(\Sigma^{-1/2}(s - \sqrt{n}\mu); \kappa(Z)).
+        e_{k, n}(s; \kappa(X)) = \abs{\Sigma}^{-1/2} e_{k, n}(\Sigma^{-1/2}(s - \sqrt{n}\mu); \kappa(Z)).
     \end{equation*}
-
-    In the rest of this thesis, we will use the Edgeworth expansion to approximate the density of random variables which are not necessarily centered or have a unit covariance. In this case, we will implicitly make use of the change of variable formula mentioned in this remark. 
+    In the sequel, we will use the Edgeworth expansion to approximate the density of random variables which are not necessarily centered or have a unit covariance. In this case, we implicitly make use of the change of variable formula mentioned in the following remark. 
 \end{remark}
 
 
 \begin{remark} \label{rem-edge-mean}
-    Note that one can easily show that for any index tuple $s \in S_p(k)$ with $k$ odd, 0 is a root of the generalized Hermite polynomial $h_s$. 
-    Furthermore, by the development of (\ref{eq-edgeworth-full}), the coefficient of each Hermite polynomial $h_s, s \in S_p(k)$ contains terms of order $O(n^{1-k'/2})$ where $k$ and $k'$ have the same parity and $k' \leq k$.
+    Note that one can easily show that for any index tuple $s \in S_p(k)$, where $k \in \N$ is an even integer, 0 is a root of the generalized Hermite polynomial $h_s$. 
+    Furthermore, by the development of (\ref{eq-edgeworth-full}), the coefficient of each Hermite polynomial $h_s$, where $s \in S_p(k)$, contains terms of order $O(n^{1-k'/2})$ where $k$ and $k'$ have the same parity and $k' \leq k$.
 
-    Together with Remarks \ref{rem-centering}, this shows that the polynomial part of the Edgeworth series evaluated at the mean of the approximated distribution is a polynomial in $n^{-1}$ instead of a polynomial in $n^{-1/2}$ since terms of odd powers are zero. Another consequence of this is that the error of the Edgeworth approximation of order $k$ is $o(n^{\floor{(1-k)/2}})$. 
+    Combining this with Remarks \ref{rem-centering} shows that the polynomial part of the Edgeworth series evaluated at the mean of the approximated distribution is a polynomial in $n^{-1}$ instead of a polynomial in $n^{-1/2}$ since terms of odd powers are zero. Another consequence of this is that the error of the Edgeworth approximation of order $k$ is $O(n^{\floor{(1-k)/2}})$. 
     
-    For instance, if $e_4(\cdot; \kappa(X))$ is Edgeworth expansion of order $4$ from Example \ref{ex-edgeworth-1d}, we have
+    For instance, if $e_{4, n}(\cdot; \kappa(X))$ is the Edgeworth expansion of order $4$ from Example \ref{ex-edgeworth-1d}, we have that
     \begin{equation*}
-        f_Y(y) = e_4(y; \kappa(X)) + \begin{cases}
-            o(n^{-2}) &\text{if } y = 0\\
-            o(n^{-3/2}) &\text{otherwise}.
+        f_Y(y) = e_{4, n}(y; \kappa(X)) + \begin{cases}
+            O(n^{-2}) &\text{if } y = 0,\\
+            O(n^{-3/2}) &\text{otherwise}.
         \end{cases} 
     \end{equation*} 
 \end{remark}
