@@ -15,6 +15,7 @@ function plot_hist(pvals, ps, title, filename; xlabel=L"\textrm{Dimension p}", y
     xticks!(1:size(ps)[1], labels)
     xlabel!(xlabel)
     ylabel!(ylabel)
+    ylims!(0, 1)
     
     now = Dates.format(Dates.now(), "yyyymmddHHMM")
     file = "$(now)_$(filename)"

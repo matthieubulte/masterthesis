@@ -18,6 +18,16 @@ function removeEdge!(C, a, b)
     lowrankupdate!(C, e)
 end
 
+
+function remedge(C, a, b)
+    L = Matrix(C.L)
+    La = L[a, :]
+    Lb = L[b, :]
+    L[a, :] -= dot(La, Lb) * Lb / dot(Lb, Lb)
+    L
+end
+
+
 function W(p)
     L = zeros(Float64, p, p)
     for i = 1:p
@@ -30,16 +40,16 @@ function W(p)
 end
 
 function Wc(p)
-    L = zeros(Float64, p, p)
-    for i = 1:p
-        @inbounds L[i,i] = rand(Chi(p - i + 1.0))
-        if i != 1
-            @inbounds L[i,i-1] = randn()
-        else
-            @inbounds L[p, 1] = randn()
+    C = Cholesky(W(p), :L, 0)
+    for i = 1:p-1
+        for j = i+2 : p
+            if i == 1 && j == p
+                continue
+            end
+            removeEdge!(C, i, j)
         end
     end
-    L
+    C
 end
 
 function compl(V, c)

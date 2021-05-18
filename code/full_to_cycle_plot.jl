@@ -25,7 +25,7 @@ l = 1; for p = ps
     pvalues_w[l, :] = [
         pvalue(ExactOneSampleKSTest(
             -2*log.(results[i,:]),
-            Chisq(p*(p-1)/2 - p)))
+            Chisq(p*(p-3)/2)))
         for i = 1:repls
     ]
     l += 1

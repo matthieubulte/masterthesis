@@ -159,7 +159,7 @@ and all together for any graph $\G$,
 
 \input{figure-pcycle.tex}
 
-\begin{example}
+\begin{example} \label{ex-pcycle}
     Let $\G = ([p], E)$ be a chordless cycle of length $p \geq 4$, $E = \eset{ (1, 2), (2, 3), \ldots, (p, 1)}$. The maximal clique size of $\G$ is $q(\G) = 2$ and it is clear that for any chordal cover $\G^+$ of $\G$, its maximal clique size is $q(\G^+) \geq 3$. We can form a chordal cover $\G^+ = ([p], \G^+)$ attaining the lower bound on $q(\G^+)$ by connecting an arbitrary node $a$ to all other nodes of $\G$ that are not already a neighbour of $a$, $E^+ = E \cup \eset{ (a, i) : i \in [p] \setminus \eset{a}}$. This chordal covering is depicted in Figure \ref{fig-pcycle}, with $a = 1$. Hence, for a chordless cycle $\G$ of size $p$,
     \begin{equation*}
         2 \leq \t{mlt}(\G) \leq 3.

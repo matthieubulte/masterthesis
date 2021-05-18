@@ -11,17 +11,17 @@ pvalues_w = zeros(Float32, size(ps)[1], repls);
 l = 1; for p = ps
     Cs = cyclebetaparams(p)
     beta_params = [((n - C - 1)/2, 1/2) for C = Cs]
-    beta_prod_cdf = construct_cdf(beta_params, 100_000);
+    logbeta_sum_cdf = construct_cdf_log(beta_params, 100_000);
 
     results = load("./202105082246_output/results_$(p).jld")["data"];
 
     pvalues[l, :] = [
-        mean(beta_prod_cdf.(exp.(-results[i,:]./n)) .< test_level)
+        mean(logbeta_sum_cdf.(-results[i,:]./n) .< test_level)
         for i = 1:repls
     ];
 
     pvalues_w[l, :] = [
-        mean(cdf(Chisq(2), results[i,:]) .< test_level)
+        mean(cdf(Chisq(p*(p-3)/2), results[i,:]) .< test_level)
         for i = 1:repls
     ]
 

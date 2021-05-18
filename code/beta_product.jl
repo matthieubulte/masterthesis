@@ -22,6 +22,14 @@ function construct_cdf(params, n)
     ecdf(result)
 end
 
+function construct_cdf_log(params, n)
+    result = zeros(n)
+    for (αᵢ, βᵢ) = params
+        result .+= log.(rand(Beta(αᵢ, βᵢ), n))
+    end
+    ecdf(result)
+end
+
 function removeedge!(E, e)
     filter!(ee -> ee != e, E)
 end
