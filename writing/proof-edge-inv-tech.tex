@@ -1,5 +1,5 @@
 \begin{proof}
-    The idea of this proof is to rewrite the left hand side of the (\ref{eq-edge-bound}) to be able to use Lemma \ref{lemma-series} and find suitable upper bounds on the remaining quantities. To that end, we define the functions $u(t) = n u^*(t n^{-1/2})$ and $v(t) = nv^*(t n^{-1/2})$ where
+    The idea of this proof is to rewrite the left hand side of the (\ref{eq-edge-bound}) to be able to use Lemma \ref{lemma-series} and find suitable upper bounds on the remaining quantities. To that end, we define the functions $u(t) = n u^*(t n^{-1/2})$ and $v(t) = nv^*(t n^{-1/2})$, where
     \begin{equation*}
         u^*(t) = \log \zeta(t) + \frac{1}{2}\norm{t}_2^2
     \end{equation*}
@@ -7,7 +7,7 @@
     \begin{equation*}
         v^*(t) = \sum_{m=3}^k \sum_{s \in S_p(m)} \frac{i^m\kappa_s t^s}{m!}.
     \end{equation*}
-    We can then rewrite $\zeta(t n^{-1/2})^n$ as follows,
+    We then rewrite $\zeta(t n^{-1/2})^n$ as follows,
     \begin{equation*}
         \zeta(t n^{-1/2})^n = \expf{n\left[\log \zeta(t n^{-1/2})\right]} = \expf{-\frac{1}{2}\norm{t}_2^2}\exp u(t)
     \end{equation*}
@@ -21,7 +21,7 @@
         = \expf{-\frac{1}{2}\norm{t}_2^2}\abs{\exp u(t) - \sum_{l=0}^{k-2} \frac{v(t)^l}{l!}}\\
         &\leq \expf{-\frac{1}{2}\norm{t}_2^2} \max \left\{ \exp{|u(t)|}, \exp{|v(t)|} \right\}\left(\abs{u(t) - v(t)} + \frac{|v(t)|^{k-1}}{(k-1)!}\right)
     \end{align*}
-    Next, we find suitable upper bounds on the right hand side of the above inequality. First note that both $u$ and $v$ have continuous derivatives in 0 of order up to $k$. Starting with $u^*$, let $s \in S_p(m)$ for $3 \leq m < k$, then
+    Next, we find a suitable upper bound on the right hand side of the above inequality. First note that both $u$ and $v$ have continuous derivatives in 0 of order up to $k$. Starting with $u^*$, let $s \in S_p(m)$ for $3 \leq m < k$, then
     \begin{align*}
         D^s u^*(0)
         &= \ddx{t_{s_1}}\ldots\ddx{t_{s_m}} \log \zeta(t) + \frac{1}{2}\norm{t}_2^2\bigg|_{t=0}\\
@@ -31,21 +31,21 @@
         \\
         &= (-i)^{-m}\kappa_s = i^m \kappa_s ,
     \end{align*}
-    where the derivative of the 2-norm of $t$ is 0 since $|s| = m \geq 3$. Similarly, we can compute the derivatives of $v^*$,
+    where the last equality follows from the fact that the derivative of $\norm{t}_2^2$ is 0 since $\norm{t}_2^2$ is quadratic in $t$ and $|s| = m \geq 3$. Similarly, we can compute the derivatives of $v^*$ in 0,
     \begin{align*}
         D^s v^*(0)
         &= \ddx{t_{s_1}}\ldots\ddx{t_{s_m}} v^*(t) \bigg|_{t=0}\\
         &= \ddx{t_{s_1}}\ldots\ddx{t_{s_m}} \sum_{m'=3}^k \sum_{s' \in S_p(m')} \frac{i^{m'}\kappa^{s'}t_{s'_1}\ldots t_{s'_{m'}}}{m'!} \bigg|_{t=0} \\
         &= \sum_{m'=3}^k \sum_{s' \in S_p(m')} \frac{i^{m'}\kappa^{s'}}{m'!} \ddx{t_{s_1}}\ldots\ddx{t_{s_m}}t_{s'_1}\ldots t_{s'_{m'}} \bigg|_{t=0}.
     \end{align*}
-    The term $\ddx{t_{s_1}}\ldots\ddx{t_{s_m}}t_{s'_1}\ldots t_{s'_{m'}} |_{t=0} = 1$ if and only if $s'$ is a permutation of $s$, otherwise 0. Hence
+    The term $\ddx{t_{s_1}}\ldots\ddx{t_{s_m}}t_{s'_1}\ldots t_{s'_{m'}} |_{t=0} = 1$ if and only if $s'$ is a permutation of $s$, otherwise it is equal to 0. Hence
     \begin{equation*}
         \ddx{t_{s_1}}\ldots\ddx{t_{s_m}} v^*(t) \bigg|_{t=0} 
         = \sum_{s' \in S_p(m)} \frac{i^m\kappa^{s'}}{m!}
+        = m! \frac{i^m\kappa^{s}}{m!}
         = i^m\kappa_s,
     \end{equation*}
-    where the last equality holds since $\kappa_s = \kappa_{s'}$ for all permutation $s'$ of $s$. 
-    Therefore all derivatives of order up to $k$ of $u^* - v^*$ (and hence also $u - v$) exist in 0 and are all equal to 0. Thus, there exists $\delta > 0$ such that for all $t \in \Rp$ with $\norm{t}_2 \leq \delta$,
+    where the second equality holds since $\kappa_s = \kappa_{s'}$ for all permutation $s'$ of $s$. Therefore all derivatives of order up to $k$ of $u^* - v^*$ (and hence also $u - v$) exist in 0 and are all equal to 0. Thus, there exists $\delta > 0$ such that for all $t \in \Rp$ with $\norm{t}_2 \leq \delta$,
     \begin{equation*}
         \abs{u^*(t) - v^*(t)} \leq \epsilon\norm{t}_2^k.
     \end{equation*}

@@ -4,7 +4,7 @@ The \textit{characteristic function} is a central tool in studying probability d
 \begin{equation*}
     \zeta(t) = \expec{}{\expf{it^\top X}}.
 \end{equation*}
-The characteristic function is an essential tool in studying distributions. Indeed, the following multidimensional extebnsion of \cite[Theorem 2.4.2]{kolassa2006series} shows that under regularity conditions on the characteristic function, the density of a random vector exists and can be expressed in terms of the characteristic function.
+The characteristic function is an essential tool in studying distributions. Indeed, the following multidimensional extension of \cite[Theorem 2.4.2]{kolassa2006series} shows that, under regularity conditions on the characteristic function, the density of a random vector exists and can be expressed in terms of the characteristic function.
 
 \begin{theorem} \label{thm-char-inversion}
     Let $X \sim P$ be a random vector in $\Rp$ with characteristic function $\zeta \in L^1(\Rp)$. Then, the density of $X$ exists and is given by
@@ -34,12 +34,12 @@ The characteristic function is an essential tool in studying distributions. Inde
     By definition, this shows that the density of $X$ exists and is given by (\ref{eq-density-via-charfun}).
 \end{proof}
 
-If $X$ has a density function, the characteristic function of $X$ corresponds to the Fourier transform of its density. Taking this generalized view of Fourier transforms will allow us to study approximations of densities that are not necessarily densities and characteristic functions themselves. We will use a less commonly used definition of the Fourier transform, in which the sign of the exponent is reversed. For $f \in L^1(\Rp)$, the Fourier transform $\F[f]$ is the function given by
+If $X$ has a density function, the characteristic function of $X$ corresponds to the Fourier transform of its density. Taking this generalized view of characteristic function allows us to study approximations of densities that are not necessarily densities and characteristic functions themselves. We employ a less commonly used definition of the Fourier transform, in which the sign of the exponent is reversed. For $f \in L^1(\Rp)$, the Fourier transform $\F[f]$ of $f$ is the function given by
 \begin{equation} \label{eq-fourier-density}
     \F[f](t) = \int_\Rp \expf{it^\top x}f(x)\d x \ \ \ \ \ \ \t{for all } t \in \Rp.
 \end{equation}
 
-In this context, we can generalize Theorem \ref{thm-char-inversion} to provide the necessary conditions under which the Fourier transform can be inverted. This corresponds to the extension of \cite[Corollary 2.4.3]{kolassa2006series} to $\Rp$.
+In this context, we generalize Theorem \ref{thm-char-inversion} to provide the necessary conditions under which the Fourier transform can be inverted. This extends \cite[Corollary 2.4.3]{kolassa2006series} to $\Rp$.
 
 \begin{corollary} \label{corr-fourier-inv}
     Suppose that $f \in L^1(\Rp)$ and $\zeta \in L^1(\Rp)$ are related by
@@ -53,7 +53,7 @@ In this context, we can generalize Theorem \ref{thm-char-inversion} to provide t
 \end{corollary}
 
 \begin{proof}
-    We decompose $f$ in positive and negative parts by $f(x) = f^+(x) - f^-(x)$ where $f^+(x) = f(x) \mathbb{1}_{f(x) \geq 0}$ and $f^-(x) = -f(x) \mathbb{1}_{f(x) < 0}$. Then, if $c^+ = \int_\Rp f^+(x) \d x$ and $c^- = \int_\Rp f^-(x) \d x$, the functions $f^+ / c^+$ and $f^- / c^-$ are both densities over $\Rp$ with resepctive characteristic function $\zeta^+$ and $\zeta^-$. We can replace these quantities in (\ref{eq-fourier-trans}) to have
+    We decompose $f$ in positive and negative parts by $f(x) = f^+(x) - f^-(x)$ where $f^+(x) = f(x) \mathbb{1}_{f(x) \geq 0}$ and $f^-(x) = -f(x) \mathbb{1}_{f(x) < 0}$. Then, if $c^+ = \int_\Rp f^+(x) \d x$ and $c^- = \int_\Rp f^-(x) \d x$, the functions $f^+ / c^+$ and $f^- / c^-$ are both densities over $\Rp$ with respective characteristic functions $\zeta^+$ and $\zeta^-$. We can replace these quantities in (\ref{eq-fourier-trans}) to have
     \begin{align*}
         \zeta(t) 
         &= \int_\Rp \expf{it^\top x}f(x)\d x \\
@@ -75,7 +75,7 @@ In this context, we can generalize Theorem \ref{thm-char-inversion} to provide t
     \end{align*}
 \end{proof}
 
-This corollary lets us extend the notation introduced in (\ref{eq-fourier-density}) and define the inverse Fourier transform operator $\Finv$ as in (\ref{eq-fourier-inv}),
+This corollary lets us extend the notation introduced in (\ref{eq-fourier-density}) and define the inverse Fourier transform operator $\Finv[\zeta]$ of $\zeta$ as in (\ref{eq-fourier-inv}), defined for every $x \in \Rp$ by
 \begin{equation*}
     \Finv[\zeta](x) = \left(2\pi\right)^{-p}\int_\Rp \expf{-i t^\top x} \zeta(t) \d t.
 \end{equation*}
@@ -84,9 +84,9 @@ In order to better understand the characteristic function, we need to be able to
 
 \input{thm-char-integrable-convolution}
 
-In the following sections, we study approximations of the characteristic function in terms of its Taylor approximation. As one might expect, computing the Fourier and inverse Fourier transforms of such approximations involves computing the Fourier transforms of derivatives of the characteristic function. Before studying Fourier transforms of differential quantities, we introduce some notation for multivariate derivatives.
+In the following sections, we study approximations of the characteristic function in terms of its Taylor approximation. As one might expect, computing the Fourier and inverse Fourier transforms of such approximations involves computing the Fourier transform of derivatives of the characteristic function. Before studying Fourier transforms of differential quantities, we introduce some notation for multivariate derivatives.
 
-For $k \in \N$, we define $S_p(k)$ as the set of index vectors of length $k$ over $p$-dimensional vectors, that is,
+For $k \in \N$, we define $S_p(k)$ as the set of index tuples of length $k$ over $p$-dimensional vectors, that is,
 \begin{equation*}
     S_p(k) = \left\{ (s_1, \ldots, s_k) : s_i \in [p] \right\},
 \end{equation*}
@@ -98,56 +98,56 @@ where $[p] = \eset{1, \ldots, p}$. Let $f : \Rp \rightarrow \R$ be a $k$-times d
 We now proceed to the following lemma, which gives a simple expression of the Fourier transform of derivatives of a function.
 
 \begin{lemma} \label{lemma-fourier-derivative}
-    Let $r \in \N$ and $f \in L^1(\Rp)$ such that all partial derivatives of $f$ of order up to $r$ exist, and for any $\tilde{s} \in S_p(r-1)$,
+    Let $k \in \N$ and $f \in L^1(\Rp)$ such that all partial derivatives of $f$ of order up to $k$ exist, and for any $\tilde{s} \in S_p(k-1)$,
     \begin{equation} \label{eq-tails-to-zero}
         \lim_{\norm{x} \rightarrow \infty} \expf{it^\top x}D^{\tilde{s}}f(x) = 0.
     \end{equation}
-    Then for any $s \in S_p(r)$, it holds that
+    Then for any $s \in S_p(k)$, it holds that
     \begin{equation*}
-        \F\left[D^s f \right](t) = (-i)^r t^s \F[f].
+        \F\left[D^s f \right](t) = (-i)^k t^s \F[f].
     \end{equation*}
 \end{lemma}
 \begin{proof}
-    Let $\tilde{s} = (s_1, \ldots, s_{r-1})$, then by direct computation of the Fourier transform,
+    Let $\tilde{s} = (s_1, \ldots, s_{k-1})$, then by direct computation of the Fourier transform,
     \begin{align*}
         \F\left[D^s f \right](t) 
         &= (2\pi)^{-p}\intRp{x}{ \expf{it^\top x} D^s f(x) } \\
         &= (2\pi)^{-p}\int_{\R^{-1}} \int_\R 
-            \expf{it^\top x} \ddx{x_{s_r}} D^{\tilde{s}} f(x) 
-        \d x_{s_r} \d x_{\tilde{s}}\,.
+            \expf{it^\top x} \ddx{x_{s_k}} D^{\tilde{s}} f(x) 
+        \d x_{s_k} \d x_{\tilde{s}}\,.
     \end{align*}
-    Integrating by part over the axis $x_{s_r}$ and using Assumption (\ref{eq-tails-to-zero}) gives,
+    Integrating by part over the axis $x_{s_k}$ and using Assumption (\ref{eq-tails-to-zero}) gives,
     \begin{align*}
         \F\left[D^s f \right](t)  
         &= - (2\pi)^{-p}\intRp{x}{
-            (it_{s_r})\expf{it^\top x} D^{\tilde{s}} f(x)
+            (it_{s_k})\expf{it^\top x} D^{\tilde{s}} f(x)
         } \\
-        &= -it_{s_r} (2\pi)^{-p}\intRp{x}{
+        &= -it_{s_k} (2\pi)^{-p}\intRp{x}{
             \expf{it^\top x} D^{\tilde{s}} f(x)
         } \\
-        &= -it_{s_r} \F\left[D^{\tilde{s}} f \right](t)
+        &= -it_{s_k} \F\left[D^{\tilde{s}} f \right](t)
     \end{align*}
     Iterating the previous steps completes the proof.
 \end{proof}
 
-Next, we introduce the \textit{cumulant generating function}, a quantity related to the characteristic function that is easier to manipulate. For a random vector $X$ in $\Rp$, the cumulant generating function of $X$ is the function $K : \Rp \rightarrow \R$ given by
+Next, we introduce the \textit{cumulant generating function}, a quantity related to the characteristic function relevant to the construction of density approximations. For a random vector $X$ in $\Rp$, the cumulant generating function of $X$ is the function $K : \Rp \rightarrow \R$ given by
 \begin{equation*}
     K(t) = \log \expec{}{\expf{t^\top X}}.
 \end{equation*}
 
-The derivatives of the cumulant generating function are called the \textit{cumulants}. Let $s \in S_p(k)$ be an index vector of length $k \in \N$, then if the involved derivatives exist, we define the $s$-cumulant of $X$ as
+The derivatives of the cumulant generating function are called the \textit{cumulants}. Let $s \in S_p(k)$ be an index vector of length $k \in \N$, then if the involved derivatives exist, we define the \textit{$s$-cumulant} of $X$ as
 \begin{equation*}
     \kappa_s(X) = D^s K(0).
 \end{equation*}
 In the sequel, cumulants might depend on various quantities such as the sample size, the random variable of interest or parameters of a distribution, in which case we will use variations of the notation $\kappa_s$ to make clear which cumulants are being discussed.
 
-Since the Normal distribution will often be used in the follwoing, the next example gives the cumulant generating function and cumulants of a multivarite Normal distribution.
+Since the Normal distribution will often be used in the following, the next example gives the cumulant generating function and cumulants of a multivariate Normal distribution.
 \begin{example} \label{ex-cumulants-mvn}
     Let $X \sim N(\mu, \Sigma)$ with $\mu \in \Rp$ and $\Sigma \in \Sp$. The cumulant generating function $K(t; \mu, \Sigma)$ of $X$ is the quadratic function given by
     \begin{equation*}
         K(t; \mu, \Sigma) = t^\top\mu + t^\top\Sigma t.
     \end{equation*}
-    From this, it is clear that all cumulants of $X$ exist. Furthermore, the first order cumulants are the components $\mu$, second order cumulants are the components of $\Sigma$, and the cumulants of higher order are 0.
+    Since $K$ is quadratic in $t$, it is clear that cumulants of $X$ of arbitrary order exist. Furthermore, the first order cumulants are the components $\mu$, second order cumulants are the components of $\Sigma$, and the cumulants of order higher than 2 are equal to 0.
 \end{example}
 
 We now state without a proof some simple properties of cumulants that will be useful in future proofs.
@@ -178,7 +178,7 @@ Note that the cumulant generating function is closely related to the characteris
     = \log \expec{}{\expf{i (-i)t^\top X}}
     = \log \zeta(-it).
 \end{equation*}
-This equality allows us to define the cumulants $\kappa_s$ for $s \in S_p(k)$ in terms of the characteristic function
+This equality allows us to define the cumulants $\kappa_s(X)$ for $s \in S_p(k)$ in terms of the characteristic function
 \begin{equation*}
     \kappa_s(X) = D^s K(0) 
     = \frac{\d^k}{\d x_{s_1} \ldots \d x_{s_k}} \log \zeta(-it) \bigg|_{t=0}

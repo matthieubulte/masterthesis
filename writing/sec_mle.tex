@@ -6,7 +6,15 @@ Consider a random vector $X$ distributed according to the \textit{multivariate G
 \begin{equation} \label{eq-density-gaussian}
     f(x; \Omega) = (2\pi)^{-p/2} |\Omega|^{1/2} \expfc{-\frac{1}{2} \trB{xx^\top \Omega} }.
 \end{equation}
-Clearly, the multivariate Gaussian distribution is an exponential family with canonical parameter $\Omega$ and sufficient statistic $\frac{1}{2}xx^\top$. 
+Clearly, the multivariate Gaussian distribution is an exponential family with canonical parameter $\Omega$ and sufficient statistic $\frac{1}{2}xx^\top$. We start by stating a result about multivariate Normal distribution that can be found in \cite[Proposition C.5]{lauritzen1996}. 
+
+\begin{lemma} \label{lem-gaussian-cond}
+    Let $X \sim N_p(\mu, \Sigma)$ and $A, B \subset [p]$ be disjoint. Then, the conditional distribution of $X_A$ given $X_B = x_B$ is $N_{|A|}(\mu_{A|B}, \Sigma_{A|B})$ where
+    \begin{align*}
+        \mu_{A|B} = \mu_A + \Sigma_{A,B}\Sigma^{-1}_{B,B}(x_B - \mu_B) && \t{and} && \Sigma_{A|B} = \Sigma_{A,A} - \Sigma_{A,B}\Sigma^{-1}_{B,B}\Sigma_{B,A}.
+    \end{align*} 
+    One recognizes that the conditional covariance matrix $\Sigma_{A|B}$ is the Schur complement of $\Sigma_B$ in $\Sigma$.
+\end{lemma}
 
 We parametrize the multivariate Normal distribution in terms of the precision matrix because of its special role in the context of graphical models. Indeed, the conditional independence relations of the entries a random vector $X \sim N_p(0, \Omega)$ are characterized by the sparsity patterns of the precision matrix $\Omega$. This is shown in the following lemma from \cite[Proposition 5.2]{lauritzen1996}.
 \
@@ -57,102 +65,106 @@ In the \textit{saturated model} where no constraints are put on the entries of $
 \begin{equation*}
     \hat\Omega = S^{-1}.
 \end{equation*}
-Remark that, if we are interested in estimating the maximum likelihood estimator $\hat\Omega$ of a Gaussian graphical model with graph $\G = ([p], E)$, the solution $\hat\Omega$ must lie in the subset $\S_{\succ 0}(\G)$ of $\S^p_{\succ 0}$ in which the conditional independence relations encoded in $\G$ are satisfied. We are then left with the following optimization problem
+Remark that, if we are interested in estimating the maximum likelihood estimator $\hat\Omega$ of a Gaussian graphical model with graph $\G = ([p], E)$, the solution $\hat\Omega$ must lie in the subset $\S_{\succ 0}(\G)$ of $\S^p_{\succ 0}$ in which the conditional independence relations encoded in $\G$ are satisfied. We are now left with the following optimization problem
 \begin{align} \label{eq-primal}
     \begin{split}
         &\underset{\Omega \in \S^p_{\succ 0}}{\t{maximize}}\ \  \log |\Omega| - \tr[S\Omega]\\
         &\t{subject to}\ \ \Omega \in \S(\G).
     \end{split}
 \end{align}
-Since the Gaussian graphical model condition is a linear constraint, the set $\S(\G)$ is the is a convex cone. Showing that the objective function in (\ref{eq-primal}) is concave would imply that maximum likelihood estimation in Gaussian graphical models is a convex optimization problem which would allow us to bring new insights to the problem by studying its dual formulation. We start by proving that the objective function is indeed concave is done in \cite[Proposition 9.2.1]{maathuis2018handbook}.
+Since the Gaussian graphical model condition is a linear constraint, the set $\S(\G)$ is a convex cone. Showing that the objective function in (\ref{eq-primal}) is concave would imply that maximum likelihood estimation in Gaussian graphical models is a convex optimization problem. This would allow us to bring new insights to the maximum likelihood problem by studying its dual formulation. The following lemma from \cite[Proposition 9.2.1]{maathuis2018handbook} states that the objective function is indeed concave.
 \begin{lemma}
     The function $f : \S^p_{\succ 0} \rightarrow \R, X \mapsto \log |X| - \trB{SX}$ is concave.
 \end{lemma}
 \begin{proof}
-    Since the sum of a linear function and a concave function is concave, and $\trB{SX}$ is linear in $X$, it is sufficient to show that the logarithm of the determinant of a matrix is a concave function. To do this, let us consider the line $\eset{ U + tV : t \in \R }$ for $U, V \in \S^p_{\succ 0}$. We can show that $X \mapsto \log |X|$ is concave on $\S^p_{\succ 0}$ by showing that $g(t) = \log |U + tV|$ is concave. Since $U \in \S^p_{\succ 0}$, both $U^{1/2}$ and $U^{-1/2}$ exist and we have 
+    Remark thath the sum of a concave function and a linear function is concave, and $\trB{SX}$ is linear in $X$. Thus, it is sufficient to show that the logarithm of the determinant of a matrix is concave. To show this, we consider the line $\eset{ U + tV : t \in \R }$ for $U, V \in \S^p_{\succ 0}$. We show that $X \mapsto \log |X|$ is concave on $\S^p_{\succ 0}$ by proving that $g(t) = \log |U + tV|$ is concave as follows. Since $U \in \S^p_{\succ 0}$, both $U^{1/2}$ and $U^{-1/2}$ exist and we have 
     \begin{align*}
         g(t)
         &= \log |U + tV| \\
         &= \log |U^{1/2}(1_p + tU^{-1/2}VU^{-1/2}|\\
-        &= \log |U| + \log |1_p + tU^{-1/2}VU^{-1/2}|\\
-        &= \log |U| + \sum_{i=1}^p \log (1 + t\lambda_i),
+        &= \log |U| + \log |1_p + tU^{-1/2}VU^{-1/2}|.
     \end{align*}
-    where $\lambda_i$ are the eigenvalues of $U^{-1/2}VU^{-1/2}$ and we use that the eigenvalues of $1_p + tU^{-1/2}VU^{-1/2}$ are $1 + t\lambda_i$. Since each $\log (1 + t\lambda_i)$ is concave in $t$, we have that $g$ is concave, completing the proof.
+    Let $\lambda_i$ be the eigenvalues of $U^{-1/2}VU^{-1/2}$ and note that the eigenvalues of $1_p + tU^{-1/2}VU^{-1/2}$ are $1 + t\lambda_i$. Therefore
+    \begin{equation*}
+        g(t) = \log |U| + \sum_{i=1}^p \log (1 + t\lambda_i).
+    \end{equation*}
+    Now, since each $\log (1 + t\lambda_i)$ is concave in $t$, we have that $g$ is concave, which completes the proof of the lemma.
 \end{proof}
 
-We can now study the dual problem to (\ref{eq-primal}). The Lagragian of the maximum likelihood estimation in Gaussian graphical models is
+We can now study the dual problem to (\ref{eq-primal}). The Lagragian of the likelihood maximization problem in Gaussian graphical models is given by
 \begin{align*}
     \mathcal{L}(\Omega, \nu)
     &= \log |\Omega| - \tr[S\Omega] - 2 \sum_{\eset{i, j} \notin E} \nu_{ij}\Omega_{ij}\\
     &= \log |\Omega| - \sum_{i=1}^p S_{ii}\Omega_{ii} - 2 \sum_{\eset{i,j} \in E} S_{ij}\Omega_{ij} - 2 \sum_{\eset{i, j} \notin E} \nu_{ij}\Omega_{ij}
 \end{align*}
-The Lagrange dual $H$ of (\ref{eq-primal}) is given by $H(\nu) = \mathcal{L}(\Omega^\nu, \nu)$ where $\Omega^\nu$ is the maximizer of $\mathcal{L}(\Omega, \nu)$. Derivating the expression of $\mathcal{L}(\Omega, \nu)$, we get that the inverse $\Sigma^\nu$ of $\Omega^\nu$ satisfies
+The Lagrange dual $H$ of (\ref{eq-primal}) is given by $H(\nu) = \mathcal{L}(\Omega^\nu, \nu)$ where $\Omega^\nu$ is the maximizer of $\mathcal{L}(\Omega, \nu)$. Let $\Omega^\nu$ be the maximizer of $\mathcal{L}(\Omega, \nu)$ with respect to $\Omega$. Then, the inverse $\Sigma^\nu$ of $\Omega^\nu$ satisfies the following
 \begin{equation*}
     \Sigma^\nu_{ij} = \begin{cases}
         S_{ij}\ \t{ if } i = j \t{ or } \eset{i, j} \in E\\
         \nu_{ij}\ \t{otherwise}.
     \end{cases}
 \end{equation*}
-Note that $\Sigma^\nu$ is the matrix formed by replcing entries in $S$ corresponding to missing edges with entries of the dual variables $\nu_{ij}$. Replacing this in the expression for the Lagrange dual function $H$, we obain
+Note that $\Sigma^\nu$ is the matrix formed by replacing entries in $S$ corresponding to missing edges with entries of the dual variables $\nu_{ij}$. Replacing $\Omega^\nu$ in the expression for the Lagrange dual function $H$, we obtain that
 \begin{align*}
     H(\nu) 
+    = \c{L}(\Omega^\nu, \nu)
     &= \log |\Omega^\nu| - \tr[S\Omega^\nu] - 2 \sum_{\eset{i, j} \notin E} \nu_{ij}\Omega^\nu_{ij}\\
     &= \log |\Omega^\nu| - \tr[\Sigma^\nu\Omega^\nu] + 2 \sum_{\eset{i, j} \notin E} \Sigma^\nu_{ij}\Omega^\nu_{ij} - 2 \sum_{\eset{i, j} \notin E} \nu_{ij}\Omega^\nu_{ij}\\
     &= \log |\Omega^\nu| - p = -\log |\Sigma^\nu| - p.
 \end{align*}
-And hence the dual to (\ref{eq-primal}) is
+Hence the dual to (\ref{eq-primal}) is
 \begin{align} \label{eq-dual}
     \begin{split}
         &\underset{\Sigma \in \S^p_{\succ 0}}{\t{minimize}}\ \  -\log |\Sigma| - p\\
         &\t{subject to}\ \ \Sigma_{ij} = S_{ij}\ \t{ for all } i = j \t{ or } \eset{i, j} \in E
     \end{split}
 \end{align}
-To show that we can equivalently study problem (\ref{eq-primal}) and (\ref{eq-dual}), we must show that strong duality holds for this convex optimization problem. By \textit{Slater's constraint quantification} \cite[Section 5.3.2]{boyd2004convex}, it is enough to show that there exists an $\Omega^* \in \S^p_{\succ 0}$ that is strictly feasable for the primal problem. Since the identity matrix is positive definite and is an element of $\S(\G)$ for any $\G$, strong duality holds for any graph $\G$ and we can freely study both formulations of the optimization problem. Furthermore, problems (\ref{eq-primal}) and (\ref{eq-dual}) have a solution if and only if $\log |\Sigma| + p$ is unbounded from above in the set of feasable matrices. We have yet to study under which condition this is the case.
+To prove that problems (\ref{eq-primal}) and (\ref{eq-dual}) are equivalent, we must show that strong duality holds for this convex optimization problem. By \textit{Slater's constraint quantification} \cite[Section 5.3.2]{boyd2004convex}, it is enough to show that there exists an $\Omega^* \in \S^p_{\succ 0}$ that is strictly feasable for the primal problem. Since the identity matrix is positive definite and is an element of $\S(\G)$ for any $\G$, strong duality holds for any graph $\G$. Thus, can freely study both formulations of the optimization problem. Furthermore, problems (\ref{eq-primal}) and (\ref{eq-dual}) have a solution if and only if $\log |\Sigma| + p$ is unbounded from above in the set of feasable matrices. We have yet to study under which condition this is the case.
 
-To that end, let us first introduce some new notation. If $\G$ is a graph over $p$ nodes and $\Sigma \in \R^{p\times p}$, the $\G$-partial matrix $\Sigma^\G$ of $\Sigma$ is the partial matrix found by removing entries in $\Sigma$ corresponding to missing edges in $\G$, see Figure \ref{fig-no-completion} for an example.With this notation, we can reformulate the dual problem (\ref{eq-dual}) as
+To that end, let us first introduce some notation. Let $\G = ([p], E)$ and $\Sigma \in \R^{p\times p}$, the \textit{$\G$-partial matrix} $\Sigma^\G$ of $\Sigma$ is the partial matrix contructed by removing entries in $\Sigma$ corresponding to missing edges in $\G$, see Figure \ref{fig-no-completion} for an example. With this notation, the dual problem (\ref{eq-dual}) can be reformulated as follows,
 \begin{align} \label{eq-completion}
     \begin{split}    
         &\underset{\Sigma \in \S^p_{\succ 0}}{\t{minimize}}\ \  -\log |\Sigma| - p\\
         &\t{subject to}\ \ \Sigma^\G = S^\G.
     \end{split}
 \end{align}
-If this formulation, the dual optimization problem corresponds to a \textit{positive definite matrix completion} problem in which the matrix $\Sigma$ is partially specified from entries of the sample covariance matrix corresponding to edges present in $\G$. Furthermore, Uhler \cite[Section 9.4]{maathuis2018handbook} presents a geometric argument tying together the matrix completion approach to the problem to its original convex optimization formulation.
+In this formulation, the dual optimization problem corresponds to a \textit{positive definite matrix completion} problem in which the matrix $\Sigma$ is partially specified from entries of the sample covariance matrix corresponding to edges present in $\G$. Furthermore, Uhler \cite[Section 9.4]{maathuis2018handbook} presents a geometric argument tying together the matrix completion to the original convex optimization formulation of the likelihood maximization problem.
 
 \begin{theorem}
     Consider a Gaussian graphical model associated to the graph $\G$ and a sample covariance matrix $S$. The maximum likelihood estimation problems have unique solutions $\hat\Omega$ and $\hat\Sigma$ if and only if $S^\G$ has a positive definite completion. In this case, $\hat\Sigma$ is the positive definite completion of $S^\G$ and $\hat\Omega = \hat\Sigma^{-1}$.
 \end{theorem}
 \begin{proof}
-    This theorem is a reformulation of Theorem 9.4.2 in \cite{maathuis2018handbook} in which $\c{L} \cap \S^p_{\succ 0} = \S(\G)$ which we have shown to contain at least $1_p$.
+    This theorem is a reformulation of \cite[Theorem 9.4.2]{maathuis2018handbook} in which $\c{L} \cap \S^p_{\succ 0} = \S(\G)$, which we have shown to contain at least $1_p$.
 \end{proof}
 
-We can now study the existence of a solution to the maximum likelihood question by finding the conditions under which a $\G$-partial sample covariance matrix can be completed to a positive definite matrix. Gross et al.\,\cite{10.3150/16-BEJ881} introduce the \textit{maximum likelihood threshold} of a graph $\G$, denoted $\t{mlt}(\G)$. The maximum likelihood treshold of a graph $\G$ is the smallest number of data points that guarantees that the maximum likelihood estimator exist almost surely in a Gaussian graphical model associated to the graph $\G$. In other words, $\t{mlt}(\G)$ is the smallest number of observations for which $S^\G$ can be completed to a positive definite matrix. For a Gaussian graphical model over $p$ variables, the rank of the sample covariance constructed from a sample of $n$ observations is $\t{rank}(S) = \min(n, p)$. Hence, if $n \geq p$, $S$ itself is a valid positive completing for $S^\G$, giving the worst case bound
+We now study the existence of a solution to the maximum likelihood question by finding the conditions under which a $\G$-partial sample covariance matrix can be completed to a positive definite matrix. Gross et al.\,\cite{10.3150/16-BEJ881} introduce the \textit{maximum likelihood threshold} of a graph $\G$. The maximum likelihood treshold of a graph $\G$, denoted by $\t{mlt}(\G)$, is the smallest number of data points that guarantees the maximum likelihood estimator  to exist almost surely in a Gaussian graphical model associated to the graph $\G$. In other words, $\t{mlt}(\G)$ is the smallest number of observations for which $S^\G$ can be completed to a positive definite matrix. For a Gaussian graphical model over $p$ variables, the rank of the sample covariance constructed from a sample of $n$ observations is $\t{rank}(S) = \min(n, p)$. Hence, if $n \geq p > 0$, $S$ itself is a valid positive completion of $S^\G$, giving the worst case bound
 \begin{equation} \label{eq-pessimistic-mlt}
     \t{mlt}(\G) \leq p,
 \end{equation}
 where equality holds if $\G$ is complete.
 
-A necessary condition for a solution to the matrix completion problem to exist is that all completely specified principal submatrices $S^\G_{[p]\setminus I}$ of $S^\G$ for $I \subset [p]$ must be positive definite. The principal submatrix $S^\G_{[p]\setminus I}$ of $S^\G$ is completely specified if it contains no missing value. The necessary condition can be easily shown with the following argument: let $S^\G_{[p]\setminus I}$ be a principal completely specified submatrix of $S^\G$ such that there exists a $z \in \R^{p-|I|}\setminus \eset{0}$ with $z^\top S^\G_{-I} z \leq 0$. Then if $S^\G_+$ is the positive definite completion of $S^\G$, it holds that $x^\top S^\G_+ x \leq 0$ for $x \in \R^p \setminus \eset{0}$ with $x_I = z$ and $x_{-I} = 0$, contradicting the positive definiteness of $S^\G_+$. Furthermore, if $C$ is a clique of $\G$, $C$ is complete and thus the submatrix $S^\G_C$ is a completely specified principal submatrix of $S^\G$. Since $S^\G_C$ is complete, it is positive definite with probability one if and only if $n \geq |C|$. With $q(\G) = \max \eset{|C| : C \t{ is a clique of } \G}$ the maximum clique size in $\G$, we can lower bound the maximum likelihood threshold
-\begin{equation*}
+A necessary condition for a solution to the matrix completion problem to exist, is that all completely specified principal submatrices $S^\G_{[p]\setminus I}$ of $S^\G$ for $I \subset [p]$ must be positive definite. The principal submatrix $S^\G_{[p]\setminus I}$ of $S^\G$ is completely specified if it contains no missing value. The necessary condition can be shown by the following argument. Let $S^\G_{[p]\setminus I}$ be a principal completely specified submatrix of $S^\G$ such that there exists $z \in \R^{p-|I|}\setminus \eset{0}$ with $z^\top S^\G_{-I} z \leq 0$. Then if $S^\G_+$ is the positive definite completion of $S^\G$, it holds that $x^\top S^\G_+ x \leq 0$ for $x \in \R^p \setminus \eset{0}$ with $x_I = z$ and $x_{-I} = 0$, contradicting the positive definiteness of $S^\G_+$. Furthermore, if $C$ is a clique of $\G$, $C$ is complete and thus the submatrix $S^\G_C$ is a completely specified principal submatrix of $S^\G$. As $S^\G_C$ is complete, it is positive definite with probability one if and only if $n \geq |C|$. Now let $q(\G) = \max \eset{|C| : C \t{ is a clique of } \G}$ be the maximum clique size in $\G$. We can then lower bound the maximum likelihood threshold by
+\begin{equation} \label{eq-mlt-upper-bound}
     q(\G) \leq \t{mlt}(\G).
-\end{equation*}
+\end{equation}
 
 \input{figure-4cycle-partial.tex}
 
-However, as shown in the Example in Figure \ref{fig-no-completion}, this condition is not sufficient for the existence of a positive definite completion. Still, Grone et al. \cite{GRONE1984109} show that this condition is also sufficient exactly for chordal graphs.
+However, as shown in the example in Figure \ref{fig-no-completion}, this condition is not sufficient for the existence of a positive definite completion. Still, Grone et al. \cite{GRONE1984109} show that this condition is also sufficient if and only if $\G$ is a chordal graph.
 \begin{theorem} \label{thm-chordal-iff}
-    For a graph $\G$, the following statements are equivalent
-    \begin{itemize}
-        \item[(a)] A partial matrix $M^\G$ has a positive definite completion if and only if all completely specified submatrices of $M^\G$ are positive definite.
-        \item[(b)] $\G$ is chordal.
-    \end{itemize}
+    For a graph $\G$, the following statements are equivalent.
+    \begin{enumerate}[i.]
+        \item A partial matrix $M^\G$ has a positive definite completion if and only if all completely specified submatrices of $M^\G$ are positive definite.
+        \item $\G$ is chordal.
+    \end{enumerate}
 \end{theorem}
-A consequence of this theorem is that if $\G$ is a chordal graph, $\t{mlt}(\G) = q(\G)$. This result for chordal graphs can be used to compute an upper bound on the maximum likelihood treshold of a general graph tighter than the worst-case one in (\ref{eq-pessimistic-mlt}). 
+A consequence of this theorem is that if $\G$ is a chordal graph, then $\t{mlt}(\G) = q(\G)$. This result for chordal graphs can be used to compute an upper bound on the maximum likelihood treshold of a general graph tighter than the worst-case bound in (\ref{eq-pessimistic-mlt}). 
 
-Let $\G = (\Gamma, E)$ be a graph and $S$ a sample covariance matrix. A graph $\G^+ = (\Gamma, E^+)$ is called a \textit{chordal cover} of $\G$ if $E \subset E^+$ and $\G^+$ is chordal. Then, since $E \subset E^+$, we have that the $\G^+$-partial matrix $S^{\G^+}$ agrees with the $\G$-partial matrix $S^\G$ on the entries corresponding to the edges $E$ of $\G$. Thus, one can view $S^{\G^+}$ as a partial completion of $S^\G$ and any positive definite completion of $S^{\G^+}$ is a valid positive completion of $S^\G$. Together with Theorem \ref{thm-chordal-iff} to show the following bound
+Let $\G = (\Gamma, E)$ be a graph and $S$ a sample covariance matrix. A graph $\G^+ = (\Gamma, E^+)$ is called a \textit{chordal cover} of $\G$ if $E \subset E^+$ and $\G^+$ is chordal. Then, since $E \subset E^+$, we have that the $\G^+$-partial matrix $S^{\G^+}$ agrees with the $\G$-partial matrix $S^\G$ on the entries corresponding to the edges $E$ of $\G$. Thus, one can view $S^{\G^+}$ as a partial completion of $S^\G$, and any positive definite completion of $S^{\G^+}$ is a valid positive completion of $S^\G$. Hence, by Theorem \ref{thm-chordal-iff}, the following bound holds
 \begin{equation*}
-    \t{mlt}(\G) \leq q^+(\G) = \min \eset{ q(\G^+) : \G^+ \t{ is a chordal cover of } \G },
+    \t{mlt}(\G) \leq q^+(\G) = \min \eset{ q(\G^+) : \G^+ \t{ is a chordal cover of } \G }.
 \end{equation*}
-and all together for any graph $\G$,
+Combining (\ref{eq-mlt-upper-bound}) and the above bound, it follows that for any graph $\G$,
 \begin{equation} \label{eq-mlt-bounds}
     q(\G) \leq \t{mlt}(\G) \leq q^+(\G).
 \end{equation}
@@ -160,7 +172,7 @@ and all together for any graph $\G$,
 \input{figure-pcycle.tex}
 
 \begin{example} \label{ex-pcycle}
-    Let $\G = ([p], E)$ be a chordless cycle of length $p \geq 4$, $E = \eset{ (1, 2), (2, 3), \ldots, (p, 1)}$. The maximal clique size of $\G$ is $q(\G) = 2$ and it is clear that for any chordal cover $\G^+$ of $\G$, its maximal clique size is $q(\G^+) \geq 3$. We can form a chordal cover $\G^+ = ([p], \G^+)$ attaining the lower bound on $q(\G^+)$ by connecting an arbitrary node $a$ to all other nodes of $\G$ that are not already a neighbour of $a$, $E^+ = E \cup \eset{ (a, i) : i \in [p] \setminus \eset{a}}$. This chordal covering is depicted in Figure \ref{fig-pcycle}, with $a = 1$. Hence, for a chordless cycle $\G$ of size $p$,
+    Let $\G = ([p], E)$ be a chordless cycle of length $p \geq 4$, $E = \eset{ (1, 2), (2, 3), \ldots, (p, 1)}$. Then, the maximal clique size of $\G$ is $q(\G) = 2$. We can form a chordal cover $\G^+ = ([p], \G^+)$ that attains the minimum $q(\G^+) = 3$ by connecting an arbitrary node $a$ to all other nodes of $\G$ that are not already a neighbour of $a$. That is, we define the set of edges of $\G^+$ as $E^+ = E \cup \eset{ (a, i) : i \in [p] \setminus \eset{a}}$. This chordal covering is depicted in Figure \ref{fig-pcycle}, with $a = 1$. Hence, for a chordless cycle $\G$ of size $p$,
     \begin{equation*}
         2 \leq \t{mlt}(\G) \leq 3.
     \end{equation*}
@@ -168,29 +180,45 @@ and all together for any graph $\G$,
 \end{example}
 
 
-Now that we have presented some of the conditions under which one can almost surely find a positive definite completion to the $\G$-partial correlation matrix $S^\G$, we turn ourselves to the question of finding an algorithm capable of computing the maximum likelihood estimator $\hat\Sigma$ of $\Sigma$. As discussed earlier, the completely specified principal submatrices of $S^\G$ are the submatrices corresponding to the cliques of $\G$. Hence, finding a positive definite completion of $\S^\G$ is equivalent to finding the matrix $\hat\Sigma$ such that.
+Now that we have presented some of the conditions under which one can almost surely find a positive definite completion to the $\G$-partial correlation matrix $S^\G$, we turn ourselves to the question of finding an algorithm capable of computing the maximum likelihood estimator $\hat\Sigma$ of $\Sigma$. As discussed earlier, the completely specified principal submatrices of $S^\G$ are the submatrices corresponding to the cliques of $\G$. Hence, finding a positive definite completion of $\S^\G$ is equivalent to finding the matrix $\hat\Sigma$ satisfying for all $C \in \c(C)(\G)$,
 \begin{equation} \label{eq-clique-constraint}
-    \hat\Sigma_C = S_C \ \ \ \ \t{for all } C \in \c{C}(\G).
+    \hat\Sigma_C = S_C.
 \end{equation}
-This equation naturally suggests an iterative algorithm successively adjusting parts of the covariance matrix to satisfy (\ref{eq-clique-constraint}) while keeping the running matrix positive definite. This procedure, called \textit{iterative proportional scaling}, was studied by Speed and Kiiveri \cite{speed1986gaussian} among with other algorithms for solving the maximum equation problem in a Gaussian graphical model. 
+This equation naturally suggests an iterative algorithm successively adjusting parts of the covariance matrix to satisfy (\ref{eq-clique-constraint}) while keeping the running matrix positive definite. This procedure, called \textit{iterative proportional scaling}, was studied by Speed and Kiiveri \cite{speed1986gaussian}, among with other algorithms for solving the maximum equation problem in a Gaussian graphical model. 
 
-We now present a development of the algorithm in a Gaussian graphical model with graph $\G$ given a sample covariance matrix $C$ computed from a sample of size $n > \t{mlt}(\G)$. Let $\Omega \in \S^p_{\succ 0}$ be a positive definite matrix and $C \in \c{C}(\G)$ be a clique of $\G$. We define the \textit{$C$-marginal adjustment} operato $T_C$ given by
+Next, we present a development of the algorithm in a Gaussian graphical model with graph $\G$ given a sample covariance matrix $C$ computed from a sample of size $n > \t{mlt}(\G)$. Let $\Omega \in \S^p_{\succ 0}$ be a positive definite matrix and let $C \in \c{C}(\G)$ be a clique of $\G$. We define the \textit{$C$-marginal adjustment} operato $T_C$ given by
 \begin{equation} \label{eq-tc-1}
     T_C \Omega = \Omega + \begin{pmatrix}
         (S_C)^{-1} - (\Sigma_C)^{-1} & 0\\
         0 & 0 
         \end{pmatrix},
 \end{equation}
-where the variable $\Sigma$ will be used to denote the inverse of $\Omega$ and, for simplicity of notation, we will use that the top-left block of matrices writen out explicitly corresponds to the current clique $C$. We now show that the operator $T_C$ has the following useful properties.
+where the variable $\Sigma$ denotes the inverse of $\Omega$ and, for simplicity of notation, the top-left block of matrices writen out explicitly corresponds to the current clique $C$. We now show that the operator $T_C$ satisfies the following useful properties.
+
+
+% \begin{lemma} \label{lem-sym-psd}
+%     Let $\Sigma \in \S^p$ be a symmetric block diagonal matrix decomposing as
+%     \begin{equation*}
+%         \Sigma = \begin{pmatrix}
+%             A & B\\
+%             B^\top & C
+%         \end{pmatrix}.
+%     \end{equation*}
+%     Then, $\Sigma \in \S^p_{\succ 0}$ if and only if both $E = A - BC^{-1}$ and $C$ are positive definite.
+% \end{lemma}
+
+% \begin{proof}
+%     See 
+% \end{proof}
 
 \begin{proposition}
-    The operator $T_C$ satisfies
-    \begin{itemize}
-        \item[(i)] $T_C$ is well defined;
-        \item[(ii)] $T_C$ adjusts the $C$-marginal of $\Omega$, that is, $(T_C \Omega)^{-1}$ satisfies (\ref{eq-clique-constraint}) for the clique $C$;
-        \item[(iii)] If $\Omega \in \S^p_{\succ 0}$, $T_C \Omega \in \S^p_{\succ 0}$;
-        \item[(iv)] If $\Omega \in \S(\G)$, $T_C \Omega \in \S(\G)$.
-    \end{itemize}    
+    Let $\G = ([p], E)$ and $S$ be an empirical covariance matrix constructed from a sample of size $n > \t{mlt}{\G}$ from the Gaussian graphical model associated to $\G$. Then, the operator $T_C$ satisfies the following properties.
+    \begin{enumerate}[i.]
+        \item $T_C$ is well defined;
+        \item $T_C$ adjusts the $C$-marginal of $\Omega$. That is, $(T_C \Omega)^{-1}$ satisfies (\ref{eq-clique-constraint}) for the clique $C$;
+        \item If $\Omega \in \S^p_{\succ 0}$, then $T_C \Omega \in \S^p_{\succ 0}$;
+        \item If $\Omega \in \S(\G)$, then $T_C \Omega \in \S(\G)$.
+    \end{enumerate}    
 \end{proposition}
 \begin{proof}
     (i) By assumption on the sample size $n$, all matrices and submatrices involved in $T_C$ are positive definite and can be inverted.
@@ -199,7 +227,7 @@ where the variable $\Sigma$ will be used to denote the inverse of $\Omega$ and, 
     \begin{equation*}
         (\Sigma_C)^{-1} = \Omega_C - \Omega_{C, C^c}(\Omega_{C^c})^{-1}\Omega_{C^c, C},
     \end{equation*}
-    where the completment $C^c$ is taken in $[p]$, that is, $C^c = [p] \setminus C$. Replacing this in the definition of $T_C$ gives
+    where the complement $C^c$ is taken in $[p]$, that is, $C^c = [p] \setminus C$. Replacing this in the definition of $T_C$ gives
     \begin{equation} \label{eq-tc-2}
         T_C \Omega = \begin{pmatrix}
             (S_C)^{-1} + \Omega_{C, C^c}(\Omega_{C^c})^{-1}\Omega_{C^c, C} & \Omega_{C, C^c}\\
@@ -212,7 +240,7 @@ where the variable $\Sigma$ will be used to denote the inverse of $\Omega$ and, 
         &= \left[ (S_C)^{-1} + \Omega_{C, C^c}(\Omega_{C^c})^{-1}\Omega_{C^c, C} - \Omega_{C, C^c}(\Omega_{C^c})^{-1}\Omega_{C^c, C} \right]^{-1}\\
         &= \left[ (S_C)^{-1}\right]^{-1} = S_C.
     \end{align*}
-    (iii) By Lemma \ref{lem-sym-psd}, $T_C \Omega$ is positive definite if and only if both $(T_C \Omega)_C$ and $E = (T_C \Omega)_C - (T_C \Omega)_{C, C^c}((T_C \Omega)_{C^c})^{-1}(T_C \Omega)_{C^c,C}$ are positive definite. As seen in (ii), $(T_C \Omega)_C = S_C$ and is by assumption positive definite. As for the Schur complement
+    (iii) In \cite[Proposition B.1]{lauritzen1996}, Lauritzen gives a sufficient condition for a symmetric diagonal to be positive definite. Applying this lemma, we have that $T_C \Omega$ is positive definite if and only if both $(T_C \Omega)_C$ and $E = (T_C \Omega)_C - (T_C \Omega)_{C, C^c}((T_C \Omega)_{C^c})^{-1}(T_C \Omega)_{C^c,C}$ are positive definite. As seen in (ii), $(T_C \Omega)_C = S_C$ is by assumption positive definite. As for the Schur complement
     \begin{align*}
         E &= (T_C \Omega)_C - (T_C \Omega)_{C, C^c}((T_C \Omega)_{C^c})^{-1}(T_C \Omega)_{C^c,C}\\
         &= (S_C)^{-1} + \Omega_{C, C^c}(\Omega_{C^c})^{-1}\Omega_{C^c, C} - \Omega_{C, C^c}(\Omega_{C^c})^{-1}\Omega_{C^c,C}\\
@@ -220,10 +248,10 @@ where the variable $\Sigma$ will be used to denote the inverse of $\Omega$ and, 
     \end{align*}
     is by the same assumption positive definite. Hence $T_C \Omega$ is positive definite.
     \newline
-    (iv) Let $E$ be the set of edges of $\G$ and $e = \eset{i, j} \notin E$ be an missing edge in $\G$. Then, since $C$ is a clique of $\G$, we have that $|C \cap \eset{i, j}| \leq 1$ and the entry of the matrix $T_C \Omega$ corresponding to the edge $\eset{i, j}$ is in one of the following submatrices: $(T_C \Omega)_{C, C^c}$, $(T_C \Omega)_{C^c}$ or $(T_C \Omega)_{C^c,C}$. Since these submatrices are left invariant by $T_C$, we have that $(T_C \Omega)_{ij} = \Omega_{ij} = 0$ and thus $T_C \Omega \in \S(\G)$.
+    (iv) Let $E$ be the set of edges of $\G$ and $e = \eset{i, j} \notin E$ be a missing edge in $\G$. Since $C$ is a clique of $\G$, we have that $|C \cap \eset{i, j}| \leq 1$ and the entry of the matrix $T_C \Omega$ corresponding to the edge $\eset{i, j}$ is in one of the following submatrices: $(T_C \Omega)_{C, C^c}$, $(T_C \Omega)_{C^c}$ or $(T_C \Omega)_{C^c,C}$. Since these submatrices are left invariant under $T_C$, we have that $(T_C \Omega)_{ij} = \Omega_{ij} = 0$, thus $T_C \Omega \in \S(\G)$.
 \end{proof}
 
-Given these properties, we can naturally define an algorithm by cycling through the cliques $C \in \c{C}(\G)$ of $\G$, successively adjusting each $C$-marginal by applying the adjustement operator $T_C$, and repeating until convergence. This algorithm is the iterative proportional scaling algorithm, given in Algorithm \ref{alg:itpropscale}. The question remains of whether this algorithm converges and why. We start by showing that the $C$-marginal adjustement operator computes the solution to a contrained version of (\ref{eq-primal}).
+Given these properties, we can naturally define an algorithm by cycling through the cliques $C \in \c{C}(\G)$ of $\G$, successively adjusting each $C$-marginal by applying the adjustement operator $T_C$, and repeating until convergence. This algorithm is the iterative proportional scaling algorithm, given in Algorithm \ref{alg:itpropscale}. The question remains of whether this algorithm converges and why. We start by showing that the $C$-marginal adjustement operator computes the solution to a constrained version of (\ref{eq-primal}).
 
 \begin{algorithm}[ht!]
     \caption{Iterative proportional scaling}
@@ -246,8 +274,8 @@ Given these properties, we can naturally define an algorithm by cycling through 
     \end{algorithmic}
 \end{algorithm}
 
-\begin{lemma}
-    Let $\Omega^0 \in \S_{\succ 0}(\G)$, the $C$-marginal adjustement operator $T_C$ computes the solution to problem (\ref{eq-primal}) over the section 
+\begin{lemma} \label{lem-tc-sol-opt}
+    Let $\Omega^0 \in \S_{\succ 0}(\G)$. The $C$-marginal adjustement operator $T_C$ computes the solution to problem (\ref{eq-primal}) over the section 
     \begin{equation*}
         \Theta_C(\Omega^0) = \eset{ \Omega \in \S_{\succ 0}(\G) : \Omega_{C^c} = \Omega^0_{C^c} \t{ and } \Omega_{C, C^c} = \Omega^0_{C, C^c} }.
     \end{equation*}
@@ -260,19 +288,19 @@ Given these properties, we can naturally define an algorithm by cycling through 
     \end{align}
 \end{lemma}
 \begin{proof}
-    Using the expression of the determinant of a block matrix in terms of Schur complement, we have
+    Using the expression of the determinant of a block matrix in terms of Schur complement, we have that
     \begin{equation*}
         \abs{\Omega} 
-        = \abs{\Omega_C - \Omega_{C, C^c}(\Omega_{C^c})^{-1}\Omega_{C^c, C}} \abs{\Omega_{C^c}}
+        = \abs{\Omega_C - \Omega_{C, C^c}(\Omega_{C^c})^{-1}\Omega_{C^c, C}} \abs{\Omega_{C^c}}.
     \end{equation*}
-    Furthermore, using the fact that $\Omega \in \Theta(\Omega^0)$
+    Furthermore, using the fact that $\Omega \in \Theta(\Omega^0)$, it follows that
     \begin{align*}
         \log \abs{\Omega}
         &= \log \left\{ \abs{\Omega_C - \Omega^0_{C, C^c}(\Omega^0_{C^c})^{-1}\Omega^0_{C^c, C}} \abs{\Omega^0_{C^c}} \right\}\\
         &= \log \abs{\Omega_C - \Omega^0_{C, C^c}(\Omega^0_{C^c})^{-1}\Omega^0_{C^c, C}} + \log \abs{\Omega^0_{C^c}}\\
         &= \log \abs{\Omega'} + \log \abs{\Omega^0_{C^c}},
     \end{align*}
-    where $\Omega' = \Omega_C - \Omega^0_{C, C^c}(\Omega^0_{C^c})^{-1}\Omega^0_{C^c, C}$. Since $\Omega^0_{C^c}$ is constant in the optimization problem (\ref{eq-sub-optim}), it can be ignored and we have $\log \abs{\Omega} \doteq \log \abs{\Omega'}$, where $\doteq$ denotes equality up to a constant term. Furthermore, using again that $\Omega \in \Theta_C(\Omega^0)$, we have
+    where $\Omega' = \Omega_C - \Omega^0_{C, C^c}(\Omega^0_{C^c})^{-1}\Omega^0_{C^c, C}$. Since $\Omega^0_{C^c}$ is constant in the optimization problem (\ref{eq-sub-optim}), it can be ignored and we have $\log \abs{\Omega}$ and $\log \abs{\Omega'}$ are equal up to a constant term. Furthermore, using again the fact that $\Omega \in \Theta_C(\Omega^0)$, we get
     \begin{align*}
         \trB{\Omega S}
         &= \trB{\Omega_C S_C} + \trB{\Omega_{C^c} S_{C^c}} + 2 \trB{\Omega_{C,C^c} S_{C,C^c}} 
@@ -284,41 +312,13 @@ Given these properties, we can naturally define an algorithm by cycling through 
     \begin{equation*}
         \underset{\Omega' \in \S_{\succ 0}^{|C|}}{\t{maximize}}\ \  \log |\Omega'| - \tr[S_C\Omega'].
     \end{equation*}
-    Comparing this to earlier discussions, this problem is equivalent to finding the maximum likelihood estimator of the precision matrix $\Omega'$ in the Gaussian graphical model associated to the graph $\G$ restricted to the nodes in $C$. Since $C$ is a clique, the subgraph is complete and the maximum likelihood estimator is given by $\hat\Omega' = (S_C)^{-1}$. Hence, the solution to (\ref{eq-sub-optim}) is given by $\hat\Omega \in \Theta(\Omega^0)$ with
+    Comparing this to the earlier discussions, this problem is equivalent to finding the maximum likelihood estimator of the precision matrix $\Omega'$ of the Gaussian graphical model associated to the graph $\G$ restricted to the nodes in $C$. Since $C$ is a clique, the subgraph is complete and the maximum likelihood estimator is given by $\hat\Omega' = (S_C)^{-1}$. Hence, the solution to (\ref{eq-sub-optim}) is given by $\hat\Omega \in \Theta(\Omega^0)$ where
     \begin{align*}
         \hat\Omega_C
         &= \Omega' + \Omega^0_{C, C^c}(\Omega^0_{C^c})^{-1}\Omega^0_{C^c, C}\\
-        &= (S_C)^{-1} + \Omega^0_{C, C^c}(\Omega^0_{C^c})^{-1}\Omega^0_{C^c, C},
+        &= (S_C)^{-1} + \Omega^0_{C, C^c}(\Omega^0_{C^c})^{-1}\Omega^0_{C^c, C}.
     \end{align*}
-    and hence the solution to (\ref{eq-sub-optim}) is $\hat\Omega = T_C \Omega^0$.
+    Hence the solution to (\ref{eq-sub-optim}) is $\hat\Omega = T_C \Omega^0$.
 \end{proof}
 
-Hence, Algorithm \ref{alg:itpropscale} corresponds to an \textit{iterative partial maximization} algorithm, or block coordinate descent algorithm. Since $T_C$ is a linear transformation, it is continuous and we have already shown that $T_C$ maps $\S_{\succ 0}(\G)$ onto itself. With these assumptions satisfied, Lauritzen \cite[Proposition A.3]{lauritzen1996} shows that the iterative partial maximization algorithm converges and hence, Algorithm \ref{alg:itpropscale} converges to the maximum likelihood estimator $\hat\Omega \in \S_{\succ 0}(\G)$.
-
-
-\begin{lemma} \label{lem-gaussian-cond}
-    Let $X \sim N_p(\mu, \Sigma)$ and $A, B \subset [p]$ be disjoint. Then, the conditional distribution of $X_A$ given $X_B = x_B$ is $N_{|A|}(\mu_{A|B}, \Sigma_{A|B})$ where
-    \begin{align*}
-        \mu_{A|B} = \mu_A + \Sigma_{A,B}\Sigma^{-1}_{B,B}(x_B - \mu_B) && \t{and} && \Sigma_{A|B} = \Sigma_{A,A} - \Sigma_{A,B}\Sigma^{-1}_{B,B}\Sigma_{B,A}.
-    \end{align*} 
-    One recognizes that the conditional covariance matrix $\Sigma_{A|B}$ is the Schur complement of $\Sigma_B$ in $\Sigma$.
-\end{lemma}
-
-\begin{proof}
-    See \cite[Proposition C.5]{lauritzen1996}
-\end{proof}
-
-\begin{lemma} \label{lem-sym-psd}
-    Let $\Sigma \in \S^p$ be a symmetric block diagonal matrix decomposing as
-    \begin{equation*}
-        \Sigma = \begin{pmatrix}
-            A & B\\
-            B^\top & C
-        \end{pmatrix}.
-    \end{equation*}
-    Then, $\Sigma \in \S^p_{\succ 0}$ if and only if both $E = A - BC^{-1}$ and $C$ are positive definite.
-\end{lemma}
-
-\begin{proof}
-    See \cite[Proposition B.1]{lauritzen1996}
-\end{proof}
+By Lemma \ref{lem-tc-sol-opt}, Algorithm \ref{alg:itpropscale} corresponds to an \textit{iterative partial maximization} algorithm, or block coordinate descent algorithm. Since $T_C$ is a linear transformation, it is continuous. Further, we showed that $T_C$ maps $\S_{\succ 0}(\G)$ onto itself. With these conditions satisfied, Lauritzen \cite[Proposition A.3]{lauritzen1996} proves that the iterative partial maximization algorithm converges and hence, Algorithm \ref{alg:itpropscale} converges to the maximum likelihood estimator $\hat\Omega \in \S_{\succ 0}(\G)$.

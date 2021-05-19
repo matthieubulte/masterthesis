@@ -1,8 +1,8 @@
-\subsection{Convergence of the Edgeworth expansion}
+\subsection{Convergence of the Edgeworth approximation}
 
-While the previous section provided an intuition for the development of the Edgeworth expansion, it is not a rigorous proof. In this section, we develop the a proof for the convergence claim in (\ref{eq-edgeworth}).
+While the previous section provided an intuition for the development of the Edgeworth approximation, it is not a rigorous proof. In this section, we develop the a proof for the convergence claim in (\ref{eq-edgeworth}).
 
-Recall that in the first step of the development of the Edgeworth expansion, the ratio of characteristic functions $\zeta / \xi$ is approximated via two truncated Taylor expansions,
+Recall that in the first step of the development of the Edgeworth approximation, the ratio of characteristic functions $\zeta / \xi$ is approximated via two truncated Taylor expansions,
 \begin{equation*}
     \begin{matrix}
         \log \zeta(t) - \log \xi(t) = & u & \longrightarrow & \exp u & = & \zeta(t) / \xi(t)\\
@@ -19,14 +19,14 @@ The following lemma from \cite[Theorem 2.5.3]{kolassa2006series} bounds the erro
 \end{lemma}
 \input{proof-lemma-series-1}
 
-Continuing the development of the Edgeworth series, a pseudo-characteristic function was constructed based on the approximation of the ratio $\zeta / \xi$. In the following theorem, we use the previous lemma and properties of cumulants to provide an asymptotic bound on the error obtained when using this approximation on the characteristic function of a standardized sum of random variables. It is a specialization of \cite[Corollary 2.5.4]{kolassa2006series}.
+Continuing the development of the Edgeworth approximation, a pseudo-characteristic function was constructed based on the approximation of the ratio $\zeta / \xi$. In the following theorem, we use the previous lemma and properties of cumulants to provide an asymptotic bound on the error obtained when using this approximation on the characteristic function of a standardized sum of random variables. It is a specialization of \cite[Corollary 2.5.4]{kolassa2006series}.
 
 \begin{theorem} \label{thm-edge-inv-tech}
     Let $\zeta$ be the characteristic function of a random vector $X \in \Rp$ and let $n, k \in \N$. Assume that all cumulants of $X$ of order up to $k$ exist and that the second cumulants of $X$ satisfy $\kappa_{(i, j)} = \delta_{ij}$ for all $i, j \in [p]$. Let
     \begin{equation} \label{eq-edgeworth-fourier}
         \xi(t) = \expf{-\frac{1}{2}\norm{t}_2^2}\sum_{l=0}^{k-2} \frac{1}{l!} \left[ 1 + \sum_{m=3}^k \sum_{s \in S_p(m)} \frac{i^m\kappa_s t^s}{n^{m/2-1}m!} \right]^l.
     \end{equation}
-    Then for every $\epsilon > 0$ there exists a $\delta > 0$ and a constant $C_p$ dependent on the dimension of $X$ such that 
+    Then for every $\epsilon > 0$ there exists $\delta > 0$ and a constant $C_p > 0$ dependent on the dimension of $X$ such that 
     \begin{equation}\label{eq-edge-bound}
         \abs{\zeta(t n^{-1/2})^n - \xi(t)} \leq \expf{-\frac{1}{4}\norm{t}_2^2}\left[ \frac{\epsilon\norm{t}_2^k}{n^{k/2-1}} + \frac{C_p^{k-1}\norm{t}_2^{3(k-1)}}{(k-1)!n^{k/2-1/2}} \right]
     \end{equation}
@@ -36,7 +36,7 @@ Continuing the development of the Edgeworth series, a pseudo-characteristic func
 
 Note that this proof doesn't use the fact that $\zeta$ is a characteristic function. Indeed, this theorem can be proven in a more general setting without any changes to the statement of the theorem or the proof itself.
 
-We finally prove the main theorem of this section by relating the approximation error of the Edgeworth density approximation to the error of the Edgeworth approximation to the characteristic function. The original proof is presented in \cite[Theorem 3.5.1]{kolassa2006series}.
+We finally prove the main theorem of this section by relating the error of the Edgeworth approximation to the error of the associated Fourier transforms. The original proof is presented in \cite[Theorem 3.5.1]{kolassa2006series}.
 
 \begin{theorem} \label{thm-edgeworth}
     Let $P$ be a distribution and $k \in \N_{\geq 2}$ such that all cumulants $\kappa(X)$ of $P$ of order up to $k$ exist. Let $n \in \N$, let $X_1, \ldots, X_n \simiid P$ and $Y$ be the standardized sum

@@ -5,11 +5,11 @@
     \end{equation}
     where $\zeta(tn^{-1/2})^n$ is the characteristic function of $Y$. Since both $\zeta$ and $\xi$ are $L^1(\Rp)$, the integral is well defined and provides a valid upper bound. We proceed by splitting the range of integration in two parts: one part in which $t$ is small such that Theorem \ref{thm-edge-inv-tech} can be applied, and the remaining part of the integral will be handled separately.
 
-    By construction of the Edgeworth series, the Fourier transform of $e_{k, n}(\cdot; \kappa(X))$ corresponds to the function given in (\ref{eq-edgeworth-fourier}) of Theorem \ref{thm-edge-inv-tech}. Hence, for any $\varepsilon > 0$, there is $\delta > 0$ such that (\ref{eq-edge-bound}) holds and we can upper bound the \textit{small $t$} part of the right hand side of (\ref{eq-bound-abserr}) as follows,
+    By construction of the Edgeworth approximation, the Fourier transform of $e_{k, n}(\cdot; \kappa(X))$ corresponds to the function given in (\ref{eq-edgeworth-fourier}) of Theorem \ref{thm-edge-inv-tech}, where $k$ is replaced by $k+1$. Hence, for any $\varepsilon > 0$, there is $\delta > 0$ such that (\ref{eq-edge-bound}) holds and we can upper bound the \textit{small $t$} part of the right hand side of (\ref{eq-bound-abserr}) as follows,
     \begin{align*}
         \int_{B_2(\delta\sqrt{n})} &|\zeta(tn^{-1/2})^n - \xi(t)| \d t\\
-        &\leq (2\pi)^{-p}\int_{B_2(\delta\sqrt{n})}\expf{-\frac{1}{4}\norm{t}_2^2}\left[ \frac{\epsilon\norm{t}_2^k}{n^{k/2-1}} + \frac{C_0^{k-1}\norm{t}_2^{3(k-1)}}{(k-1)!n^{k/2-1/2}} \right] \d t \\
-        &\leq \frac{\epsilon C_1}{n^{k/2-1}}\expec{T}{\norm{T}^k_2} + \frac{C_2^{k-1}}{(k-1)!n^{k/2-1/2}}\expec{T}{\norm{T}_2^{3(k-1)}}
+        &\leq (2\pi)^{-p}\int_{B_2(\delta\sqrt{n})}\expf{-\frac{1}{4}\norm{t}_2^2}\left[ \frac{\epsilon\norm{t}_2^{k+1}}{n^{(k+1)/2-1}} + \frac{C_0^{k}\norm{t}_2^{3k}}{k!n^{(k+1)/2-1/2}} \right] \d t \\
+        &\leq \frac{\epsilon C_1}{n^{k/2-1/2}}\expec{T}{\norm{T}^k_2} + \frac{C_2^{k}}{k!n^{k/2}}\expec{T}{\norm{T}_2^{3k}}
         = O(n^{(1-k)/2}),
     \end{align*}
     in which $T \sim N(0, 2\mathbb{1}_p)$ and $C_0, C_1, C_2 \in \R$ are constants that do not depend on $n$. 
