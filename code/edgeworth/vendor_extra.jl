@@ -64,7 +64,7 @@ function cycle(p)
     O
 end
 
-@ssyms S[1:10, 1:10] O[1:10, 1:10]
+# @ssyms S[1:10, 1:10] O[1:10, 1:10]
 
 
 

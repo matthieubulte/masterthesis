@@ -7,7 +7,7 @@ include("edgeworth/cgflib.jl")
 include("edgeworth/genedgeworth.jl")
 include("edgeworth/gensaddlepoint.jl")
 include("edgeworth/genpstar.jl")
-include("plotgen.jl")
+include("plotutils.jl")
 
 function sample_sum(d, nterms, samplesize)
     result = zeros(samplesize)
@@ -76,7 +76,7 @@ function plot_approximations_err(
         for i=2:4
             plot_approximation_err!(p,
                 truedistrib,
-                edgeworth_sum(cgf, nterms, i);
+                edgeworth(cgf, nterms, i);
                 xlim=xlim,
                 relative=relative,
                 label=L"\textrm{Edgeworth-%$i}",
@@ -146,7 +146,7 @@ begin
     plot!(p, size=(400,500), legendfontsize=10, legend=:topright)
 
     Plots.svg(p, "plots/pstar_exp_err")
-    inkscapegen("pstar_exp_err")
+    inkscapegen("pstar_exp_err", "pstar_exp_err")
 end
 
 begin
@@ -173,10 +173,6 @@ begin
     Plots.svg(p, "plots/pstar_exp_dens")
     inkscapegen("pstar_exp_dens")
 end
-
-@syms n::integer x::real
-edgeworth(symcgf(5), n, 4; T=Sym)(x)
-
 
 # Γ(2, 1)
 for nterms = [1; 10]
