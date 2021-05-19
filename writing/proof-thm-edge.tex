@@ -5,12 +5,12 @@
     \end{equation}
     where $\zeta(tn^{-1/2})^n$ is the characteristic function of $Y$. Since both $\zeta$ and $\xi$ are $L^1(\Rp)$, the integral is well defined and provides a valid upper bound. We proceed by splitting the range of integration in two parts: one part in which $t$ is small such that Theorem \ref{thm-edge-inv-tech} can be applied, and the remaining part of the integral will be handled separately.
 
-    By construction of the Edgeworth approximation, the Fourier transform of $e_{k, n}(\cdot; \kappa(X))$ corresponds to the function given in (\ref{eq-edgeworth-fourier}) of Theorem \ref{thm-edge-inv-tech}, where $k$ is replaced by $k+1$. Hence, for any $\varepsilon > 0$, there is $\delta > 0$ such that (\ref{eq-edge-bound}) holds and we can upper bound the \textit{small $t$} part of the right hand side of (\ref{eq-bound-abserr}) as follows,
+    By construction of the Edgeworth approximation, the Fourier transform of $e_{k, n}(\cdot; \kappa(X))$ corresponds to the function given in (\ref{eq-edgeworth-fourier}) of Theorem \ref{thm-edge-inv-tech}. Hence, for any $\varepsilon > 0$, there is $\delta > 0$ such that (\ref{eq-edge-bound}) holds and we can upper bound the \textit{small $t$} part of the right hand side of (\ref{eq-bound-abserr}) as follows,
     \begin{align*}
         \int_{B_2(\delta\sqrt{n})} &|\zeta(tn^{-1/2})^n - \xi(t)| \d t\\
-        &\leq (2\pi)^{-p}\int_{B_2(\delta\sqrt{n})}\expf{-\frac{1}{4}\norm{t}_2^2}\left[ \frac{\epsilon\norm{t}_2^{k+1}}{n^{(k+1)/2-1}} + \frac{C_0^{k}\norm{t}_2^{3k}}{k!n^{(k+1)/2-1/2}} \right] \d t \\
-        &\leq \frac{\epsilon C_1}{n^{k/2-1/2}}\expec{T}{\norm{T}^k_2} + \frac{C_2^{k}}{k!n^{k/2}}\expec{T}{\norm{T}_2^{3k}}
-        = O(n^{(1-k)/2}),
+        &\leq (2\pi)^{-p}\int_{B_2(\delta\sqrt{n})}\expf{-\frac{1}{4}\norm{t}_2^2}\left[ \frac{\epsilon\norm{t}_2^{k}}{n^{k/2-1}} + \frac{C_0^{k-1}\norm{t}_2^{3(k-1)}}{(k-1)!n^{k/2-1/2}} \right] \d t \\
+        &\leq \frac{\epsilon C_1}{n^{(k-2)/2}}\expec{T}{\norm{T}^k_2} + \frac{C_2^{k}}{k!n^{(k-1)/2}}\expec{T}{\norm{T}_2^{3k}}
+        = o(n^{1-k/2}),
     \end{align*}
     in which $T \sim N(0, 2\mathbb{1}_p)$ and $C_0, C_1, C_2 \in \R$ are constants that do not depend on $n$. 
 
@@ -20,12 +20,12 @@
         &\leq \int_{\Rp \setminus B_2(\delta\sqrt{n})} |\xi(t)| \d t + \int_{\Rp \setminus B_2(\delta\sqrt{n})} |\zeta(tn^{-1/2})^n| \d t\\
         &= I_1 + I_2.
     \end{align*}
-    By construction of $\xi$, the integral $I_1$ has an exponential decay, thus $I_1$ is $O(n^{(1 - k)/2})$. As for the integral $I_2$, using that $|\zeta(t)| < 1$ for $t \neq 0$ and $|\zeta(t)| \rightarrow 0$ for $n \rightarrow \infty$ and any $t \in \Rp$, there exists $a \in (0, 1)$ such that for $n$ large enough, if $\norm{t}_2 \geq \delta\sqrt{n}$, then $|\zeta(tn^{-1/2})| \leq a$. Furthermore, by assumption of the existence of $f_Y$ and Lemma \ref{lem-char-integrable-convolution}, there exists $q > 1$ such that $\zeta^n \in L^q(\Rp)$. Thus,
+    By construction of $\xi$, the integral $I_1$ has an exponential decay, thus $I_1$ is $o(n^{1 - k/2})$. As for the integral $I_2$, using that $|\zeta(t)| < 1$ for $t \neq 0$ and $|\zeta(t)| \rightarrow 0$ for $n \rightarrow \infty$ and any $t \in \Rp$, there exists $a \in (0, 1)$ such that for $n$ large enough, if $\norm{t}_2 \geq \delta\sqrt{n}$, then $|\zeta(tn^{-1/2})| \leq a$. Furthermore, by assumption of the existence of $f_Y$ and Lemma \ref{lem-char-integrable-convolution}, there exists $q > 1$ such that $\zeta^n \in L^q(\Rp)$. Thus,
     \begin{equation*}
         I_2
         \leq a^{n-q} \int_{\Rp \setminus B_2(\delta\sqrt{n})} |\zeta(tn^{-1/2})|^q \d t 
         \leq a^{n-q}\sqrt{n}\intRp{t}{|\zeta(t)|^q} 
-        = O(\sqrt{n}a^n) = O(n^{(1-k)/2}),
+        = O(\sqrt{n}a^n) = o(n^{1-k/2}),
     \end{equation*}
     which concludes the proof.
 \end{proof}

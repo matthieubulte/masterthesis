@@ -78,13 +78,13 @@ Next, we apply this transformation to the standardized sum $Y = n^{-1/2}\sum_{i=
     \kappa_s(Y) = n^{1-k/2} \kappa_s(X) = O(n^{1-k/2}).
 \end{equation*}
 \
-We can form the \textit{Edgeworth approximation} of order $k$, denoted $e_{k, n}(\cdot; \kappa(X))$, by discarding terms of order higher than $O(n^{1-k/2})$ in (\ref{eq-edgeworth-full}). The notation $e_{k, n}(\cdot; \kappa(X))$ highlights the fact that the approximation to the density of $Y$ only depends on three parameters: the order $k$, the number of terms summed $n$, and the cumulants $\kappa(X)$ of the summands. This gives
+We can form the \textit{Edgeworth approximation} of order $k$, denoted $e_{k, n}(\cdot; \kappa(X))$, by only keeping cumulants of order up tto $k$ in (\ref{eq-edgeworth-full}). The notation $e_{k, n}(\cdot; \kappa(X))$ highlights the fact that the approximation to the density of $Y$ only depends on three parameters: the order $k$, the number of terms summed $n$, and the cumulants $\kappa(X)$ of the summands. Since we discard all cumulants of order higher than $k$, the error of the resulting approximation must be at least $O(n^{(1-k)/2})$ and we actually have
 \begin{equation} \label{eq-edgeworth}
-    f_Y(y) = e_{k, n}(y; \kappa(X)) + O(n^{(1-k)/2}),
+    f_Y(y) = e_{k, n}(y; \kappa(X)) + o(n^{1-k/2}),
 \end{equation}
-where the order of the remainder is $O(n^{1-(k+1)/2}) = O(n^{(1-k)/2})$. Note that this equation can be slightly refined, which will be of use in the sequel. After truncating (\ref{eq-edgeworth-full}), the density $f$ can be decomposed as follows
+Note that this equation can be slightly refined, which will be of use in the sequel. After truncating (\ref{eq-edgeworth-full}), the density $f$ can be decomposed as follows
 \begin{equation} \label{eq-edge-polynomial}
-    f(y) = \phi(y)\left\{1 + P_{k, n}(y; \kappa(X)) + O(n^{(1-k)/2})\right\},
+    f(y) = \phi(y)\left\{1 + P_{k, n}(y; \kappa(X)) + o(n^{1-k/2})\right\},
 \end{equation}
 where $P_{k, n}(\cdot; \kappa(X))$ is the polynomial part of the Edgeworth approximation.
 
@@ -95,17 +95,17 @@ where $P_{k, n}(\cdot; \kappa(X))$ is the polynomial part of the Edgeworth appro
             1 + \sum_{j=3}^\infty  \frac{1}{j!}\alpha^*_j h_j(x)
         \right\}.
     \end{equation*}
-    Let $Y$ be a standardized sum of $n$ independent copies of $X$. To construct the Edgeworth approximation of order $k = 4$ of the density of $Y$, we truncate the above equation to only keep terms of size at least $O(n^{1-4/2}) = O(n^{-1})$. That is, we keep terms of size $O(n^{-1/2})$ and $O(n^{-1})$. As mentioned ealier, each cumulant $\kappa_{(k)}(Y)$ is of order $O(n^{1-k/2})$, hence, the following products of cumulants can result in a term of the desired orders
+    Let $Y$ be a standardized sum of $n$ independent copies of $X$. To construct the Edgeworth approximation of order $k = 4$ of the density of $Y$, we truncate the above equation to only keep cumulants of order up to 4: $\kappa_{(3)}$ and $\kappa_{(4)}$. As mentioned ealier, each cumulant $\kappa_{(k)}(Y)$ is of order $O(n^{1-k/2})$, hence, the following products of cumulants can result in a term of the desired orders
     \begin{align*}
         \kappa_{(3)}(Y) = \frac{\kappa_{(3)}}{\sqrt{n}} && \kappa_{(3)}(Y)\kappa_{(3)}(Y) = \frac{\kappa_{(3)}^2}{n} && \kappa_{(4)}(Y) = \frac{\kappa_{(4)}}{n}.
     \end{align*}
     Finding the right coefficients of each of these terms from the definition of the corresponding $\alpha^*$, we obtain the following expression of the Edgeworth approximation
     \begin{equation} \label{eq-edgeworth-1d-4}
-        e_{4, n}(y; \kappa(X)) = \frac{1}{\sqrt{2\pi}}\expf{-\frac{y^2}{2}}\left\{1 + \frac{\kappa_3 H_3(y)}{6\sqrt{n}} + \frac{3\kappa_4 H_4(y) + \kappa_3^2 H_6(y)}{72 n}\right\}.
+        e_{4, n}(y; \kappa(X)) = \frac{1}{\sqrt{2\pi}}\expf{-\frac{y^2}{2}}\left\{1 + \frac{\kappa_{(3)} H_3(y)}{6\sqrt{n}} + \frac{3\kappa_{(4)} H_4(y) + \kappa_{(3)}^2 H_6(y)}{72 n}\right\}.
     \end{equation}
 \end{example}
 
-While the argument provided above for the definition of the Edgeworth series is not sufficiently rigorous to prove (\ref{eq-edgeworth}), we now show that the Edgeworth series $e_{k, n}(y; \kappa(X))$ indeed approximates the density of a standardized sum with an error of $O(n^{(1-k)/2})$.
+While the argument provided above for the definition of the Edgeworth series is not sufficiently rigorous to prove (\ref{eq-edgeworth}), we now show that the Edgeworth series $e_{k, n}(y; \kappa(X))$ indeed approximates the density of a standardized sum with an error of $o(n^{1-k/2})$.
 
 \begin{remark} \label{rem-centering}
     The initial assumption of having mean 0 and a covariance matrix equal to the identity does not imply a loss of generality of the approach. Indeed, if $X$ has a mean $\mu$ and covariance matrix $\Sigma$, the Edgeworth series $e_{k, n}(\cdot; \kappa(Z))$ can be constructed for the standardized random variable $Z = \Sigma^{-1/2}(X - \mu)$ and can be used to construct an approximation $e_{k, n}(\cdot; \kappa(X))$ of the density of $n^{-1/2} \sum_{i=1}^n X_i$ by applying the corresponding change of variable formula, giving
@@ -120,13 +120,13 @@ While the argument provided above for the definition of the Edgeworth series is 
     Note that one can easily show that for any index tuple $s \in S_p(k)$, where $k \in \N$ is an odd integer, 0 is a root of the generalized Hermite polynomial $h_s$. 
     Furthermore, by the development of (\ref{eq-edgeworth-full}), the coefficient of each Hermite polynomial $h_s$, where $s \in S_p(k)$, contains terms of order $O(n^{1-k'/2})$ where $k$ and $k'$ have the same parity and $k' \leq k$.
 
-    Combining this with Remarks \ref{rem-centering} shows that the polynomial part of the Edgeworth series evaluated at the mean of the approximated distribution is a polynomial in $n^{-1}$ instead of a polynomial in $n^{-1/2}$ since terms of odd powers are zero. Another consequence of this is that the error of the Edgeworth approximation of order $k$ is $O(n^{\floor{(1-k)/2}})$. 
+    Combining this with Remarks \ref{rem-centering} shows that the polynomial part of the Edgeworth series evaluated at the mean of the approximated distribution is a polynomial in $n^{-1}$ instead of a polynomial in $n^{-1/2}$ since terms of odd powers are zero. Another consequence of this is that the error at the mean of the Edgeworth approximation of order $k$ is $o(n^{\floor{1-k/2}})$. 
     
-    For instance, if $e_{4, n}(\cdot; \kappa(X))$ is the Edgeworth expansion of order $4$ from Example \ref{ex-edgeworth-1d}, we have that
+    For instance, if $e_{3, n}(\cdot; \kappa(X))$ is the Edgeworth expansion of order $3$ from Example \ref{ex-edgeworth-1d}, we have that
     \begin{equation*}
-        f_Y(y) = e_{4, n}(y; \kappa(X)) + \begin{cases}
-            O(n^{-2}) &\text{if } y = 0,\\
-            O(n^{-3/2}) &\text{otherwise}.
+        f_Y(y) = e_{3, n}(y; \kappa(X)) + \begin{cases}
+            o(n^{-2}) &\text{if } y = 0,\\
+            o(n^{-3/2}) &\text{otherwise}.
         \end{cases} 
     \end{equation*} 
 \end{remark}
