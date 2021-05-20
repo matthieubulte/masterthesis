@@ -17,7 +17,7 @@ end
 function edgeworth(cgf, nsum, order; T=Float64)
     final_type = promote_rule(T, typeof(nsum))
     symbolic = T == Sym
-    @syms t n::(positive, integer)
+    @syms t n
 
     # start by constructing the cgf of ∑(Xᵢ - μ)/σ√n
     mean, var = cumulants(cgf, 2; T=T)

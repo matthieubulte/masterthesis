@@ -36,7 +36,7 @@ gamma(α, θ) = (t) -> -α*log(θ)-α*log(1/θ-t)
 _uniform = (t) -> t == 0 ? 1 : log((exp(t/2) - exp(-t/2))/t)
 uniform(a, b) = affine(_uniform, 0.5, b - a)
 
-symcgf(order::Int) = symcgf(symbols.(string.("κ", map_subscripts.(1:order))))
+symcgf(order::Int) = osymcgf(symbols.(string.("κ", map_subscripts.(1:order))))
 
 osymcgf(cums::Vector) = let
     order = length(cums)
