@@ -1,6 +1,6 @@
 \subsection{The characteristic function and related quantities} \label{sec-charfun}
 
-The \textit{characteristic function} is a central tool in studying probability distributions. In this section, we review general results about the characteristic function of a multivariate continuous distribution. Let $X$ be a random vector in $\Rp$. The characteristic function of $X$ is the function $\zeta : \Rp \rightarrow \C$ given by
+The \textit{characteristic function} is a central tool in studying probability distributions. In this section, we review general results about the characteristic function of a multivariate continuous random variable. Let $X$ be a random vector in $\Rp$. The characteristic function of $X$ is the function $\zeta : \Rp \rightarrow \C$ given by
 \begin{equation*}
     \zeta(t) = \expec{}{\expf{it^\top X}}.
 \end{equation*}
@@ -25,7 +25,7 @@ The characteristic function is an essential tool in studying distributions. Inde
         &= \lim_{T \rightarrow \infty} \left(2\pi\right)^{-p}\int_{\left[-T, T\right]^p} \zeta(t) \prod_{k=1}^p \int_{a_k}^{b_k}\expf{-i t_k x_k} \d x_k \d t \\
         &= \lim_{T \rightarrow \infty} \left(2\pi\right)^{-p}\int_{\left[-T, T\right]^p} \zeta(t) \int_A \expf{-i t^\top x} \d x \d t.
     \end{align*}
-    Since $\zeta \in L^1(\Rp)$ and $A$ is bounded, the integrand in the previous equation is integrable, and the limit $T \rightarrow \infty$ can be replaced by the proper integral over $\Rp$. Further, using the absolute convergence property of $\zeta$, Fubini's Theorem allows us to change the order of integration and gives us
+    Since $\zeta \in L^1(\Rp)$ and $A$ is bounded, the integrand in the previous equation is integrable, and the limit $T \rightarrow \infty$ can be replaced by the proper integral over $\Rp$. Further, using the absolute convergence property of $\zeta$, Fubini's Theorem allows us to change the order of integration, which gives us
     \begin{align*}
         P(X \in A) 
         &= \left(2\pi\right)^{-p}\intRp{t}{\int_A \zeta(t) \expf{-i t^\top x} \d x} \\
@@ -34,7 +34,7 @@ The characteristic function is an essential tool in studying distributions. Inde
     By definition, this shows that the density of $X$ exists and is given by (\ref{eq-density-via-charfun}).
 \end{proof}
 
-If $X$ has a density function, the characteristic function of $X$ corresponds to the Fourier transform of its density. Taking this generalized view of characteristic function allows us to study approximations of densities that are not necessarily densities and characteristic functions themselves. We employ a less commonly used definition of the Fourier transform, in which the sign of the exponent is reversed. For $f \in L^1(\Rp)$, the Fourier transform $\F[f]$ of $f$ is the function given by
+If $X$ has a density function, the characteristic function of $X$ corresponds to the \textit{Fourier transform} of its density. Taking this generalized view of characteristic functions allows us to study approximations of densities that are not necessarily densities and characteristic functions themselves. We employ a less commonly used definition of the Fourier transform, in which the sign of the exponent is reversed. For $f \in L^1(\Rp)$, the Fourier transform $\F[f]$ of $f$ is the function given by
 \begin{equation} \label{eq-fourier-density}
     \F[f](t) = \int_\Rp \expf{it^\top x}f(x)\d x \ \ \ \ \ \ \t{for all } t \in \Rp.
 \end{equation}
@@ -60,7 +60,7 @@ In this context, we generalize Theorem \ref{thm-char-inversion} to provide the n
         &= c^+ \int_\Rp \expf{it^\top x} \frac{1}{c^+}f^+(x)\d x - c^- \int_\Rp \expf{it^\top x} \frac{1}{c^-}f^-(x)\d x\\
         &= c^+ \zeta^+(t) - c^-\zeta^-(t).
     \end{align*}
-    By applying Theorem \ref{thm-char-inversion} to the positive and negative parts of $f$, we obtain that
+    Since $\zeta \in L^1(\Rp)$, we have that $\zeta^\pm \in L^1(\Rp)$ and the conditions of Theorem \ref{thm-char-inversion} are satisfied by $\zeta^+$ and $\zeta^-$. We then obtain that
     \begin{equation*}
         \frac{1}{c^\pm} f^\pm(x) = \left(2\pi\right)^{-p}\int_\Rp \expf{-i t^\top x} \zeta^\pm(t) \d t,
     \end{equation*}
@@ -75,7 +75,7 @@ In this context, we generalize Theorem \ref{thm-char-inversion} to provide the n
     \end{align*}
 \end{proof}
 
-This corollary lets us extend the notation introduced in (\ref{eq-fourier-density}) and define the inverse Fourier transform operator $\Finv[\zeta]$ of $\zeta$ as in (\ref{eq-fourier-inv}), defined for every $x \in \Rp$ by
+This corollary lets us extend the notation introduced in (\ref{eq-fourier-density}) and define the inverse Fourier transform operator $\Finv[\zeta]$ of $\zeta \in L^1(\Rp)$ as in (\ref{eq-fourier-inv}), defined for every $x \in \Rp$ by
 \begin{equation*}
     \Finv[\zeta](x) = \left(2\pi\right)^{-p}\int_\Rp \expf{-i t^\top x} \zeta(t) \d t.
 \end{equation*}
@@ -147,7 +147,7 @@ Since the Normal distribution will often be used in the following, the next exam
     \begin{equation*}
         K(t; \mu, \Sigma) = t^\top\mu + t^\top\Sigma t.
     \end{equation*}
-    Since $K$ is quadratic in $t$, it is clear that cumulants of $X$ of arbitrary order exist. Furthermore, the first order cumulants are the components $\mu$, second order cumulants are the components of $\Sigma$, and the cumulants of order higher than 2 are equal to 0.
+    Since $K$ is quadratic in $t$, it is clear that cumulants of $X$ of arbitrary order exist. Furthermore, the first order cumulants are the components $\mu$, the second order cumulants are the components of $\Sigma$, and the cumulants of order higher than 2 are equal to 0.
 \end{example}
 
 We now state without a proof some simple properties of cumulants that will be useful in future proofs.

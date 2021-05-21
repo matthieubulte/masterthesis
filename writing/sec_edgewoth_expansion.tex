@@ -1,6 +1,6 @@
 \subsection{Heuristic introduction to the Edgeworth approximation} \label{sec-edgeworth}
 
-We now present a heuristic development of the Edgeworth approximation. Consider two distributions $P$ and $Q$ over $\Rp$ with respective densities $f$ and $q$, characteristic functions $\zeta$ and $\xi$, and cumulants $\kappa_s$ and $\gamma_s$ for $s \in S_p(k)$, $k \in \N$. Assume that both $P$ and $Q$ have mean $0$ and a covariance matrix equal to $\mathbb{1}_p$. We wish to utilize the cumulants of both distributions to construct an approximation of $P$.
+We now present a heuristic development of the Edgeworth approximation. Consider two distributions $P$ and $Q$ over $\Rp$ with respective densities $f$ and $q$, characteristic functions $\zeta$ and $\xi$, and cumulants $\kappa_s$ and $\gamma_s$ for $s \in S_p(k)$, $k \in \N$. Assume that both $P$ and $Q$ have mean $0$ and a covariance matrix equal to $\mathbb{1}_p$. We wish to utilize the cumulants of both distributions to construct an approximation of the density of $P$.
 
 By formal expansion of the difference between the cumulant generating functions of $P$ and $Q$ around 0, we obtain that for any $t \in \Rp$,
 \begin{align*}
@@ -43,7 +43,7 @@ One sees that for $s \in S_p(j)$, the pseudo-cumulant $\alpha^*_s$ is a sum over
     &j = 2:&\alpha^*_{(k, l)} &= \alpha_{(k, l)} + \alpha_{(k)}\alpha_{(l)}\\
     &j = 3:&\alpha^*_{(k, l, m)} &= \alpha_{(k, l, m)} + \alpha_{(k, l)}\alpha_{(m)} + \alpha_{(k)}\alpha_{(l)}\alpha_{(m)},
 \end{align*}
-where $k,l,m \in [p]$ and the exact coefficient in front of the $\alpha$ terms are not relevant and ignored for conciseness. Now, by Lemma \ref{lemma-fourier-derivative}, we recognize the Fourier transform of derivatives of the density $q$ of $Q$
+where $k,l,m \in [p]$ and the exact coefficient in front of the $\alpha$ terms are not relevant and ignored for conciseness. Now, assuming that the conditions of Lemma \ref{lemma-fourier-derivative} are satisfied by the density $q$ of $Q$, we recognize that
 \begin{equation*}
     \xi(t) (-i)^{j} t^s  = \F \left[ D^s q \right].
 \end{equation*}
@@ -68,17 +68,17 @@ A convenient choice for $Q$ is the multivariate standard Normal distribution $\m
         1 + \sum_{j=3}^\infty  \sum_{s \in S_p(j)} \frac{1}{j!}\alpha^*_s h_s(x)
     \right\}, \label{eq-edgeworth-full}
 \end{align} 
-where $h_s(\cdot)$ are a multivariate generalization of the Hermite polynomials given by
-\begin{equation*}
+where $h_s(\cdot)$ are a multivariate generalization of the Hermite polynomials, given by
+\begin{equation} \label{eq-hermite}
     h_s(x) = (-1)^j \frac{D^s \phi(x)}{\phi(x)}.
-\end{equation*}
+\end{equation}
 \
 Next, we apply this transformation to the standardized sum $Y = n^{-1/2}\sum_{i=1}^n X_i$ where $X_1, \ldots, X_n$ are i.i.d.\,copies of $X \sim P$. For any $s \in S_p(k)$, using properties (i) and (ii) of cumulants given in Lemma \ref{lem-cumulants-props}, the $s$-cumulants of $Y$ are given by 
 \begin{equation*}
     \kappa_s(Y) = n^{1-k/2} \kappa_s(X) = O(n^{1-k/2}).
 \end{equation*}
 \
-We can form the \textit{Edgeworth approximation} of order $k$, denoted $e_{k, n}(\cdot; \kappa(X))$, by only keeping cumulants of order up tto $k$ in (\ref{eq-edgeworth-full}). The notation $e_{k, n}(\cdot; \kappa(X))$ highlights the fact that the approximation to the density of $Y$ only depends on three parameters: the order $k$, the number of terms summed $n$, and the cumulants $\kappa(X)$ of the summands. Since we discard all cumulants of order higher than $k$, the error of the resulting approximation must be at least $O(n^{(1-k)/2})$ and we actually have
+We can form the \textit{Edgeworth approximation} of order $k$, denoted $e_{k, n}(\cdot; \kappa(X))$, by only keeping cumulants of order up to $k$ and removing terms of order $o(n^{1-k/2})$ in (\ref{eq-edgeworth-full}). The notation $e_{k, n}(\cdot; \kappa(X))$ highlights the fact that the approximation to the density of $Y$ only depends on three parameters: the order $k$, the number of terms summed $n$, and the cumulants $\kappa(X)$ of the summands. Since we discard all cumulants of order higher than $k$, the error of the resulting approximation must be at least $O(n^{(1-k)/2})$ and we actually have
 \begin{equation} \label{eq-edgeworth}
     f_Y(y) = e_{k, n}(y; \kappa(X)) + o(n^{1-k/2}),
 \end{equation}
@@ -117,16 +117,16 @@ While the argument provided above for the definition of the Edgeworth series is 
 
 
 \begin{remark} \label{rem-edge-mean}
-    Note that one can easily show that for any index tuple $s \in S_p(k)$, where $k \in \N$ is an odd integer, 0 is a root of the generalized Hermite polynomial $h_s$. 
+    Note that one can show from the definition of generalized Hermite polynomials in (\ref{eq-hermite}), that for any index tuple $s \in S_p(k)$, where $k \in \N$ is an odd integer, 0 is a root of the generalized Hermite polynomial $h_s$. 
     Furthermore, by the development of (\ref{eq-edgeworth-full}), the coefficient of each Hermite polynomial $h_s$, where $s \in S_p(k)$, contains terms of order $O(n^{1-k'/2})$ where $k$ and $k'$ have the same parity and $k' \leq k$.
 
-    Combining this with Remarks \ref{rem-centering} shows that the polynomial part of the Edgeworth series evaluated at the mean of the approximated distribution is a polynomial in $n^{-1}$ instead of a polynomial in $n^{-1/2}$ since terms of odd powers are zero. Another consequence of this is that the error at the mean of the Edgeworth approximation of order $k$ is $o(n^{\floor{1-k/2}})$. 
+    Combining this with Remarks \ref{rem-centering} shows that the polynomial part of the Edgeworth series evaluated at the mean of the approximated distribution is a polynomial in $n^{-1}$ instead of a polynomial in $n^{-1/2}$ since terms of odd powers are zero. Another consequence of this is that the error at the mean of the Edgeworth approximation of even order $k$ is $O(n^{-k/2})$. 
     
-    For instance, if $e_{3, n}(\cdot; \kappa(X))$ is the Edgeworth expansion of order $3$ from Example \ref{ex-edgeworth-1d}, we have that
+    For instance, if $e_{4, n}(\cdot; \kappa(X))$ is the Edgeworth expansion of order $4$ from Example \ref{ex-edgeworth-1d}, we have that
     \begin{equation*}
-        f_Y(y) = e_{3, n}(y; \kappa(X)) + \begin{cases}
-            o(n^{-2}) &\text{if } y = 0,\\
-            o(n^{-3/2}) &\text{otherwise}.
+        f_Y(y) = e_{4, n}(y; \kappa(X)) + \begin{cases}
+            O(n^{-2}) &\text{if } y = 0,\\
+            o(n^{-1}) &\text{otherwise}.
         \end{cases} 
     \end{equation*} 
 \end{remark}

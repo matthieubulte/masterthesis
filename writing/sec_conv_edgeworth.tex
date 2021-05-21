@@ -1,6 +1,6 @@
 \subsection{Convergence of the Edgeworth approximation}
 
-While the previous section provided an intuition for the development of the Edgeworth approximation, it is not a rigorous proof. In this section, we develop the a proof for the convergence claim in (\ref{eq-edgeworth}).
+While the previous section provided an intuition for the development of the Edgeworth approximation, it is not a rigorous proof. In this section, we develop a proof for the convergence claim in (\ref{eq-edgeworth}).
 
 Recall that in the first step of the development of the Edgeworth approximation, the ratio of characteristic functions $\zeta / \xi$ is approximated via two truncated Taylor expansions,
 \begin{equation*}
@@ -19,7 +19,7 @@ The following lemma from \cite[Theorem 2.5.3]{kolassa2006series} bounds the erro
 \end{lemma}
 \input{proof-lemma-series-1}
 
-Continuing the development of the Edgeworth approximation, a pseudo-characteristic function was constructed based on the approximation of the ratio $\zeta / \xi$. In the following theorem, we use the previous lemma and properties of cumulants to provide an asymptotic bound on the error obtained when using this approximation on the characteristic function of a standardized sum of random variables. It is a specialization of \cite[Corollary 2.5.4]{kolassa2006series}.
+Continuing the development of the Edgeworth approximation, a pseudo-characteristic function was constructed based on the approximation of the ratio $\zeta / \xi$. In the following theorem, we use the previous lemma and properties of cumulants to provide an asymptotic bound on the error obtained when using this approximation on the characteristic function of a standardized sum of random variables. This theorem is a specialization of \cite[Corollary 2.5.4]{kolassa2006series}.
 
 \begin{theorem} \label{thm-edge-inv-tech}
     Let $\zeta$ be the characteristic function of a random vector $X \in \Rp$ and let $n, k \in \N$. Assume that all cumulants of $X$ of order up to $k$ exist and that the second cumulants of $X$ satisfy $\kappa_{(i, j)} = \delta_{ij}$ for all $i, j \in [p]$. Let

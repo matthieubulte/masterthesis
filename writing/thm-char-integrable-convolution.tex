@@ -2,13 +2,11 @@
     The characteristic function $\zeta$ of a random variable $X$ in $\Rp$ satisfies $\zeta \in L^q(\Rp)$ for some $q > 1$ if and only if there exists a positive integer $l \in \N$ such that the density of a convolution of $l$ independent copies of $X$ exists and is bounded.
 \end{lemma}
 \begin{proof}
-    This proof is an adaptation of the one-dimensional proof given in \cite[Lemma 2.4.4]{kolassa2006series}.
-
     The \textit{only if} direction is a direct consequence of Theorem \ref{thm-char-inversion}. Assuming that $\zeta \in L^q(\Rp)$ we have that $\zeta \in L^l(\Rp)$ for $l = \ceil{q}$ and hence,
     \begin{equation*}
         \intRp{t}{\abs{\zeta(t)^l}} < \infty.
     \end{equation*}
-    Thus, $\zeta^l \in L^1(\Rp)$. Since the characteristic function of a sum of $l$ independent copies of $X$ is equal to $t \mapsto \zeta(t)^n$, we can apply Theorem \ref{thm-char-inversion}. This shows that the density of the convolution of $l$ copies of $X$ exists and is bounded.
+    Thus, $\zeta^l \in L^1(\Rp)$. Since the characteristic function of a sum of $l$ independent copies of $X$ is equal to $t \mapsto \zeta(t)^l$, we can apply Theorem \ref{thm-char-inversion}. This shows that the density of the convolution of $l$ copies of $X$ exists and is bounded.
     \newline
     We now prove the \textit{if} direction of the theorem. Assume that there exists a positive interger $j \in \N$ such that the density $f_j$ of a convolution of $j$ independent copies of $X$ exists and is bounded. Then, using that $\abs{\zeta(-t)} = \abs{\overline{\zeta(t)}} = \abs{\zeta(t)}$, we have that for any $r \in \R$,
     \begin{equation*}
@@ -39,8 +37,8 @@
     Using the fact that $\sup_{x \in \R} \abs{\sin x / x} < 1$, we have that $\prod_{k=1}^p \frac{2 \sin(v_k)}{v_k} < 2^p$ and
     \begin{equation*}
         \int_{[-r, r]^p} \abs{\zeta(t)}^{2j} \d t
-        \leq \intRp{x}{f_j(x)\intRp{v}{f_j(x + v/r)}}
-        = \intRp{x}{f_j(x)} = 1.
+        \leq 2^p \intRp{x}{f_j(x)\intRp{v}{f_j(x + v/r)}}
+        = 2^p \intRp{x}{f_j(x)} = 2^p.
     \end{equation*}
     This shows that a finite upper bound on $\norm{\zeta}_{2j}^{2j}$ that is independent of $r$ exists. This concludes the proof for $q = 2j$.
 \end{proof}

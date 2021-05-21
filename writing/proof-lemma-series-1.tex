@@ -13,13 +13,13 @@
         = \abs{\frac{v^{l+1}}{(l+1)!}} \exp v\\
         &\leq \abs{\frac{v^{l+1}}{(l+1)!}} \max \left\{ \exp{|u|}, \exp{|v|} \right\}.
     \end{align*}
-    Furthermore, by the mean value theorem, there exists a point $z \in \C$ lying on the straight line between $u$ and $v$ such that
+    Furthermore, by Taylor's theorem, there exists $\theta \in (0, 1)$ such that for $z = \theta u + (1-\theta)v$
     \begin{equation*}
-        \exp u - \exp v = (u - v) \exp z.
+        \abs{\exp u - \exp v}= \abs{u - v} \exp z.
     \end{equation*}
-    Taking absolute values and using the convexity of the exponential function, we find the following bound
+    Using the convexity of the exponential function, we find the following bound
     \begin{equation*}
-        \abs{\exp u - \exp v} = \abs{u - v} \exp |z| \leq \abs{u - v} \max \left\{ \exp{|u|}, \exp{|v|} \right\}.
+        \abs{\exp u - \exp v} \leq \abs{u - v} \max \left\{ \exp{|u|}, \exp{|v|} \right\}.
     \end{equation*}
     Combining the above two bounds completes the proof of the lemma.
 \end{proof}

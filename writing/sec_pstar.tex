@@ -4,11 +4,11 @@ Next, we apply the Saddlepoint approximation to an exponential family $\mathcal{
 \begin{equation*}
     f(x; \theta) = \expf{\theta^\top T(x) - \mathcal{H}(\theta) - \mathcal{G}(x)}.
 \end{equation*}
-Given a random sample $x = (x_1, \ldots, x_n)$ of $P_\theta$, the \textit{log-likelihood function} denoted $\ell(\cdot; x)$ is given by
+Given a random sample $x = (x_1, \ldots, x_n)$ of $P_\theta$, the \textit{log-likelihood function} denoted by $\ell(\cdot; x)$ is given by
 \begin{equation*}
     \ell(\theta; x) = \theta^\top \sum_{i=1}^n T(x_i) - n \mathcal{H}(\theta) = n\left[\bar t - \mathcal{H}(\theta)\right],
 \end{equation*}
-where $\bar t = n^{-1}\sum_{i=1}^n T(x_i)$ is the sample average of the sufficient statistic. Hence, the maximum likelihood estimator of $\theta$ is the value $\hat\theta_{\bar t} \in \Rp$ satisfying the score equation
+where $\bar t = n^{-1}\sum_{i=1}^n T(x_i)$ is the sample average of the sufficient statistic $T$. Hence, the maximum likelihood estimator of $\theta$ is the value $\hat\theta_{\bar t} \in \Rp$ satisfying the score equation
 \begin{equation} \label{eq-score-expfam}
     \mathcal{H}'(\hat\theta_{\bar t}) = \bar t.
 \end{equation}
