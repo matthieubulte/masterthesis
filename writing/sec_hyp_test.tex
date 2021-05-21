@@ -11,7 +11,7 @@ The classical approach to this testing  problem is to use the \textit{likelihood
 \end{equation*}
 where $\hat\Omega_{\G_0}$ and $\hat\Omega_\G$ are the functions mapping an observed covariance matrix to the maximum likelihood estimators of the precision matrix under models $\G_0$ and $\G$ respectively. Under regularity conditions and assuming that the $H_0$ is true, the distribution of $\Lambda(S_n)$ converges to a $\chi^2_d$ distribution with $d = |E| - |E_0|$ degrees of freedom, see \cite{wilks1938large}. A hypothesis test in finite sample can then be constructed by using the $\chi^2_d$ approximation to the distribution of $\Lambda(S_n)$.
 
-In Eriksen \cite{eriksen1996tests}, the author gives the following simple example which demonstrates how the $\chi^2_d$ approximation fails when the sample size $n$ is not large enough. Consider two graphs $\G$ and $\G_0$ with $p = 4$ nodes such that $\G_0$ is a cycle and $\G$ is a chordal cover of $\G_0$. We are interested in the following hypothesis test in Figure \ref{fig-test-cycle-vs-diamond}. Eriksen proposes an alternative test statistic for testing this class of problems which, in this example, is
+In Eriksen \cite{eriksen1996tests}, the author gives the following simple example which demonstrates how the $\chi^2_d$ approximation fails when the sample size $n$ is not large enough. Consider two graphs $\G$ and $\G_0$ with $p = 4$ nodes such that $\G_0$ is a cycle and $\G$ is a chordal cover of $\G_0$. We are interested in the hypothesis test displayed in Figure \ref{fig-test-cycle-vs-diamond}. Eriksen proposes an alternative test statistic for testing this class of problems which, in this example, is
 \begin{equation} \label{eq-q-stat}
     Q(S_n) = \expf{-\Lambda(S_n) / n},
 \end{equation}
@@ -19,7 +19,7 @@ and demonstrates that it asymptotically follows a beta distribution $B((n - 3)/2
 
 
 
-As we have seen in the previous section, the maximum likelihood estimator exists almost surely under both $H_0$ and $H_1$ if $n \geq 3$. We can empirically evaluate the $\chi_2^d$ approximation to the distribution of $\Lambda(S_n)$ and the $B((n - 3)/2, 1/2)$ approximation to the distribution of $Q(S_n)$ by sampling the statistics under the null hypothesis of a chordless cycle. For a given sample size $n \in \N$, we sample $N = 10000$ values $\lambda_1, \ldots, \lambda_N$ of the statistic $\Lambda(S_n)$ under the null hypothesis. With this sample, we construct the empirical cumulative distribution function $\hat F_\Lambda$ which approximates the true cumulative distribution function of $\Lambda(S_n)$, as well as the sorted empirical probabilities $\hat p_{i} = \hat F_\Lambda(\lambda_{(i)})$. Further, the empirical probabilities $\hat p_{i}$ can be compared to the probabilities $\tilde p_i = F(\lambda_{(i)})$ where $F$ corresponds to the cumulative distribution function of either the $\chi^2_1$ approximation of $\Lambda(S_n)$ or the $B((n - 3)/2, 1/2)$ approximation of $Q(S_n) = \expf{-\Lambda(S_n) / n}$. Figure \ref{fig-diamond-vs-square-small} displays this comparison. As seens in the upper pane of Figure \ref{fig-diamond-vs-square-small}, the $\chi^2_1$ approximation is a poor approximation to the distribution of $\Lambda(S_n)$ while the $B((n - 3)/2, 1/2)$ approximation to the distribution of $Q(S_n)$ is accurate even for small sample sizes. Since we are interested in constructing a hypothesis test based on these approximations, the small probability region is of particular interest. In the lower pane of Figure \ref{fig-diamond-vs-square-small}, we see that the $\chi^2_1$ approximation is particularly bad for $n=5$ where a test at level $\alpha=0.05$ based on the $\chi^2_1$ approximation would have a true size of $0.1$.
+As we have seen in the previous section, the maximum likelihood estimator exists almost surely under both $H_0$ and $H_1$ if $n \geq 3$. We can empirically evaluate the $\chi^2_d$ approximation to the distribution of $\Lambda(S_n)$ and the $B((n - 3)/2, 1/2)$ approximation to the distribution of $Q(S_n)$ by sampling the statistics under the null hypothesis of a chordless cycle. For a given sample size $n \in \N$, we sample $N = 10000$ values $\lambda_1, \ldots, \lambda_N$ of the statistic $\Lambda(S_n)$ under the null hypothesis. With this sample, we construct the empirical cumulative distribution function $\hat F_\Lambda$ which approximates the true cumulative distribution function of $\Lambda(S_n)$, as well as the sorted empirical probabilities $\hat p_{i} = \hat F_\Lambda(\lambda_{(i)})$. Further, the empirical probabilities $\hat p_{i}$ can be compared to the probabilities $\tilde p_i = F(\lambda_{(i)})$ where $F$ corresponds to the cumulative distribution function of either the $\chi^2_1$ approximation of $\Lambda(S_n)$ or the $B((n - 3)/2, 1/2)$ approximation of $Q(S_n) = \expf{-\Lambda(S_n) / n}$. Figure \ref{fig-diamond-vs-square-small} displays this comparison. As seens in the upper pane of Figure \ref{fig-diamond-vs-square-small}, the $\chi^2_1$ approximation is a poor approximation to the distribution of $\Lambda(S_n)$ while the $B((n - 3)/2, 1/2)$ approximation to the distribution of $Q(S_n)$ is accurate even for small sample sizes. Since we are interested in constructing a hypothesis test based on these approximations, the small probability region is of particular interest. In the lower pane of Figure \ref{fig-diamond-vs-square-small}, we see that the $\chi^2_1$ approximation is particularly poor for $n=5$, where a test at level $\alpha=0.05$ based on the $\chi^2_1$ approximation would have a true size of $0.1$.
 \input{fig-cycle-vs-chordal}
 \input{fig-diamond-vs-square-small}
 
@@ -55,7 +55,7 @@ While the $B((n - 3)/2, 1/2)$ approximation seems accurate, its origin and accur
     where the last statement follows from the fact that $\hat\Omega_\G(S) S = 1_p$ and hence $\trB{\hat\Omega_\G(S) S} = p$ is constant. The formula for the observed infomation matrix can easily be verified by taking the appropriate derivatives of the log-likelihood.
 \end{proof}
 
-Before applying the result of Lemma \ref{lem-pstar-covariance} to the general problem of subgraph testing, we begin by studying a special case. Consider a Gaussian graphical model with graph $\G = ([p], E)$ and the sub-graph $\G_0$ constructed by removing an edge $e_0 \in E$ from $\G$. The Gaussian graphical sub-model associated to the graph $\G_0 = ([p], E_0)$ where $E_0 = E \setminus \eset{e_0}$. Without loss of generality, we assume that $e_0 = \eset{1,2}$. It follows the test statistic given in (\ref{eq-q-stat}) is
+Before applying the result of Lemma \ref{lem-pstar-covariance} to the general problem of subgraph testing, we begin by studying a special case. Consider a Gaussian graphical model with graph $\G = ([p], E)$ and the sub-graph $\G_0$ constructed by removing a single edge $e_0 \in E$ from $\G$. The Gaussian graphical submodel is then associated to the subgraph $\G_0 = ([p], E_0)$ where $E_0 = E \setminus \eset{e_0}$. Without loss of generality, we assume that $e_0 = \eset{1,2}$. It follows that the test statistic given in (\ref{eq-q-stat}) is
 \begin{align*}
     Q(S_n) 
     &= \expf{-\Lambda(S_n) / n}  \\
@@ -66,12 +66,12 @@ Before applying the result of Lemma \ref{lem-pstar-covariance} to the general pr
         (\log |\hat\Omega_\G(S_n)| - \tr[S_n\hat\Omega_\G(S_n)])} \\
     &= \frac{|\hat\Omega_{\G_0}(S_n)|}{|\hat\Omega_{\G}(S_n)|},
 \end{align*}
-where the last equality follows from the fact that $\tr[S_n\hat\Omega_{\G_0}(S_n)] = p$ is constant given any graph $\G_0$. The following theorem from \cite[Theorem 3.2]{eriksen1996tests}, shows that the $Q(S_n)$ statistic asymptotically follows a Beta distribution with known parameters.
+where the last equality follows from the fact that $\tr[S_n\hat\Omega_{\G}(S_n)] = \tr[S_n\hat\Omega_{\G_0}(S_n)] = p$ is constant for any given graph $\G$. The following theorem from \cite[Theorem 3.2]{eriksen1996tests}, shows that the $Q(S_n)$ statistic asymptotically follows a Beta distribution with known parameters.
 
 \begin{theorem} \label{thm-one-edge-less}
-    Let $\G = ([p], E)$ be a graph with subgraph $\G_0 = ([p], E_0)$ satisfying $E \setminus E_0 = \eset{e_0}$, where $e_0 = \eset{i, j} \in E$. Let $S$ be a sample covariance matrix computed from a sample of size $n$ of the Gaussian graphical model associated to $\G_0$ with precision matrix $\Omega_0 \in \S_{\succ 0}(\G_0)$. Then, the distribution of $Q(S_n)$ conditioned on observing $S_n$ asymptotically converges
+    Let $\G = ([p], E)$ be a graph with subgraph $\G_0 = ([p], E_0)$ satisfying $E \setminus E_0 = \eset{e_0}$, where $e_0 = \eset{i, j} \in E$. Let $S$ be a sample covariance matrix computed from a sample of size $n > \t{mlt}(\G)$ of the Gaussian graphical model associated to $\G_0$ with precision matrix $\Omega_0 \in \S_{\succ 0}(\G_0)$. Then, the distribution of $Q(S_n)$ conditioned on observing $S_n$ asymptotically converges to
     \begin{equation}
-        Q(S_n) \sim B\left(\frac{n - f(e_0) - 1}{2}, \frac{1}{2} \right)\ \ \ \ \t{ as } n \rightarrow \infty,
+        B\left(\frac{n - f(e_0) - 1}{2}, \frac{1}{2} \right)\ \ \ \ \t{ as } n \rightarrow \infty,
     \end{equation}
     where $f(\eset{i, j}) = |\t{bd}(i) \cap \t{bd}(j)|$.
 \end{theorem}
@@ -148,19 +148,19 @@ where the last equality follows from the fact that $\tr[S_n\hat\Omega_{\G_0}(S_n
         j_\G(S)_{\eset{1, i} \eset{2, j}} = S_{1 2}S_{i j} + S_{1 j} S_{i 2} + S_{i 2} S_{1 j} + S_{i j} S_{1 2} = 0.
     \end{equation*}
 
-    Case 3. $e = \eset{1, 2}$ and $\bar e = \eset{i}$ (or the opposite). This is the case when $a = \eset{1, i}$ and $b = \eset{2, i}$ and since $S_{i i} = 1$, $S_{1, 2} = s$ and $S_{i 1} = S_{i 2} = 0$, we get
+    Case 3. $e = \eset{1, 2}$ and $\bar e = \eset{i}$ (or the opposite). This is the case when $a = \eset{1, i}$ and $b = \eset{2, i}$, and since $S_{i i} = 1$, $S_{12} = s$ and $S_{i 1} = S_{i 2} = 0$, we get
     \begin{equation*}
         j_\G(S)_{\eset{1, i} \eset{2, i}} = 
         S_{1 2}S_{i i} + S_{1 i} S_{i 2} + S_{i 2} S_{1 i} + S_{i i} S_{1 2} = 2 s.
     \end{equation*}
     Note that the matrix $j_\G$ is indexed by edges in $\G$. Therefore, the cases $a = \eset{1, i}$ and $b = \eset{2, i}$ are only relevant if $a, b \in E$. In this case, $i$ is a neighbour of both 1 and 2, meaning that $i \in \t{bd}(1) \cap \t{bd}(2) =: C$.
 
-    Case 4. $e = \eset{i}$ and $\bar e = \eset{j}$. This only happens if $a = b = \eset{i, j}$, which, again using that $a, b \in E$ and $S = 1_p + sH_{e_0}$ gives
+    Case 4. $e = \eset{i}$ and $\bar e = \eset{j}$. This only happens if $a = b = \eset{i, j}$, which, again using that $a, b \in E$ and $S = 1_p + sH_{e_0}$, gives
     \begin{equation*}
         j_\G(S)_{\eset{i, j} \eset{i, j}} = \begin{cases}
-            &S_\eset{i, i}S_\eset{i, i} = 1\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \  \t{ if } i = j,\\
-            &2S_\eset{1 1}S_\eset{2 2} + 2S_\eset{1 2}S_\eset{1 2} = 2 + 2s^2\  \t{ if } \eset{i, j} = \eset{1, 2},\\
-            &2S_\eset{i,i} + 2S_\eset{i, j} = 2\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \  \t{ otherwise.}
+            &S_{i i}S_{i i} = 1\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \  \t{ if } i = j,\\
+            &2S_{1 1}S_{2 2} + 2S_{1 2}S_{1 2} = 2 + 2s^2\ \ \ \t{ if } \eset{i, j} = \eset{1, 2},\\
+            &2S_{ii} + 2S_{ij} = 2\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \  \t{ otherwise.}
         \end{cases}
     \end{equation*}
     This shows that $j_\G(S)$ is a block diagonal matrix with blocks each equal to one of the following matrices,
