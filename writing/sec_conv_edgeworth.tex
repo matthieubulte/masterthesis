@@ -7,10 +7,10 @@ Recall that in the first step of the development of the Edgeworth approximation,
     \begin{matrix}
         \log \zeta(t) - \log \xi(t) = & u & \longrightarrow & \exp u & = & \zeta(t) / \xi(t)\\
         &\approx & & \approx & & \approx \\
-        &v  & \longrightarrow & \sum_{k=0}^l \frac{v^k}{k!} & = & z
+        &v  & \longrightarrow & \sum_{k=0}^l v^k/k! & = & z
     \end{matrix}
 \end{equation*}
-The following lemma from \cite[Theorem 2.5.3]{kolassa2006series} bounds the error found in approximating $\exp u$ by the truncated Taylor expansion of $\exp$ evaluated at a point $v$ near $u$.
+The following lemma from \cite[Theorem 2.5.3]{kolassa2006series} bounds the error found in approximating $\exp u$ by the truncated Taylor expansion of $\exp(\cdot)$ evaluated at a point $v$ near $u$.
 \begin{lemma} \label{lemma-series}
     Let $u, v \in \C$ and $l \in \mathbb{N}$, then the following inequality holds,
     \begin{equation}

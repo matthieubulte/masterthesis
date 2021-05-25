@@ -17,11 +17,11 @@ Let $L$ be sampled as described above and let $\Omega = L L^\top$. Then, if $L$ 
 \begin{equation*}
     \Omega_e = 0 \Leftrightarrow L_i \bot L_j.
 \end{equation*}
-Therefore we can remove the edge $e$ from $\Omega$ by orthogonalizing the corresponding columns in $L$ before constructing $\Omega$. To do this, we define the matrix $L^e$ via a transformation the rows $L_i$ of $L$
+Therefore, we can remove the edge $e$ from $\Omega$ by orthogonalizing the corresponding columns in $L$ before constructing $\Omega$. To do this, we define the matrix $L^e$ via a transformation the rows $L_i$ of $L$
 \begin{equation*}
     L^e_k = \begin{cases}
         L_i - \frac{L_i L_j^\top}{L_j L_j^\top} L_j \ \ \t{ if } k = i,\\
         L_k \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \t{ otherwise}.
     \end{cases}
 \end{equation*}
-Since this step involves subtracting one row from another in the matrix $L$, we have that $|L^e| = |L|$. Hence, the matrix $\Omega^e = L^e (L^e)^\top$ is positive definite and satisfies $\Omega^e_e = 0$. This edge removal corresponds to a single step in the Gramm-Schmidt orthogonalization process. Hence, if more than one edge has to be removed, a complete Gramm-Schmidt algorithm can be run on the rows of $L$ as described in Algorithm 2 of C\'ordoba et al.\,\cite{cordoba2020generating}.
+Since this step involves subtracting one row from another in the matrix $L$, we have that $|L^e| = |L|$. Hence, the matrix $\Omega^e = L^e (L^e)^\top$ is positive definite and satisfies $\Omega^e_e = 0$. This edge removal corresponds to a single step in the Gram-Schmidt orthogonalization process. Hence, if more than one edge have to be removed, a complete Gram-Schmidt algorithm can be run on the rows of $L$ as described in Algorithm 2 of C\'ordoba et al.\,\cite{cordoba2020generating}.

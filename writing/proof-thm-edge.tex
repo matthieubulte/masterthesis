@@ -5,7 +5,7 @@
     \end{equation}
     where $\zeta(tn^{-1/2})^n$ is the characteristic function of $Y$. Since both $\zeta$ and $\xi$ are $L^1(\Rp)$, the integral is well defined and provides a valid upper bound. We proceed by splitting the range of integration in two parts: one part in which $t$ is small such that Theorem \ref{thm-edge-inv-tech} can be applied, and the remaining part of the integral will be handled separately.
 
-    By construction of the Edgeworth approximation, the Fourier transform of $e_{k, n}(\cdot; \kappa(X))$ corresponds to the function given in (\ref{eq-edgeworth-fourier}) of Theorem \ref{thm-edge-inv-tech}. Hence, for any $\varepsilon > 0$, there is $\delta > 0$ such that (\ref{eq-edge-bound}) holds and we can upper bound the \textit{small $t$} part of the right hand side of (\ref{eq-bound-abserr}) as follows,
+    By construction of the Edgeworth approximation, the Fourier transform of $e_{k, n}(\cdot; \kappa(X))$ corresponds to the function given in (\ref{eq-edgeworth-fourier}) of Theorem \ref{thm-edge-inv-tech}. Hence, for any $\varepsilon > 0$, there exists $\delta > 0$ such that (\ref{eq-edge-bound}) holds and we can upper bound the \textit{small $t$} part of the right hand side of (\ref{eq-bound-abserr}) as follows,
     \begin{align*}
         \int_{B_2(\delta\sqrt{n})} &|\zeta(tn^{-1/2})^n - \xi(t)| \d t\\
         &\leq (2\pi)^{-p}\int_{B_2(\delta\sqrt{n})}\expf{-\frac{1}{4}\norm{t}_2^2}\left[ \frac{\epsilon\norm{t}_2^{k}}{n^{k/2-1}} + \frac{C_0^{k-1}\norm{t}_2^{3(k-1)}}{(k-1)!n^{k/2-1/2}} \right] \d t \\

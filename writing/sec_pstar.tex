@@ -61,7 +61,7 @@ Hence, the $p^*$ approximation is invariant under reparametrization. The next ex
         \subfloat{
             \includegraphics[width=8cm]{pstar_exp_err.eps} 
         }
-        \caption{Study of the approximation error of the Saddlepoint approximation on a standardized sum of $n=10$ of $\Gamma(2, 1)$ random variables. Both panel exposes properties studied of the Saddlepoint approximation: the accurate rellative error, the gain in order of approximation and the uniform relative error of the approximation for sums of Gamma random variables.}
+        \caption{Study of the approximation error of the Saddlepoint approximation on a standardized sum of $n=10$ of $\Gamma(2, 1)$ random variables. Both panes expose properties studied of the Saddlepoint approximation: the accurate relative error, the gain in order of approximation and the uniform relative error of the approximation for sums of Gamma random variables.}
         \label{fig-pstar-approx}
     \end{figure}    
 
@@ -94,7 +94,7 @@ Hence, the $p^*$ approximation is invariant under reparametrization. The next ex
     \end{equation}
     Hence, $\hat\lambda$ is approximately $N(\lambda, \lambda^2/n)$ with an approximation error of the density of $o(n^{-1/2})$. 
     
-    In Figure \ref{fig-pstar-approx}, we display how (\ref{eq-pstar-lambda}) and (\ref{eq-normal-lambda}) approximate the density of $\hat\lambda$ under the true model $\t{Exp}(2)$. Since $\t{Exp}(\lambda) = \Gamma(1, \lambda)$, the distribution of $\bar X$ is $\Gamma(n, n\lambda)$ and hence $\hat\lambda = \bar x$ is $\t{Inv-}\Gamma(n, n\lambda)$. As we can see in the left panel, the $p^*$ approximation properly fits the true density of $\hat\lambda$ and captures the bias of the $\hat\lambda$ estimator as opposed to the Normal approximation which is centered around the true value of $\lambda$. Furthermore, we observe in the right panel how the relative error of the $p^*$ approximation is identical to the approximation error of the Saddlepoint approximation to the mean of $\Gamma(2, 1)$ seen in Example \ref{ex-gamma-saddle}. This is also a direct consequence of the invariance of the $p^*$ approximation since $\hat\Lambda$, the random variable associated to the maximum likelihood estimator, is the inverse of the sample mean $\bar X$, which is a diffeomorphic transformation for positive reals.
+    In Figure \ref{fig-pstar-approx}, we display how (\ref{eq-pstar-lambda}) and (\ref{eq-normal-lambda}) approximate the density of $\hat\lambda$ under the true model $\t{Exp}(2)$. Since $\t{Exp}(\lambda) = \Gamma(1, \lambda)$, the distribution of $\bar X$ is $\Gamma(n, n\lambda)$ and hence $\hat\lambda = \bar x$ is $\t{Inv-}\Gamma(n, n\lambda)$. As we can see in the left pane, the $p^*$ approximation properly fits the true density of $\hat\lambda$ and captures the bias of the $\hat\lambda$ estimator as opposed to the Normal approximation which is centered around the true value of $\lambda$. Furthermore, we observe in the right panel how the relative error of the $p^*$ approximation is identical to the approximation error of the Saddlepoint approximation to the mean of $\Gamma(2, 1)$ seen in Example \ref{ex-gamma-saddle}. This is also a direct consequence of the invariance of the $p^*$ approximation since $\hat\Lambda$, the random variable associated to the maximum likelihood estimator, is the inverse of the sample mean $\bar X$, which is a diffeomorphic transformation for positive reals.
     
 
     \input{edgeworth_julia}

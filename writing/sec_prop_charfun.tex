@@ -1,6 +1,6 @@
 \subsection{The characteristic function and related quantities} \label{sec-charfun}
 
-The \textit{characteristic function} is a central tool in studying probability distributions. In this section, we review general results about the characteristic function of a multivariate continuous random variable. Let $X$ be a random vector in $\Rp$. The characteristic function of $X$ is the function $\zeta : \Rp \rightarrow \C$ given by
+The \textit{characteristic function} is a central tool in studying probability distributions. In this section, we review general results about the characteristic function of a multivariate continuous random variable. Let $p \in \N$ and let $X$ be a random vector in $\Rp$. The characteristic function of $X$ is the function $\zeta : \Rp \rightarrow \C$ given by
 \begin{equation*}
     \zeta(t) = \expec{}{\expf{it^\top X}}.
 \end{equation*}
@@ -53,7 +53,7 @@ In this context, we generalize Theorem \ref{thm-char-inversion} to provide the n
 \end{corollary}
 
 \begin{proof}
-    We decompose $f$ in positive and negative parts by $f(x) = f^+(x) - f^-(x)$ where $f^+(x) = f(x) \mathbb{1}_{f(x) \geq 0}$ and $f^-(x) = -f(x) \mathbb{1}_{f(x) < 0}$. Then, if $c^+ = \int_\Rp f^+(x) \d x$ and $c^- = \int_\Rp f^-(x) \d x$, the functions $f^+ / c^+$ and $f^- / c^-$ are both densities over $\Rp$ with respective characteristic functions $\zeta^+$ and $\zeta^-$. We can replace these quantities in (\ref{eq-fourier-trans}) to have
+    We decompose $f$ in positive and negative parts by $f(x) = f^+(x) - f^-(x)$ where $f^+(x) = f(x) \mathbb{1}_{f(x) \geq 0}$ and $f^-(x) = -f(x) \mathbb{1}_{f(x) < 0}$. Then, if $c^+ = \int_\Rp f^+(x) \d x$ and $c^- = \int_\Rp f^-(x) \d x$, the functions $f^+ / c^+$ and $f^- / c^-$ are both densities over $\Rp$ with respective characteristic functions $\zeta^+$ and $\zeta^-$. By replacing these quantities in (\ref{eq-fourier-trans}), it follows that
     \begin{align*}
         \zeta(t) 
         &= \int_\Rp \expf{it^\top x}f(x)\d x \\
@@ -62,9 +62,9 @@ In this context, we generalize Theorem \ref{thm-char-inversion} to provide the n
     \end{align*}
     Since $\zeta \in L^1(\Rp)$, we have that $\zeta^\pm \in L^1(\Rp)$ and the conditions of Theorem \ref{thm-char-inversion} are satisfied by $\zeta^+$ and $\zeta^-$. We then obtain that
     \begin{equation*}
-        \frac{1}{c^\pm} f^\pm(x) = \left(2\pi\right)^{-p}\int_\Rp \expf{-i t^\top x} \zeta^\pm(t) \d t,
+        \frac{1}{c^\pm} f^\pm(x) = \left(2\pi\right)^{-p}\int_\Rp \expf{-i t^\top x} \zeta^\pm(t) \d t.
     \end{equation*}
-    and hence
+    Hence
     \begin{align*}
         f(x) 
         &= f^+(x) - f^-(x) \\
@@ -80,7 +80,7 @@ This corollary lets us extend the notation introduced in (\ref{eq-fourier-densit
     \Finv[\zeta](x) = \left(2\pi\right)^{-p}\int_\Rp \expf{-i t^\top x} \zeta(t) \d t.
 \end{equation*}
 
-In order to better understand the characteristic function, we need to be able to know in which functional space it lies. The following lemma relates $L^p$ integrability of the characteristic function to the existence of the density of a convolution of random variables. This is an extension of \cite[Lemma 2.4.4]{kolassa2006series} to $\Rp$.
+In order to better understand the characteristic function, we need to be able to know in which functional space it lies in. The following lemma relates $L^p$ integrability of the characteristic function to the existence of the density of a convolution of random variables. This is an extension of \cite[Lemma 2.4.4]{kolassa2006series} to $\Rp$.
 
 \input{thm-char-integrable-convolution}
 
@@ -90,7 +90,7 @@ For $k \in \N$, we define $S_p(k)$ as the set of index tuples of length $k$ over
 \begin{equation*}
     S_p(k) = \left\{ (s_1, \ldots, s_k) : s_i \in [p] \right\},
 \end{equation*}
-where $[p] = \eset{1, \ldots, p}$. Let $f : \Rp \rightarrow \R$ be a $k$-times differentiable function, $s \in S_p(k)$ and $x_0 \in \Rp$, then the \textit{$s$-derivative} of $f$ in $x_0$ is given by
+where $[p] = \eset{1, \ldots, p}$. Let $f : \Rp \rightarrow \R$ be a $k$-times differentiable function, let $s \in S_p(k)$ and let $x_0 \in \Rp$. Then the \textit{$s$-derivative} of $f$ in $x_0$ is given by
 \begin{equation*}
     D^s f(x_0) = \frac{\d^k}{\d x_{s_1} \ldots \d x_{s_k}} f(x) \bigg|_{x=x_0}.
 \end{equation*}
@@ -141,7 +141,7 @@ The derivatives of the cumulant generating function are called the \textit{cumul
 \end{equation*}
 In the sequel, cumulants might depend on various quantities such as the sample size, the random variable of interest or parameters of a distribution, in which case we will use variations of the notation $\kappa_s$ to make clear which cumulants are being discussed.
 
-Since the Normal distribution will often be used in the following, the next example gives the cumulant generating function and cumulants of a multivariate Normal distribution.
+Since the Normal distribution will often be used in the sequel, the next example gives the cumulant generating function and cumulants of a multivariate Normal distribution.
 \begin{example} \label{ex-cumulants-mvn}
     Let $X \sim N(\mu, \Sigma)$ with $\mu \in \Rp$ and $\Sigma \in \Sp$. The cumulant generating function $K(t; \mu, \Sigma)$ of $X$ is the quadratic function given by
     \begin{equation*}
@@ -150,7 +150,7 @@ Since the Normal distribution will often be used in the following, the next exam
     Since $K$ is quadratic in $t$, it is clear that cumulants of $X$ of arbitrary order exist. Furthermore, the first order cumulants are the components $\mu$, the second order cumulants are the components of $\Sigma$, and the cumulants of order higher than 2 are equal to 0.
 \end{example}
 
-We now state without a proof some simple properties of cumulants that will be useful in future proofs.
+We now state, without a proof, some simple properties of cumulants that will be useful in future proofs.
 \begin{lemma} \label{lem-cumulants-props}
     Let $X_1, \ldots, X_n \simiid P$. Then the following holds for any $s \in S(k)$
     \begin{enumerate}[i.]

@@ -1,6 +1,6 @@
 \subsection{Heuristic introduction to the Edgeworth approximation} \label{sec-edgeworth}
 
-We now present a heuristic development of the Edgeworth approximation. Consider two distributions $P$ and $Q$ over $\Rp$ with respective densities $f$ and $q$, characteristic functions $\zeta$ and $\xi$, and cumulants $\kappa_s$ and $\gamma_s$ for $s \in S_p(k)$, $k \in \N$. Assume that both $P$ and $Q$ have mean $0$ and a covariance matrix equal to $\mathbb{1}_p$. We wish to utilize the cumulants of both distributions to construct an approximation of the density of $P$.
+We now present a heuristic development of the Edgeworth approximation \cite{edg}. Consider two distributions $P$ and $Q$ over $\Rp$ with respective densities $f$ and $q$, characteristic functions $\zeta$ and $\xi$, and cumulants $\kappa_s$ and $\gamma_s$ for $s \in S_p(k)$, $k \in \N$. Assume that both $P$ and $Q$ have mean $0$ and a covariance matrix equal to $\mathbb{1}_p$. We wish to utilize the cumulants of both distributions to construct an approximation of the density of $P$.
 
 By formal expansion of the difference between the cumulant generating functions of $P$ and $Q$ around 0, we obtain that for any $t \in \Rp$,
 \begin{align*}
@@ -58,7 +58,7 @@ This allows us to retrieve the density of $P$ by Fourier inversion,
     \sum_{s \in S_p(j)}
     \alpha^*_s \frac{(-1)^j D^s q(x)}{j! q(x)}\right\}.
 \end{align}
-A convenient choice for $Q$ is the multivariate standard Normal distribution $\mathcal{N}_p(0, \mathbb{1}_p)$ with density $\phi : \Rp \rightarrow \R$. In this case, the cumulants of $P$ and $Q$ of order $k=1,2$ of the two distributions match, implying $\alpha_s = 0$ for any $s \in S_p(k)$ and $k=1,2$. Since the pseudo-cumulants $\alpha^*$ are composed of sums and products of the coefficients $\alpha$, this also implies that the pseudo-cumulants of order $k=1,2$ are 0 as well. Using this in (\ref{eq-edge-abstract}), we obtain that
+A convenient choice for $Q$ is the multivariate standard Normal distribution $\mathcal{N}_p(0, \mathbb{1}_p)$ with density $\phi : \Rp \rightarrow \R$. In this case, the cumulants of $P$ and $Q$ of order $k=1,2$ of the two distributions match, implying that $\alpha_s = 0$ for any $s \in S_p(k)$ and $k=1,2$. Since the pseudo-cumulants $\alpha^*$ are composed of sums and products of the coefficients $\alpha$, this also implies that the pseudo-cumulants of order $k=1,2$ are 0 as well. Using this in (\ref{eq-edge-abstract}), we obtain that
 \begin{align}
     f(x) 
     &= \phi(x) \left\{ 1 + \sum_{j=3}^\infty 
@@ -78,7 +78,7 @@ Next, we apply this transformation to the standardized sum $Y = n^{-1/2}\sum_{i=
     \kappa_s(Y) = n^{1-k/2} \kappa_s(X) = O(n^{1-k/2}).
 \end{equation*}
 \
-We can form the \textit{Edgeworth approximation} of order $k$, denoted $e_{k, n}(\cdot; \kappa(X))$, by only keeping cumulants of order up to $k$ and removing terms of order $o(n^{1-k/2})$ in (\ref{eq-edgeworth-full}). The notation $e_{k, n}(\cdot; \kappa(X))$ highlights the fact that the approximation to the density of $Y$ only depends on three parameters: the order $k$, the number of terms summed $n$, and the cumulants $\kappa(X)$ of the summands. Since we discard all cumulants of order higher than $k$, the error of the resulting approximation must be at least $O(n^{(1-k)/2})$ and we actually have
+We can form the \textit{Edgeworth approximation} of order $k$, denoted $e_{k, n}(\cdot; \kappa(X))$, by only keeping cumulants of order up to $k$ and removing terms of order $o(n^{1-k/2})$ in (\ref{eq-edgeworth-full}). The notation $e_{k, n}(\cdot; \kappa(X))$ highlights the fact that the approximation to the density of $Y$ only depends on three parameters: the order $k$, the number of terms summed $n$, and the cumulants $\kappa(X)$ of the summands. Since we discard all cumulants of order higher than $k$, the error of the resulting approximation must be at least $O(n^{(1-k)/2})$ and we have
 \begin{equation} \label{eq-edgeworth}
     f_Y(y) = e_{k, n}(y; \kappa(X)) + o(n^{1-k/2}),
 \end{equation}
@@ -112,7 +112,7 @@ While the argument provided above for the definition of the Edgeworth series is 
     \begin{equation*}
         e_{k, n}(s; \kappa(X)) = \abs{\Sigma}^{-1/2} e_{k, n}(\Sigma^{-1/2}(s - \sqrt{n}\mu); \kappa(Z)).
     \end{equation*}
-    In the sequel, we will use the Edgeworth expansion to approximate the density of random variables which are not necessarily centered or have a unit covariance. In this case, we implicitly make use of the change of variable formula mentioned in the following remark. 
+    In the sequel, we use the Edgeworth expansion to approximate the density of random variables which are not necessarily centered or have a unit covariance. In this case, we implicitly make use of the change of variable formula mentioned in the following remark. 
 \end{remark}
 
 
@@ -120,7 +120,7 @@ While the argument provided above for the definition of the Edgeworth series is 
     Note that one can show from the definition of generalized Hermite polynomials in (\ref{eq-hermite}), that for any index tuple $s \in S_p(k)$, where $k \in \N$ is an odd integer, 0 is a root of the generalized Hermite polynomial $h_s$. 
     Furthermore, by the development of (\ref{eq-edgeworth-full}), the coefficient of each Hermite polynomial $h_s$, where $s \in S_p(k)$, contains terms of order $O(n^{1-k'/2})$ where $k$ and $k'$ have the same parity and $k' \leq k$.
 
-    Combining this with Remarks \ref{rem-centering} shows that the polynomial part of the Edgeworth series evaluated at the mean of the approximated distribution is a polynomial in $n^{-1}$ instead of a polynomial in $n^{-1/2}$ since terms of odd powers are zero. Another consequence of this is that the error at the mean of the Edgeworth approximation of even order $k$ is $O(n^{-k/2})$. 
+    Combining this with Remark \ref{rem-centering} shows that the polynomial part of the Edgeworth series evaluated at the mean of the approximated distribution is a polynomial in $n^{-1}$ instead of a polynomial in $n^{-1/2}$ since terms of odd powers are zero. Another consequence of this is that the error at the mean of the Edgeworth approximation of even order $k$ is $O(n^{-k/2})$. 
     
     For instance, if $e_{4, n}(\cdot; \kappa(X))$ is the Edgeworth expansion of order $4$ from Example \ref{ex-edgeworth-1d}, we have that
     \begin{equation*}

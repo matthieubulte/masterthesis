@@ -15,11 +15,11 @@ In Eriksen \cite{eriksen1996tests}, the author gives the following simple exampl
 \begin{equation} \label{eq-q-stat}
     Q(S_n) = \expf{-\Lambda(S_n) / n},
 \end{equation}
-and demonstrates that it asymptotically follows a beta distribution $B((n - 3)/2, 1/2)$.
+and demonstrates that it asymptotically follows a Beta distribution $B((n - 3)/2, 1/2)$.
 
 
 
-As we have seen in the previous section, the maximum likelihood estimator exists almost surely under both $H_0$ and $H_1$ if $n \geq 3$. We can empirically evaluate the $\chi^2_d$ approximation to the distribution of $\Lambda(S_n)$ and the $B((n - 3)/2, 1/2)$ approximation to the distribution of $Q(S_n)$ by sampling the statistics under the null hypothesis of a chordless cycle. For a given sample size $n \in \N$, we sample $N = 10000$ values $\lambda_1, \ldots, \lambda_N$ of the statistic $\Lambda(S_n)$ under the null hypothesis. With this sample, we construct the empirical cumulative distribution function $\hat F_\Lambda$ which approximates the true cumulative distribution function of $\Lambda(S_n)$, as well as the sorted empirical probabilities $\hat p_{i} = \hat F_\Lambda(\lambda_{(i)})$. Further, the empirical probabilities $\hat p_{i}$ can be compared to the probabilities $\tilde p_i = F(\lambda_{(i)})$ where $F$ corresponds to the cumulative distribution function of either the $\chi^2_1$ approximation of $\Lambda(S_n)$ or the $B((n - 3)/2, 1/2)$ approximation of $Q(S_n) = \expf{-\Lambda(S_n) / n}$. Figure \ref{fig-diamond-vs-square-small} displays this comparison. As seens in the upper pane of Figure \ref{fig-diamond-vs-square-small}, the $\chi^2_1$ approximation is a poor approximation to the distribution of $\Lambda(S_n)$ while the $B((n - 3)/2, 1/2)$ approximation to the distribution of $Q(S_n)$ is accurate even for small sample sizes. Since we are interested in constructing a hypothesis test based on these approximations, the small probability region is of particular interest. In the lower pane of Figure \ref{fig-diamond-vs-square-small}, we see that the $\chi^2_1$ approximation is particularly poor for $n=5$, where a test at level $\alpha=0.05$ based on the $\chi^2_1$ approximation would have a true size of $0.1$.
+As we have seen in the previous section, the maximum likelihood estimator exists almost surely under both $H_0$ and $H_1$ if $n \geq 3$. We can empirically evaluate the $\chi^2_d$ approximation to the distribution of $\Lambda(S_n)$ and the $B((n - 3)/2, 1/2)$ approximation to the distribution of $Q(S_n)$ by sampling the statistics under the null hypothesis of a chordless cycle. For a given sample size $n \in \N$, we sample $N = 10000$ values $\lambda_1, \ldots, \lambda_N$ of the statistic $\Lambda(S_n)$ under the null hypothesis. With this sample, we construct the empirical cumulative distribution function $\hat F_\Lambda$ which approximates the true cumulative distribution function of $\Lambda(S_n)$, as well as the sorted empirical probabilities $\hat p_{i} = \hat F_\Lambda(\lambda_{(i)})$. Further, the empirical probabilities $\hat p_{i}$ can be compared to the probabilities $\tilde p_i = F(\lambda_{(i)})$ where $F$ corresponds to the cumulative distribution function of either the $\chi^2_1$ approximation of $\Lambda(S_n)$ or the $B((n - 3)/2, 1/2)$ approximation of $Q(S_n) = \expf{-\Lambda(S_n) / n}$. Figure \ref{fig-diamond-vs-square-small} displays this comparison. As seen in the upper pane of Figure \ref{fig-diamond-vs-square-small}, the $\chi^2_1$ approximation is a poor approximation to the distribution of $\Lambda(S_n)$ while the $B((n - 3)/2, 1/2)$ approximation to the distribution of $Q(S_n)$ is accurate even for small sample sizes. Since we are interested in constructing a hypothesis test based on these approximations, the small probability region is of particular interest. In the lower pane of Figure \ref{fig-diamond-vs-square-small}, we see that the $\chi^2_1$ approximation is particularly poor for $n=5$, where a test at level $\alpha=0.05$ based on the $\chi^2_1$ approximation would have a true size of $0.1$.
 \input{fig-cycle-vs-chordal}
 \input{fig-diamond-vs-square-small}
 
@@ -84,7 +84,7 @@ where the last equality follows from the fact that $\tr[S_n\hat\Omega_{\G}(S_n)]
     \begin{equation*}
         p(S^\G; \Omega_0) = c \frac{|\Omega_0|^{n/2}}{|\hat\Omega_\G(S^\G)|^{n/2}} |j_\G(\hat\Omega_\G(S^\G)) |^{-1/2} \expfc{-\frac{n}{2} \trB{\Omega_0 S^\G}} (1 + o(n^{-3/2})).
     \end{equation*}
-    Combining these results together allows us to approximate the density of $S_e$,conditioned on $S^{\G_0}$, as follows
+    Combining these results together allows us to approximate the density of $S_e$, conditioned on $S^{\G_0}$, as follows
     \begin{align*}
         p(S_{e_0}| S^{\G_0}; \Omega_0)
         &= \frac{p(S_{e_0}, S^{\G_0}; \Omega_0)}{p(S^{\G_0}; \Omega_0)} = \frac{p(S^{\G}; \Omega_0)}{p(S^{\G_0}; \Omega_0)}\\
@@ -136,14 +136,14 @@ where the last equality follows from the fact that $\tr[S_n\hat\Omega_{\G}(S_n)]
             &0\ \ \t{ otherwise}.
         \end{cases}
     \end{equation*}
-    Thus, the summands $S_e S_{\bar e}$ of (\ref{eq-tr-sum}) are non-zero if and only if both $e$ and $\bar e$ are either $\eset{i}$ for some $i \in [p]$ or equal to $e_0$. Without loss of generality, we assume that $e_0 = \eset{1, 2}$. We can thus fous on the following cases. 
+    Thus, the summands $S_e S_{\bar e}$ of (\ref{eq-tr-sum}) are non-zero if and only if both $e$ and $\bar e$ are either $\eset{i}$ for some $i \in [p]$ or equal to $e_0$. Without loss of generality, we assume that $e_0 = \eset{1, 2}$. We can thus focus on the following cases. 
 
     Case 1. $e = \bar e = \eset{1, 2}$. This is possible only if $a = \eset{1}$ and $b = \eset{2}$, in which case
     \begin{equation*}
         j_\G(S)_{\eset{1} \eset{2}} = \sum_{e \in \eset{1} \times \eset{2}} S_e S_{\bar e} = S_{\eset{1, 2}}S_{\eset{1, 2}} = s^2.
     \end{equation*}
 
-    Case 2. $e = \eset{1, 2}$ and $\bar e = \eset{i, j}$ with $i \neq j$ (or the opposite). Then we must have $a = \eset{1, i}$ and $b = \eset{2, j}$ and since we assumed that $S = 1_p + s H_{e_0}$, we have that
+    Case 2. $e = \eset{1, 2}$ and $\bar e = \eset{i, j}$ with $i \neq j$ (or the opposite). Then, we must have $a = \eset{1, i}$ and $b = \eset{2, j}$ and since we assumed that $S = 1_p + s H_{e_0}$, we have that
     \begin{equation*}
         j_\G(S)_{\eset{1, i} \eset{2, j}} = S_{1 2}S_{i j} + S_{1 j} S_{i 2} + S_{i 2} S_{1 j} + S_{i j} S_{1 2} = 0.
     \end{equation*}
@@ -186,7 +186,7 @@ where the last equality follows from the fact that $\tr[S_n\hat\Omega_{\G}(S_n)]
     Since the density of a $B(\alpha, \beta)$ distribution is proportional to $q^{\alpha-1}(1-q)^{\beta-1}$, we have that $q$ asymptotically follows a $B((n - f(e_0) - 1)/2, 1/2)$ distribution.
 \end{proof}
 
-This construction can be generalized to the case where $\G_0 = ([p], E_0)$ is the subgraph of $\G = ([p], E)$ with $d = |E \setminus E_0| > 1$. Let $E_- = E \setminus E_0 = \eset{e_0, \ldots, e_{d-1}}$. We define for $i = 1, \ldots, d-1$ the subgraphs $\G_i = ([p], E_i)$ with $E_i = E_{i-1} \cup \eset{e_i}$. Then, the $Q(S_n)$ statitistic can be decomposed as follows,
+This construction can be generalized to the case where $\G_0 = ([p], E_0)$ is the subgraph of $\G = ([p], E)$ with $d = |E \setminus E_0| > 1$. Let $E_- = E \setminus E_0 = \eset{e_0, \ldots, e_{d-1}}$. We define for $i = 1, \ldots, d-1$ the subgraphs $\G_i = ([p], E_i)$ with $E_i = E_{i-1} \cup \eset{e_i}$. Then, the $Q(S_n)$ statistic can be decomposed as follows,
 \begin{align*}
     Q(S_n) 
     &= \frac{|\hat\Omega_{\G_0}(S_n)|}{|\hat\Omega_{\G}(S_n)|}

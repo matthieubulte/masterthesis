@@ -8,7 +8,7 @@
     \end{equation*}
     Thus, $\zeta^l \in L^1(\Rp)$. Since the characteristic function of a sum of $l$ independent copies of $X$ is equal to $t \mapsto \zeta(t)^l$, we can apply Theorem \ref{thm-char-inversion}. This shows that the density of the convolution of $l$ copies of $X$ exists and is bounded.
     \newline
-    We now prove the \textit{if} direction of the theorem. Assume that there exists a positive interger $j \in \N$ such that the density $f_j$ of a convolution of $j$ independent copies of $X$ exists and is bounded. Then, using that $\abs{\zeta(-t)} = \abs{\overline{\zeta(t)}} = \abs{\zeta(t)}$, we have that for any $r \in \R$,
+    We now prove the \textit{if} direction of the lemma. Assume that there exists a positive interger $j \in \N$ such that the density $f_j$ of a convolution of $j$ independent copies of $X$ exists and is bounded. Then, using that $\abs{\zeta(-t)} = \abs{\overline{\zeta(t)}} = \abs{\zeta(t)}$, we have that for any $r \in \R$,
     \begin{equation*}
         \int_{[-r, r]^p} \abs{\zeta(t)}^{2j} \d t
         = \int_{[-r, r]^p} \abs{\zeta(t)}^j\abs{\zeta(t)}^j \d t
@@ -40,5 +40,5 @@
         \leq 2^p \intRp{x}{f_j(x)\intRp{v}{f_j(x + v/r)}}
         = 2^p \intRp{x}{f_j(x)} = 2^p.
     \end{equation*}
-    This shows that a finite upper bound on $\norm{\zeta}_{2j}^{2j}$ that is independent of $r$ exists. This concludes the proof for $q = 2j$.
+    This shows that a finite upper bound on $\norm{\zeta}_{2j}^{2j}$ exists, that is independent of $r$. This concludes the proof for $q = 2j$.
 \end{proof}
